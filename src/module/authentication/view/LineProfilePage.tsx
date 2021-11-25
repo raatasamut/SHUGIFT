@@ -33,6 +33,7 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                 <Row className="justify-content-center" style={{
                     fontSize: '16px',
                     textAlign: 'center',
+                    paddingRight: '16px',
                     color: '#6C6C6C'
                 }}>
                     <Image style={{ width: '44px' }} src={'ic-line.svg'} /> LINE Profile
