@@ -27,8 +27,7 @@ export default class WebAPI {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(new RequestModel(module, target, data))
         }).then((res: Response) => {
