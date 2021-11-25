@@ -18,15 +18,15 @@ function App() {
   const viewModel = new AppViewModel()
 
   useEffect(() => {
-    // initial()
+    initial()
 
 
-    viewModel.request.channel = 'LINE'
-    viewModel.request.userID = 'uwuduwueduuweqd'
-    viewModel.request.name = 'fair'
-    viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
+    // viewModel.request.channel = 'LINE'
+    // viewModel.request.userID = 'uwuduwueduuweqd'
+    // viewModel.request.name = 'fair'
+    // viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
 
-    setState(AppState.PROFILE)
+    // setState(AppState.PROFILE)
   });
 
   const logout = () => {
