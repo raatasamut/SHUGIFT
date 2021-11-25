@@ -20,6 +20,9 @@ function App() {
   const viewModel = new AppViewModel()
 
   useEffect(() => {
+
+    console.log('useEffect')
+
     initial()
 
     // viewModel.request.channel = 'LINE'
@@ -41,6 +44,9 @@ function App() {
   }
 
   const checkUser = () => {
+
+    console.log('checkUser')
+
     let user = User.getUser()
 
     if (user) {
@@ -51,6 +57,9 @@ function App() {
   }
 
   const initial = () => {
+
+    console.log('initial')
+
     liff.init({ liffId: '1656661903-7gDz0NJL' }, () => {
       if (liff.isLoggedIn()) {
         getLineAccountData()
@@ -61,6 +70,9 @@ function App() {
   }
 
   const getLineAccountData = () => {
+
+    console.log('getLineAccountData')
+
     const idToken = liff.getIDToken();
     liff.getProfile().then(profile => {
 
@@ -77,6 +89,9 @@ function App() {
   }
 
   const requestLogin = () => {
+
+    console.log('requestLogin')
+
     viewModel.login((msg) => {
       liff.logout();
       initial();
