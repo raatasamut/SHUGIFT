@@ -12,7 +12,7 @@ function App() {
     LOGIN = 'login', PROFILE = 'profile', HOME = 'home'
   }
 
-  const [appState, setState] = useState('login')
+  const [appState, setState] = useState(AppState.LOGIN)
 
   const viewModel = new AppViewModel()
 
