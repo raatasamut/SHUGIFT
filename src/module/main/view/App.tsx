@@ -22,10 +22,8 @@ function App() {
   useEffect(() => {
     initial()
 
-    // console.log('useEffect')
-
     // viewModel.request.channel = 'LINE'
-    // viewModel.request.userID = 'uwuduwueduuweqd'
+    // viewModel.request.userID = 'uwuduwuelr,flre,l;f,erlf,mllerw,dlewmkldmweklmdklewmeduuweqd'
     // viewModel.request.name = 'fair'
     // viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
 

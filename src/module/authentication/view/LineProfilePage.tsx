@@ -45,7 +45,7 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                 <Table style={{
                     fontSize: '16px',
                     color: '#6C6C6C'
-                }}>
+                }} responsive>
                     <tbody>
                         <tr>
                             <td className="noborder" style={{ textAlign: 'end' }}>UserID:</td>
