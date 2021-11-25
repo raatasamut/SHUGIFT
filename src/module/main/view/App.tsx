@@ -5,6 +5,7 @@ import AppViewModel from '../viewmodel/AppViewModel';
 import User from '../../authentication/User';
 import { Container, Row, Image } from 'react-bootstrap';
 import LoginPage from '../../authentication/view/LoginPage';
+import LineProfilePage from '../../authentication/view/LineProfilePage';
 
 function App() {
 
@@ -16,6 +17,10 @@ function App() {
 
   const viewModel = new AppViewModel()
 
+  useEffect(() => {
+    initial()
+  });
+
   const logout = () => {
     window.sessionStorage.removeItem('user')
     window.location.reload()
@@ -24,7 +29,7 @@ function App() {
   const checkUser = () => {
     let user = User.getUser()
 
-    if(user){
+    if (user) {
       setState(AppState.HOME)
     } else {
       setState(AppState.LOGIN)
@@ -34,18 +39,14 @@ function App() {
   const initial = () => {
     liff.init({ liffId: '1656661903-7gDz0NJL' }, () => {
       if (liff.isLoggedIn()) {
-        requestLogin();
+        getLineAccountData()
       } else {
         checkUser();
       }
     }, err => console.error(err));
   }
 
-  useEffect(() => {
-    initial()
-  });
-
-  const requestLogin = () => {
+  const getLineAccountData = () => {
     const idToken = liff.getIDToken();
     liff.getProfile().then(profile => {
 
@@ -56,11 +57,15 @@ function App() {
       viewModel.request.name = profile.displayName
       viewModel.request.picture = profile.pictureUrl
 
-      viewModel.login((msg) => {
-        liff.logout();
-        initial();
-      })
+      setState(AppState.PROFILE)
     }).catch(err => console.error(err));
+  }
+
+  const requestLogin = () => {
+    viewModel.login((msg) => {
+      liff.logout();
+      initial();
+    })
   }
 
   return (
@@ -97,12 +102,16 @@ function App() {
 
           {
 
-            appState === AppState.LOGIN ? <LoginPage lineCallback={()=>{
+            appState === AppState.LOGIN ? <LoginPage lineCallback={() => {
               liff.login()
-            }}/> : 
-            appState === AppState.PROFILE ? <>PROFILE</> : 
-            appState === AppState.HOME ? <>HOME</> : 
-            <>{appState}</>
+            }} /> :
+              appState === AppState.PROFILE ? <LineProfilePage data={viewModel.request} loginCallback={() => {
+                requestLogin()
+              }} logoutCallback={() => {
+                setState(AppState.LOGIN)
+              }} /> :
+                appState === AppState.HOME ? <>HOME</> :
+                  <>{appState}</>
 
           }
 

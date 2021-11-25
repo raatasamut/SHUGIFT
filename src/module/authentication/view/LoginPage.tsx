@@ -10,9 +10,7 @@ export interface ILoginPageState {
   total: number
 }
 
-
 export default class LoginPage extends React.Component<ILoginPageProps, ILoginPageState> {
-
 
   constructor(props: ILoginPageProps) {
     super(props)
