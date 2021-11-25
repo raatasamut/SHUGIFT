@@ -18,7 +18,15 @@ function App() {
   const viewModel = new AppViewModel()
 
   useEffect(() => {
-    initial()
+    // initial()
+
+
+    viewModel.request.channel = 'LINE'
+    viewModel.request.userID = 'uwuduwueduuweqd'
+    viewModel.request.name = 'fair'
+    viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
+
+    setState(AppState.PROFILE)
   });
 
   const logout = () => {
@@ -72,7 +80,7 @@ function App() {
     <Container>
 
       <Row className="justify-content-center">
-        <Image style={{ width: '100px' }} src={'logo.png'} />
+        <Image style={{ width: '80px' }} src={'logo.png'} />
       </Row>
 
       <Container
@@ -80,12 +88,14 @@ function App() {
         style={{
           height: '100%',
           maxWidth: '600px',
-          padding: '24px',
+          paddingBottom: '24px',
+          paddingLeft: '24px',
+          paddingRight: '24px',
           backgroundColor: '#F2EFEA'
         }}>
 
         <Row className="justify-content-center">
-          <Image style={{ width: '80%', maxWidth: '360px' }} src={'event-logo.svg'} />
+          <Image style={{ width: '70%', maxWidth: '360px' }} src={'event-logo.svg'} />
         </Row>
 
         <Container
@@ -93,8 +103,8 @@ function App() {
           style={{
             height: '100%',
             maxWidth: '460px',
-            paddingTop: '36px',
-            paddingBottom: '36px',
+            paddingTop: '30px',
+            paddingBottom: '30px',
             paddingLeft: '12px',
             paddingRight: '12px',
             backgroundColor: '#FFFFFF'
@@ -108,7 +118,7 @@ function App() {
               appState === AppState.PROFILE ? <LineProfilePage data={viewModel.request} loginCallback={() => {
                 requestLogin()
               }} logoutCallback={() => {
-                setState(AppState.LOGIN)
+                initial();
               }} /> :
                 appState === AppState.HOME ? <>HOME</> :
                   <>{appState}</>
