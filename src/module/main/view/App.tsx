@@ -23,16 +23,16 @@ function App() {
 
     console.log('useEffect')
 
-    // initial()
+    initial()
 
-    viewModel.request.channel = 'LINE'
-    viewModel.request.userID = 'uwuduwuelr,flre,l;f,erlf,mllerw,dlewmkldmweklmdklewmeduuweqd'
-    viewModel.request.name = 'fair'
-    viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
+    // viewModel.request.channel = 'LINE'
+    // viewModel.request.userID = 'uwuduwuelr,flre,l;f,erlf,mllerw,dlewmkldmweklmdklewmeduuweqd'
+    // viewModel.request.name = 'fair'
+    // viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
 
-    setData(viewModel.request)
+    // setData(viewModel.request)
 
-    setState(AppState.PROFILE)
+    // setState(AppState.PROFILE)
 
   }, []);
 
