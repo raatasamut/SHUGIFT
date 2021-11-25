@@ -22,6 +22,8 @@ function App() {
   useEffect(() => {
     initial()
 
+    // console.log('useEffect')
+
     // viewModel.request.channel = 'LINE'
     // viewModel.request.userID = 'uwuduwueduuweqd'
     // viewModel.request.name = 'fair'
@@ -31,7 +33,7 @@ function App() {
 
     // setState(AppState.PROFILE)
 
-  });
+  }, []);
 
   const logout = () => {
     setData(new RequestLogModel())
@@ -117,7 +119,6 @@ function App() {
           }}>
 
           {
-
             appState === AppState.LOGIN ? <LoginPage lineCallback={() => {
               liff.login()
             }} /> :
@@ -128,12 +129,10 @@ function App() {
               }} /> :
                 appState === AppState.HOME ? <>HOME</> :
                   <>{appState}</>
-
           }
 
         </Container>
       </Container>
-
     </Container>
   );
 }

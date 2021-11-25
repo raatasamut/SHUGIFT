@@ -11,6 +11,10 @@ export interface ILineProfilePageProps {
 export default class LineProfilePage extends React.Component<ILineProfilePageProps> {
 
     public render() {
+
+        console.log('LineProfilePage')
+        console.log(this.props.data)
+
         return (
             <div>
 
