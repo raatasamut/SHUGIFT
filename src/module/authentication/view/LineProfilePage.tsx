@@ -12,19 +12,35 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
 
     public render() {
         return (
-            <div style={{
-                fontSize: '24px',
-                textAlign: 'center',
-                color: '#6C6C6C'
-            }}>
+            <div>
+
+                <div style={{
+                    fontSize: '24px',
+                    textAlign: 'center',
+                    color: '#6C6C6C'
+                }}>
+                    อนุญาตให้ใช้ข้อมูลไลน์ ในการลงทะเบียน กรุณากดปุ่ม “ยืนยัน” เพื่อไปยังหน้า Lucky Draw
+                </div>
+
+                <Row className="justify-content-center">
+                    <Image style={{ width: '240px', marginBottom: '48px' }} src={'ic-section.svg'} />
+                </Row>
 
 
-                <Button variant="secondary" size="lg" onClick={this.props.loginCallback}>
-                    ยืนยัน
-                </Button>
+                <Row className="justify-content-center">
+                    <Image style={{ width: '150px', margin: '24px' }} src={this.props.data.picture} rounded />
+                </Row>
 
-                <Button variant="light" onClick={this.props.logoutCallback}>LINE Logout</Button>
-            </div>
+                <Row className="justify-content-center">
+                    <Button variant="secondary" size="lg" onClick={this.props.loginCallback}>
+                        ยืนยัน
+                    </Button>
+                </Row>
+
+                <Row className="justify-content-center">
+                    <Button variant="light" onClick={this.props.logoutCallback}>LINE Logout</Button>
+                </Row>
+            </div >
         );
     }
 }
