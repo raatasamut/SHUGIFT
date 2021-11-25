@@ -6,6 +6,7 @@ import User from '../../authentication/User';
 import { Container, Row, Image } from 'react-bootstrap';
 import LoginPage from '../../authentication/view/LoginPage';
 import LineProfilePage from '../../authentication/view/LineProfilePage';
+import RequestLogModel from '../model/LoginRequestModel'
 
 function App() {
 
@@ -14,19 +15,23 @@ function App() {
   }
 
   const [appState, setState] = useState(AppState.LOGIN)
+  const [lineData, setData] = useState(new RequestLogModel())
 
   const viewModel = new AppViewModel()
 
   useEffect(() => {
-    initial()
+    // initial()
 
 
-    // viewModel.request.channel = 'LINE'
-    // viewModel.request.userID = 'uwuduwueduuweqd'
-    // viewModel.request.name = 'fair'
-    // viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
+    viewModel.request.channel = 'LINE'
+    viewModel.request.userID = 'uwuduwueduuweqd'
+    viewModel.request.name = 'fair'
+    viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
 
-    // setState(AppState.PROFILE)
+    setData(viewModel.request)
+
+    setState(AppState.PROFILE)
+
   });
 
   const logout = () => {
@@ -65,6 +70,7 @@ function App() {
       viewModel.request.name = profile.displayName
       viewModel.request.picture = profile.pictureUrl
 
+      setData(viewModel.request)
       setState(AppState.PROFILE)
     }).catch(err => console.error(err));
   }
@@ -115,7 +121,7 @@ function App() {
             appState === AppState.LOGIN ? <LoginPage lineCallback={() => {
               liff.login()
             }} /> :
-              appState === AppState.PROFILE ? <LineProfilePage data={viewModel.request} loginCallback={() => {
+              appState === AppState.PROFILE ? <LineProfilePage data={lineData} loginCallback={() => {
                 requestLogin()
               }} logoutCallback={() => {
                 initial();
@@ -130,18 +136,6 @@ function App() {
 
     </Container>
   );
-  // return (
-  //   <div className="App">
-
-  //     <div style={{ textAlign: "center" }}>
-
-  //       <button onClick={() => { liff.login() }} >Line Login</button>
-  //       <button onClick={() => logout()} style={{ width: "100%", height: 30 }}>Logout</button>
-
-  //     </div>
-
-  //   </div>
-  // );
 }
 
-export default App;
+export default App
