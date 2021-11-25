@@ -1,10 +1,9 @@
 import './App.css';
 import liff from '@line/liff';
 import { useEffect, useState } from 'react';
-import { Console } from 'console';
 import AppViewModel from '../viewmodel/AppViewModel';
 import User from '../../authentication/User';
-import { Button, Col, Container, Row, Image, Card } from 'react-bootstrap';
+import { Container, Row, Image } from 'react-bootstrap';
 import LoginPage from '../../authentication/view/LoginPage';
 
 function App() {
@@ -13,7 +12,7 @@ function App() {
     LOGIN = 'login', PROFILE = 'profile', HOME = 'home'
   }
 
-  const [appState, setState] = useState(String)
+  const [appState, setState] = useState('login')
 
   const viewModel = new AppViewModel()
 
