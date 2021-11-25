@@ -85,6 +85,8 @@ function App() {
 
       setData(viewModel.request)
       setState(AppState.PROFILE)
+
+      liff.logout();
     }).catch(err => console.error(err));
   }
 
@@ -93,7 +95,6 @@ function App() {
     console.log('requestLogin')
 
     viewModel.login((msg) => {
-      liff.logout();
       initial();
     })
   }
