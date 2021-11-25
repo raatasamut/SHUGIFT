@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
 
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 .App {
@@ -55,4 +55,8 @@ body {
   -moz-border-radius: 12px !important;
   -ms-border-radius: 12px !important;
   -o-border-radius: 12px !important;
+}
+
+.noborder {
+  border: none;
 }

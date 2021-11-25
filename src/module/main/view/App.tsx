@@ -34,6 +34,7 @@ function App() {
   });
 
   const logout = () => {
+    setData(new RequestLogModel())
     window.sessionStorage.removeItem('user')
     window.location.reload()
   }
@@ -123,7 +124,7 @@ function App() {
               appState === AppState.PROFILE ? <LineProfilePage data={lineData} loginCallback={() => {
                 requestLogin()
               }} logoutCallback={() => {
-                initial();
+                logout();
               }} /> :
                 appState === AppState.HOME ? <>HOME</> :
                   <>{appState}</>

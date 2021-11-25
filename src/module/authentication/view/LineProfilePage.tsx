@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Row, Image, Button, Col, Container } from 'react-bootstrap';
+import { Row, Image, Button, Col, Container, Table } from 'react-bootstrap';
 import RequestLogModel from '../../main/model/LoginRequestModel'
 
 export interface ILineProfilePageProps {
@@ -38,32 +38,30 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                     <Image style={{ width: '130px', margin: '12px' }} src={this.props.data.picture} rounded />
                 </Row>
 
-                <Container style={{
+                <Table style={{
                     fontSize: '16px',
                     color: '#6C6C6C'
                 }}>
-                    <Row>
-                        <Col style={{
-                            textAlign: 'right',
-                        }}>UserID :</Col>
-                        <Col>{this.props.data.userID}</Col>
-                    </Row>
-                    <Row>
-                        <Col style={{
-                            textAlign: 'right',
-                        }}>Username :</Col>
-                        <Col>{this.props.data.name}</Col>
-                    </Row>
-                </Container>
+                    <tbody>
+                        <tr>
+                            <td className="noborder" style={{ textAlign: 'end' }}>UserID:</td>
+                            <td className="noborder">{this.props.data.userID}</td>
+                        </tr>
+                        <tr>
+                            <td className="noborder" style={{ textAlign: 'end' }}>Username:</td>
+                            <td className="noborder">{this.props.data.name}</td>
+                        </tr>
+                    </tbody>
+                </Table>
 
-                <Row className="justify-content-center" style={{paddingTop:'24px'}}>
+                <Row className="justify-content-center" style={{ paddingTop: '24px' }}>
                     <Button variant="secondary" style={{ maxWidth: '130px', maxHeight: '48px' }} size="lg" onClick={this.props.loginCallback}>
                         ยืนยัน
                     </Button>
                 </Row>
 
-                <Row className="justify-content-center" style={{paddingTop:'24px'}}>
-                    <Button variant="light" style={{ maxWidth: '110px', maxHeight: '28px' }} size="sm" onClick={this.props.logoutCallback}>LINE Logout</Button>
+                <Row className="justify-content-center" style={{ paddingTop: '24px' }}>
+                    <Button variant="light" style={{ maxWidth: '110px', maxHeight: '28px', fontSize: '12px', color: '#6C6C6C' }} size="sm" onClick={this.props.logoutCallback}>LINE Logout</Button>
                 </Row>
             </div >
         );
