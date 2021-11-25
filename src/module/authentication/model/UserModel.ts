@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import 'reflect-metadata'
-import { BaseModel } from '../../models/BaseModel';
+import { BaseModel } from '../../../models/BaseModel';
 
 export enum APIKey {
     SELECT = 'SELECT', INSERT = 'INSERT', UPDATE = 'UPDATE', DELETE = 'DELETE'

@@ -1,5 +1,5 @@
 import { plainToClass } from 'class-transformer';
-import AppConfig from '../AppConfig';
+import AppConfig from '../../AppConfig';
 import { UserModel } from './model/UserModel';
 
 export default class User{

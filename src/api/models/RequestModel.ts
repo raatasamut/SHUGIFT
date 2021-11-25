@@ -1,5 +1,5 @@
 import { BaseModel } from './../../models/BaseModel';
-import User from '../../authentication/User';
+import User from '../../module/authentication/User';
 
 export class RequestModel {
     module?: string;
