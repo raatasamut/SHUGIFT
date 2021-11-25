@@ -58,7 +58,7 @@ function App() {
 
       viewModel.login((msg) => {
         liff.logout();
-        // window.location.reload();
+        initial();
       })
     }).catch(err => console.error(err));
   }
