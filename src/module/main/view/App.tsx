@@ -38,6 +38,7 @@ function App() {
   const logout = () => {
     setData(new RequestLogModel())
     window.sessionStorage.removeItem('user')
+    setState(AppState.LOGIN)
     window.location.reload()
   }
 
