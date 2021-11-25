@@ -10,10 +10,10 @@ import LoginPage from '../../authentication/view/LoginPage';
 function App() {
 
   enum AppState {
-    LOGIN, PROFILE, HOME
+    LOGIN = 'login', PROFILE = 'profile', HOME = 'home'
   }
 
-  const [appState, setState] = useState(Number)
+  const [appState, setState] = useState(String)
 
   const viewModel = new AppViewModel()
 
