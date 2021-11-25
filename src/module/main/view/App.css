@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
 .App {
   text-align: center;
 }
@@ -26,6 +32,10 @@
 }
 
 .App-link {
+  color: #61dafb;
+}
+
+.mouse {
   color: #61dafb;
 }
 

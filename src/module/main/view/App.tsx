@@ -66,7 +66,6 @@ function App() {
 
   return (
     <Container>
-      <button onClick={() => { liff.login() }} >Line Login</button>
 
       <Row className="justify-content-center">
         <Image style={{ width: '100px' }} src={'logo.png'} />
@@ -76,28 +75,35 @@ function App() {
         className='rounded-border'
         style={{
           height: '100%',
-          padding: '16px',
+          maxWidth: '600px',
+          padding: '24px',
           backgroundColor: '#F2EFEA'
         }}>
 
         <Row className="justify-content-center">
-          <Image style={{ width: '80%' }} src={'event-logo.svg'} />
+          <Image style={{ width: '80%', maxWidth: '360px' }} src={'event-logo.svg'} />
         </Row>
 
         <Container
           className='rounded-border'
           style={{
             height: '100%',
-            padding: '16px',
+            maxWidth: '460px',
+            paddingTop: '36px',
+            paddingBottom: '36px',
+            paddingLeft: '12px',
+            paddingRight: '12px',
             backgroundColor: '#FFFFFF'
           }}>
 
           {
 
-            appState === AppState.LOGIN ? <LoginPage /> : 
+            appState === AppState.LOGIN ? <LoginPage lineCallback={()=>{
+              liff.login()
+            }}/> : 
             appState === AppState.PROFILE ? <>PROFILE</> : 
             appState === AppState.HOME ? <>HOME</> : 
-            <></>
+            <>{appState}</>
 
           }
 
