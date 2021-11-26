@@ -7,6 +7,7 @@ import LoginPage from '../../authentication/view/LoginPage';
 import LineProfilePage from '../../authentication/view/LineProfilePage';
 import RequestLogModel from '../model/LoginRequestModel'
 import './App.scss';
+import HomePage from '../../home/view/HomePage';
 
 function App() {
 
@@ -100,7 +101,7 @@ function App() {
         }}>
 
         <Row className="justify-content-center">
-          <Image style={{ width: '75%', maxWidth: '250px' }} src={'event-logo.svg'} />
+          <Image style={{ width: '90%', maxWidth: '250px' }} src={'event-logo.svg'} />
         </Row>
 
         <Container
@@ -124,7 +125,9 @@ function App() {
               }} logoutCallback={() => {
                 logout();
               }} /> :
-                appState === AppState.HOME ? <>HOME</> :
+                appState === AppState.HOME ? <HomePage logoutCallback={() => {
+                  logout();
+                }} /> :
                   <>{appState}</>
           }
 
