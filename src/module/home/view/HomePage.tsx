@@ -1,15 +1,18 @@
 import * as React from 'react';
-import { Row, Image, Button, Col, Container, Table } from 'react-bootstrap';
-import RequestLogModel from '../../main/model/LoginRequestModel'
-import { Type } from 'class-transformer';
+import { Row, Image, Container } from 'react-bootstrap';
+import { WheelData } from '../../../game/wheel/components/Wheel/types';
 import { WheelComponent } from '../../../game/wheel/components/Wheel/WheelComponent';
+import { MCouponType } from '../model/MCouponType';
+import { UserData } from '../model/UserData';
+import HomeViewModel from '../viewmodel/HomeViewModel';
 
 export interface IHomePageProps {
     logoutCallback: () => void
 }
 
-
 export interface IHomePageState {
+    listMCouponType: Array<MCouponType>,
+    data?: UserData,
     containerWidth: number,
     prizeNumber: number,
     spin: boolean
@@ -17,14 +20,35 @@ export interface IHomePageState {
 
 export default class HomePage extends React.Component<IHomePageProps, IHomePageState> {
 
+    viewModel?: HomeViewModel
+
     constructor(props: IHomePageProps) {
         super(props)
 
         this.state = {
+            listMCouponType: [],
+            data: undefined,
             containerWidth: window.innerWidth,
             prizeNumber: 0,
             spin: false
         }
+
+        this.viewModel = new HomeViewModel()
+        this.viewModel.loadMCouponType((list?: Array<MCouponType>) => {
+            // this.setState({
+            //     listMCouponType: list || []
+            // })
+            // this.viewModel?.loadUserData((data?: UserData) => {
+            //     console.log('loadUserData')
+            //     this.setState({
+            //         data: data
+            //     })
+            // }, (msg) => {
+
+            // })
+        }, (msg) => {
+
+        })
     }
 
     componentDidMount() {
@@ -37,7 +61,6 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
     });
 
     public render() {
-
         return (
             <div>
                 {
@@ -58,7 +81,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     textAlign: 'center',
                     color: '#000000'
                 }}>
-                    SHU GLOBAL LUCKY DRAW
+                    {this.state.data?.name || '-'}
                 </div>
 
                 <div style={{
@@ -95,7 +118,8 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                 </Row>
 
                 {
-                    this.spin()
+                    this.state.listMCouponType.length > 0 ?
+                        this.spin() : <></>
                 }
             </>
         )
@@ -111,23 +135,26 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
         )
     }
 
+    getMList() {
+        let mList: Array<WheelData> = []
+        this.state.listMCouponType.map((item, index) => {
+            mList.push({ option: item.name || '-', style: { backgroundColor: index % 2 == 1 ? 'green' : 'white', textColor: 'black' } })
+        })
+        return mList
+    }
+
     spin() {
         return (
-            <Container className="justify-content-center">
+            <div className="justify-content-center" onClick={() => {
+                this.setState({
+                    spin: true
+                })
+            }}>
                 <WheelComponent
-                    spinWidth={window.screen.width / 1.4}
+                    spinWidth={window.screen.width / 1.3}
                     mustStartSpinning={this.state.spin}
                     prizeNumber={this.state.prizeNumber}
-                    data={[
-                        { option: '0', style: { backgroundColor: 'green', textColor: 'black' } },
-                        { option: '1', style: { backgroundColor: 'white', textColor: 'black' } },
-                        { option: '2', style: { backgroundColor: 'green', textColor: 'black' } },
-                        { option: '3', style: { backgroundColor: 'white', textColor: 'black' } },
-                        { option: '4', style: { backgroundColor: 'green', textColor: 'black' } },
-                        { option: '5', style: { backgroundColor: 'white', textColor: 'black' } },
-                        { option: '6', style: { backgroundColor: 'green', textColor: 'black' } },
-                        { option: '7', style: { backgroundColor: 'white', textColor: 'black' } }
-                    ]}
+                    data={this.getMList()}
                     onStopSpinning={() => {
                         this.setState({
                             spin: false
@@ -135,13 +162,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     }}
                     backgroundColors={['#3e3e3e', '#df3428']}
                     textColors={['#ffffff']} />
-
-                <button onClick={() => {
-                    this.setState({
-                        spin: true
-                    })
-                }}>Start</button>
-            </Container>
+            </div>
         )
     }
 }

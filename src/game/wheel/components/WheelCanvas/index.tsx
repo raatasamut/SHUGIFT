@@ -44,10 +44,10 @@ const drawWheel = (
   } = drawWheelProps;
   /* eslint-enable prefer-const */
 
-  outerBorderWidth *= 1;
-  innerBorderWidth *= 1;
-  radiusLineWidth *= 1;
-  fontSize *= 1.5;
+  outerBorderWidth *= 0.5;
+  innerBorderWidth *= 0.5;
+  radiusLineWidth *= 0.5;
+  fontSize *= 0.6;
 
   const canvas = canvasRef.current;
   if (canvas?.getContext('2d')) {
@@ -70,7 +70,7 @@ const drawWheel = (
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
 
-    ctx.font = `bold ${fontSize}px Helvetica, Arial`;
+    ctx.font = `bold ${fontSize}px`;
 
     for (let i = 0; i < data.length; i++) {
       const angle = startAngle + i * arc;

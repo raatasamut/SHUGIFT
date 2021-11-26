@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import { getRotationDegrees } from '../../utils';
 import { rouletteSelector } from '../common/images';
+import { rouletteWheel } from '../common/imageCircle';
 import {
   RouletteContainer,
   RouletteSelectorImage,
   RotationContainer,
+  RouletteWheelImage,
 } from './styles';
 import {
   DEFAULT_BACKGROUND_COLORS,
@@ -152,6 +154,7 @@ export const WheelComponent = ({
     }}>
       <RouletteSelectorImage src={rouletteSelector.src} alt="roulette-static" />
       <RouletteContainer>
+        <RouletteWheelImage src={rouletteWheel.src} alt="roulette-static" />
         <RotationContainer
           className={getRouletteClass()}
           startSpinningTime={START_SPINNING_TIME}

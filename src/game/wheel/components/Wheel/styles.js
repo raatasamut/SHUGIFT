@@ -68,3 +68,9 @@ export const RouletteSelectorImage = styled(NonDraggableImage)`
   z-index: 6;
   width: 10%;
 `;
+
+export const RouletteWheelImage = styled(NonDraggableImage)`
+  position: absolute;
+  z-index: 7;
+  width: 100%;
+`;
