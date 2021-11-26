@@ -4,7 +4,7 @@ import { UserModel } from './model/UserModel';
 
 export default class User{
 
-    static authenticationAPI = AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/ytif6azmjxp8x8q/response.json' : ''
+    static authenticationAPI = AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/wffnqh0wxm9zyxk/data.json' : ''
 
     static getUser() {
         try {
