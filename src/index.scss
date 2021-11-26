@@ -1,0 +1,20 @@
+@font-face {
+  font-family: FranklinGothic;
+  src: url(/font/FranklinGothic-Light.ttf);
+  unicode-range: U+0020-007F;
+}
+@font-face {
+  font-family: DBHeaventCond;
+  src: url(/font/DBHeaventCond.ttf);
+}
+body {
+  margin: 0;
+  font-family: FranklinGothic, DBHeaventCond;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

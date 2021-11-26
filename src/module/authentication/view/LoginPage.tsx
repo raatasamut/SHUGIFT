@@ -30,15 +30,15 @@ export default class LoginPage extends React.Component<ILoginPageProps, ILoginPa
           textAlign: 'center',
           color: '#6C6C6C'
         }}>
-          กรุณา Login ก่อนกด Lucky draw จำนวนสิทธิ์กดรับโค๊ด ท่านละ 3 ครั้ง
+          กรุณา Login<br/>ก่อนกด Lucky draw<br/>จำนวนสิทธิ์กดรับโค๊ด ท่านละ 3 ครั้ง
         </div>
 
         <Row className="justify-content-center">
-          <Image style={{ width: '240px', marginTop: '48px', marginBottom: '8px' }} src={'bt-line-login.svg'} onClick={this.props.lineCallback}/>
+          <Image style={{ width: '240px', marginTop: '36px', marginBottom: '8px' }} src={'bt-line-login.svg'} onClick={this.props.lineCallback}/>
         </Row>
 
         <Row className="justify-content-center">
-          <Image style={{ width: '240px', marginBottom: '48px' }} src={'ic-section.svg'} />
+          <Image style={{ width: '240px', marginBottom: '36px' }} src={'ic-section.svg'} />
         </Row>
 
         <div style={{

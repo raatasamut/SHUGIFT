@@ -1,4 +1,3 @@
-import './App.css';
 import liff from '@line/liff';
 import { useEffect, useState } from 'react';
 import AppViewModel from '../viewmodel/AppViewModel';
@@ -7,6 +6,7 @@ import { Container, Row, Image } from 'react-bootstrap';
 import LoginPage from '../../authentication/view/LoginPage';
 import LineProfilePage from '../../authentication/view/LineProfilePage';
 import RequestLogModel from '../model/LoginRequestModel'
+import './App.scss';
 
 function App() {
 
@@ -20,19 +20,16 @@ function App() {
   const viewModel = new AppViewModel()
 
   useEffect(() => {
+    // initial()
 
-    console.log('useEffect')
+    viewModel.request.channel = 'LINE'
+    viewModel.request.userID = 'uwuduwuelr,flre,l;f,erlf,mllerw,dlewmkldmweklmdklewmeduuweqd'
+    viewModel.request.name = 'fair'
+    viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
 
-    initial()
+    setData(viewModel.request)
 
-    // viewModel.request.channel = 'LINE'
-    // viewModel.request.userID = 'uwuduwuelr,flre,l;f,erlf,mllerw,dlewmkldmweklmdklewmeduuweqd'
-    // viewModel.request.name = 'fair'
-    // viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
-
-    // setData(viewModel.request)
-
-    // setState(AppState.PROFILE)
+    setState(AppState.PROFILE)
 
   }, []);
 
@@ -44,11 +41,7 @@ function App() {
   }
 
   const checkUser = () => {
-
-    console.log('checkUser')
-
     let user = User.getUser()
-
     if (user) {
       setState(AppState.HOME)
     } else {
@@ -57,9 +50,6 @@ function App() {
   }
 
   const initial = () => {
-
-    console.log('initial')
-
     liff.init({ liffId: '1656661903-7gDz0NJL' }, () => {
       if (liff.isLoggedIn()) {
         getLineAccountData()
@@ -70,13 +60,8 @@ function App() {
   }
 
   const getLineAccountData = () => {
-
-    console.log('getLineAccountData')
-
     const idToken = liff.getIDToken();
     liff.getProfile().then(profile => {
-
-      console.log(profile);
 
       viewModel.request.channel = 'LINE'
       viewModel.request.userID = profile.userId
@@ -91,9 +76,6 @@ function App() {
   }
 
   const requestLogin = () => {
-
-    console.log('requestLogin')
-
     viewModel.login((msg) => {
       initial();
     })
@@ -103,31 +85,31 @@ function App() {
     <Container>
 
       <Row className="justify-content-center">
-        <Image style={{ width: '80px' }} src={'logo.png'} />
+        <Image style={{ width: '90px' }} src={'logo.png'} />
       </Row>
 
       <Container
         className='rounded-border'
         style={{
           height: '100%',
-          maxWidth: '600px',
+          maxWidth: '900px',
           paddingBottom: '24px',
-          paddingLeft: '24px',
-          paddingRight: '24px',
+          paddingLeft: '20px',
+          paddingRight: '20px',
           backgroundColor: '#F2EFEA'
         }}>
 
         <Row className="justify-content-center">
-          <Image style={{ width: '70%', maxWidth: '360px' }} src={'event-logo.svg'} />
+          <Image style={{ width: '75%', maxWidth: '250px' }} src={'event-logo.svg'} />
         </Row>
 
         <Container
           className='rounded-border'
           style={{
             height: '100%',
-            maxWidth: '460px',
-            paddingTop: '30px',
-            paddingBottom: '30px',
+            maxWidth: appState === AppState.HOME ? '800px' : '550px',
+            paddingTop: '24px',
+            paddingBottom: '24px',
             paddingLeft: '12px',
             paddingRight: '12px',
             backgroundColor: '#FFFFFF'

@@ -8,7 +8,29 @@ export interface ILineProfilePageProps {
     logoutCallback: () => void
 }
 
-export default class LineProfilePage extends React.Component<ILineProfilePageProps> {
+
+export interface ILineProfilePageState {
+    containerWidth: number
+}
+
+export default class LineProfilePage extends React.Component<ILineProfilePageProps, ILineProfilePageState> {
+
+    constructor(props: ILineProfilePageProps) {
+        super(props)
+
+        this.state = {
+            containerWidth: window.innerWidth
+        }
+    }
+
+    componentDidMount() {
+        this.handleResize();
+        window.addEventListener('resize', this.handleResize)
+    }
+
+    handleResize = () => this.setState({
+        containerWidth: window.innerWidth
+    });
 
     public render() {
 
@@ -17,30 +39,44 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
 
         return (
             <div>
-
                 <div style={{
-                    fontSize: '18px',
+                    fontSize: '24px',
                     textAlign: 'center',
                     color: '#6C6C6C'
                 }}>
-                    อนุญาตให้ใช้ข้อมูลไลน์ ในการลงทะเบียน กรุณากดปุ่ม “ยืนยัน” เพื่อไปยังหน้า Lucky Draw
+                    อนุญาตให้ใช้ข้อมูลไลน์ ในการลงทะเบียน<br/>กรุณากดปุ่ม “ยืนยัน” เพื่อไปยังหน้า Lucky Draw
                 </div>
 
                 <Row className="justify-content-center">
-                    <Image style={{ width: '240px', marginBottom: '12px', marginTop: '12px' }} src={'ic-section.svg'} />
+                    <Image style={{ width: '240px', marginBottom: '16px', marginTop: '16px' }} src={'ic-section.svg'} />
                 </Row>
 
+                {
+
+                    this.state.containerWidth < 550 ?
+                        this.smallScreen() :
+                        this.largeScreen()
+
+                }
+
+            </div >
+        );
+    }
+
+    smallScreen() {
+        return (
+            <>
                 <Row className="justify-content-center" style={{
                     fontSize: '16px',
                     textAlign: 'center',
                     paddingRight: '16px',
                     color: '#6C6C6C'
                 }}>
-                    <Image style={{ width: '44px' }} src={'ic-line.svg'} /> LINE Profile
+                    <Image style={{ width: '40px' }} src={'ic-line.svg'} /> LINE Profile
                 </Row>
 
                 <Row className="justify-content-center">
-                    <Image style={{ width: '130px', margin: '12px' }} src={this.props.data.picture} rounded />
+                    <Image style={{ width: '110px', margin: '6px' }} src={this.props.data.picture} rounded />
                 </Row>
 
                 <Table style={{
@@ -48,19 +84,19 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                     color: '#6C6C6C'
                 }} responsive>
                     <tbody>
-                        <tr>
+                        <tr style={{ lineHeight: '1px' }}>
                             <td className="noborder" style={{ textAlign: 'end' }}>UserID:</td>
                             <td className="noborder">{this.props.data.userID}</td>
                         </tr>
-                        <tr>
+                        <tr style={{ lineHeight: '1px' }}>
                             <td className="noborder" style={{ textAlign: 'end' }}>Username:</td>
                             <td className="noborder">{this.props.data.name}</td>
                         </tr>
                     </tbody>
                 </Table>
 
-                <Row className="justify-content-center" style={{ paddingTop: '24px' }}>
-                    <Button variant="secondary" style={{ maxWidth: '130px', maxHeight: '48px' }} size="lg" onClick={this.props.loginCallback}>
+                <Row className="justify-content-center" style={{ paddingTop: '4px' }}>
+                    <Button variant="secondary" style={{ maxWidth: '130px', maxHeight: '48px', backgroundColor: '#535353' }} size="lg" onClick={this.props.loginCallback}>
                         ยืนยัน
                     </Button>
                 </Row>
@@ -68,7 +104,61 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                 <Row className="justify-content-center" style={{ paddingTop: '24px' }}>
                     <Button variant="light" style={{ maxWidth: '110px', maxHeight: '28px', fontSize: '12px', color: '#6C6C6C' }} size="sm" onClick={this.props.logoutCallback}>LINE Logout</Button>
                 </Row>
-            </div >
-        );
+            </>
+        )
+    }
+
+    largeScreen() {
+        return (
+            <>
+                <Container>
+                    <Row>
+                        <Col style={{ width: '40%' }}>
+                            <Row className="justify-content-center">
+                                <Image style={{ width: '110px', margin: '6px' }} src={this.props.data.picture} rounded />
+                            </Row>
+
+                            <Row className="justify-content-center" style={{ paddingTop: '16px' }}>
+                                <Button variant="light" style={{ maxWidth: '110px', maxHeight: '28px', fontSize: '12px', color: '#6C6C6C' }} size="sm" onClick={this.props.logoutCallback}>LINE Logout</Button>
+                            </Row>
+                        </Col>
+
+                        <Col style={{ width: '60%' }}>
+
+                            <Row className="justify-content-center" style={{
+                                fontSize: '16px',
+                                textAlign: 'center',
+                                paddingRight: '16px',
+                                color: '#6C6C6C'
+                            }}>
+                                <Image style={{ width: '40px' }} src={'ic-line.svg'} /> LINE Profile
+                            </Row>
+                            <Table style={{
+                                fontSize: '16px',
+                                color: '#6C6C6C',
+                                marginTop: '24px'
+                            }} responsive>
+                                <tbody>
+                                    <tr style={{ lineHeight: '1px' }}>
+                                        <td className="noborder" style={{ textAlign: 'end' }}>UserID:</td>
+                                        <td className="noborder">{this.props.data.userID}</td>
+                                    </tr>
+                                    <tr style={{ lineHeight: '1px' }}>
+                                        <td className="noborder" style={{ textAlign: 'end' }}>Username:</td>
+                                        <td className="noborder">{this.props.data.name}</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+
+                            <Row className="justify-content-center" style={{ paddingTop: '4px' }}>
+                                <Button variant="secondary" style={{ maxWidth: '100px', maxHeight: '40px', backgroundColor: '#535353' }} size="sm" onClick={this.props.loginCallback}>
+                                    ยืนยัน
+                                </Button>
+                            </Row>
+                        </Col>
+                    </Row>
+                </Container>
+            </>
+        )
     }
 }
