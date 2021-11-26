@@ -83,64 +83,58 @@ function App() {
   }
 
   return (
-    <HomePage logoutCallback={() => {
-      logout();
-    }} />
-  )
+    <Container>
 
-  // return (
-  //   <Container>
+      <Row className="justify-content-center">
+        <Image style={{ width: '90px' }} src={'logo.png'} />
+      </Row>
 
-  //     <Row className="justify-content-center">
-  //       <Image style={{ width: '90px' }} src={'logo.png'} />
-  //     </Row>
+      <Container
+        className='rounded-border'
+        style={{
+          height: '100%',
+          maxWidth: '900px',
+          paddingBottom: '24px',
+          paddingLeft: '20px',
+          paddingRight: '20px',
+          backgroundColor: '#F2EFEA'
+        }}>
 
-  //     <Container
-  //       className='rounded-border'
-  //       style={{
-  //         height: '100%',
-  //         maxWidth: '900px',
-  //         paddingBottom: '24px',
-  //         paddingLeft: '20px',
-  //         paddingRight: '20px',
-  //         backgroundColor: '#F2EFEA'
-  //       }}>
+        <Row className="justify-content-center">
+          <Image style={{ width: '90%', maxWidth: '250px' }} src={'event-logo.svg'} />
+        </Row>
 
-  //       <Row className="justify-content-center">
-  //         <Image style={{ width: '90%', maxWidth: '250px' }} src={'event-logo.svg'} />
-  //       </Row>
+        <Container
+          className='rounded-border'
+          style={{
+            height: '100%',
+            maxWidth: appState === AppState.HOME ? '800px' : '550px',
+            paddingTop: '24px',
+            paddingBottom: '24px',
+            paddingLeft: '12px',
+            paddingRight: '12px',
+            backgroundColor: '#FFFFFF'
+          }}>
 
-  //       <Container
-  //         className='rounded-border'
-  //         style={{
-  //           height: '100%',
-  //           maxWidth: appState === AppState.HOME ? '800px' : '550px',
-  //           paddingTop: '24px',
-  //           paddingBottom: '24px',
-  //           paddingLeft: '12px',
-  //           paddingRight: '12px',
-  //           backgroundColor: '#FFFFFF'
-  //         }}>
+          {
+            appState === AppState.LOGIN ? <LoginPage lineCallback={() => {
+              liff.login()
+            }} /> :
+              appState === AppState.PROFILE ? <LineProfilePage data={lineData} loginCallback={() => {
+                requestLogin()
+              }} logoutCallback={() => {
+                logout();
+              }} /> :
+                appState === AppState.HOME ? <HomePage logoutCallback={() => {
+                  logout();
+                }} /> :
+                  <>{appState}</>
+          }
 
-  //         {
-  //           appState === AppState.LOGIN ? <LoginPage lineCallback={() => {
-  //             liff.login()
-  //           }} /> :
-  //             appState === AppState.PROFILE ? <LineProfilePage data={lineData} loginCallback={() => {
-  //               requestLogin()
-  //             }} logoutCallback={() => {
-  //               logout();
-  //             }} /> :
-  //               appState === AppState.HOME ? <HomePage logoutCallback={() => {
-  //                 logout();
-  //               }} /> :
-  //                 <>{appState}</>
-  //         }
-
-  //       </Container>
-  //     </Container>
-  //   </Container>
-  // );
+        </Container>
+      </Container>
+    </Container>
+  );
 }
 
 export default App

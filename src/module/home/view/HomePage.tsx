@@ -35,17 +35,17 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
 
         this.viewModel = new HomeViewModel()
         this.viewModel.loadMCouponType((list?: Array<MCouponType>) => {
-            // this.setState({
-            //     listMCouponType: list || []
-            // })
-            // this.viewModel?.loadUserData((data?: UserData) => {
-            //     console.log('loadUserData')
-            //     this.setState({
-            //         data: data
-            //     })
-            // }, (msg) => {
+            this.setState({
+                listMCouponType: list || []
+            })
+            this.viewModel?.loadUserData((data?: UserData) => {
+                console.log('loadUserData')
+                this.setState({
+                    data: data
+                })
+            }, (msg) => {
 
-            // })
+            })
         }, (msg) => {
 
         })
@@ -81,7 +81,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     textAlign: 'center',
                     color: '#000000'
                 }}>
-                    {this.state.data?.name || '-'}
+                    {this.state.data?.campaign || '-'}
                 </div>
 
                 <div style={{
