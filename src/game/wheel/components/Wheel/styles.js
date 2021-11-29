@@ -66,7 +66,7 @@ export const RotationContainer = styled.div`
 export const RouletteSelectorImage = styled(NonDraggableImage)`
   position: absolute;
   z-index: 6;
-  width: 10%;
+  width: 40px;
 `;
 
 export const RouletteWheelImage = styled(NonDraggableImage)`

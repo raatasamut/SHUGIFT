@@ -21,16 +21,16 @@ function App() {
   const viewModel = new AppViewModel()
 
   useEffect(() => {
-    initial()
+    // initial()
 
-    // viewModel.request.channel = 'LINE'
-    // viewModel.request.userID = 'uwuduwuelr,flre,l;f,erlf,mllerw,dlewmkldmweklmdklewmeduuweqd'
-    // viewModel.request.name = 'fair'
-    // viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
+    viewModel.request.channel = 'LINE'
+    viewModel.request.userID = 'uwuduwuelr,flre,l;f,erlf,mllerw,dlewmkldmweklmdklewmeduuweqd'
+    viewModel.request.name = 'fair'
+    viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
 
-    // setData(viewModel.request)
+    setData(viewModel.request)
 
-    // setState(AppState.PROFILE)
+    setState(AppState.PROFILE)
 
   }, []);
 
@@ -108,7 +108,7 @@ function App() {
           className='rounded-border'
           style={{
             height: '100%',
-            maxWidth: appState === AppState.HOME ? '800px' : '550px',
+            maxWidth: appState === AppState.HOME ? '900px' : '550px',
             paddingTop: '24px',
             paddingBottom: '24px',
             paddingLeft: '12px',

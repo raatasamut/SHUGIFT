@@ -44,15 +44,15 @@ const drawWheel = (
   } = drawWheelProps;
   /* eslint-enable prefer-const */
 
-  outerBorderWidth *= 0.5;
-  innerBorderWidth *= 0.5;
-  radiusLineWidth *= 0.5;
-  fontSize *= 0.6;
+  outerBorderWidth *= 1;
+  innerBorderWidth *= 1;
+  radiusLineWidth *= 1;
+  fontSize *= 1;
 
   const canvas = canvasRef.current;
   if (canvas?.getContext('2d')) {
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-    ctx.clearRect(0, 0, 400, 400);
+    ctx.clearRect(0, 0, 300, 300);
     ctx.strokeStyle = 'transparent';
     ctx.lineWidth = 0;
     // ctx.translate(0.5, 0.5)

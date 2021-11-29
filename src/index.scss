@@ -3,12 +3,15 @@
   src: url(/font/FranklinGothic-Light.ttf);
   unicode-range: U+0020-007F;
 }
+
 @font-face {
   font-family: DBHeaventCond;
   src: url(/font/DBHeaventCond.ttf);
 }
+
 body {
   margin: 0;
+  background-color: white;
   font-family: FranklinGothic, DBHeaventCond;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
