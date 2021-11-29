@@ -2,7 +2,7 @@ import { Type } from "class-transformer";
 import { BaseModel } from "../../../models/BaseModel";
 
 export class UserData extends BaseModel {
-    campaign?: string;
+    name?: string;
     startDate?: number;
     endDate?: number;
     @Type(() => UserHistoryData)

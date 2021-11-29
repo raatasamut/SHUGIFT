@@ -8,6 +8,7 @@ import { UserData, UserHistoryData } from '../model/UserData';
 import HomeViewModel from '../viewmodel/HomeViewModel';
 import RoundComponent from './component/RoundComponent';
 import UseCodeComponent from './component/UseCodeComponent';
+import { GiftData } from '../model/GiftData';
 
 export interface IHomePageProps {
     logoutCallback: () => void
@@ -15,6 +16,7 @@ export interface IHomePageProps {
 
 export interface IHomePageState {
     listMCouponType: Array<MCouponType>,
+    winData: UserHistoryData,
     data?: UserData,
     containerWidth: number,
     prizeNumber: number,
@@ -34,6 +36,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
         this.spinRef = React.createRef();
         this.state = {
             listMCouponType: [],
+            winData: new UserHistoryData(-1, ''),
             data: undefined,
             containerWidth: window.innerWidth,
             prizeNumber: 0,
@@ -47,31 +50,35 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
             this.setState({
                 listMCouponType: list || []
             })
-            this.viewModel?.loadUserData((data?: UserData) => {
-                console.log('loadUserData')
-                if (data) {
-                    if ((data.history?.length || 0) <= 0 || undefined) {
-                        data.history = new Array<UserHistoryData>()
-                    }
+            this.loadUserData()
+        }, (msg) => {
 
-                    let addCount = 3 - (data.history?.length || 3)
+        })
+    }
 
-                    for (let i = 0; i < addCount; i++) {
-                        data.history?.push(new UserHistoryData(-1, 'รอการสุ่ม'))
-                    }
-
-                    console.log('Validated coupon')
-                    console.log(data)
-
-                    this.setState({
-                        data: data
-                    })
-                } else {
-
+    loadUserData(){
+        this.viewModel?.loadUserData((data?: UserData) => {
+            console.log('loadUserData')
+            if (data) {
+                if ((data.history?.length || 0) <= 0 || undefined) {
+                    data.history = new Array<UserHistoryData>()
                 }
-            }, (msg) => {
 
-            })
+                let addCount = 3 - (data.history?.length || 3)
+
+                for (let i = 0; i < addCount; i++) {
+                    data.history?.push(new UserHistoryData(-1, 'รอการสุ่ม'))
+                }
+
+                console.log('Validated coupon')
+                console.log(data)
+
+                this.setState({
+                    data: data
+                })
+            } else {
+
+            }
         }, (msg) => {
 
         })
@@ -107,7 +114,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     textAlign: 'center',
                     color: '#000000'
                 }}>
-                    {this.state.data?.campaign || '-'}
+                    {this.state.data?.name || '-'}
                 </div>
 
                 <div style={{
@@ -238,20 +245,32 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
         console.log(this.spinRef.current?.clientWidth)
         return (
             <div className="justify-content-center" onClick={() => {
-                this.setState({
-                    spin: true
+
+                this.viewModel?.loadGiftData((data) => {
+                    if (data) {
+                        if ((data.couponTypeID || -1) >= 0) {
+                            this.setState({
+                                winData: data,
+                            })
+                            this.setState({
+                                spin: true,
+                            })
+                        }
+                    }
+                }, (msg) => {
+
                 })
             }}>
                 <WheelComponent
                     spinWidth={this.spinRef.current?.clientWidth || window.screen.width / 1.3}
                     mustStartSpinning={this.state.spin}
-                    prizeNumber={this.state.prizeNumber}
+                    prizeNumber={this.state.listMCouponType.findIndex(tmp => tmp.uniqueID == this.state.winData.couponTypeID)}
                     data={this.getMList()}
                     onStopSpinning={() => {
                         this.setState({
                             spin: false
                         })
-                        console.log('STOP')
+                        this.loadUserData()
                     }}
                     backgroundColors={['#3e3e3e', '#df3428']}
                     textColors={['#ffffff']} />
