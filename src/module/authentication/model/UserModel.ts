@@ -25,6 +25,9 @@ export class UserModel extends BaseModel {
 export class UserInfoModel extends BaseModel {
     name?: string;
     email?: string;
+    userID?: string;
+    picture?: string;
+    channel?: string;
 }
 
 export class WebServiceModel extends BaseModel {

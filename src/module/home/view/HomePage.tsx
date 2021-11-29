@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Row, Image, Container, Button } from 'react-bootstrap';
 import { WheelData } from '../../../game/wheel/components/Wheel/types';
 import { WheelComponent } from '../../../game/wheel/components/Wheel/WheelComponent';
+import User from '../../authentication/User';
 import { MCouponType } from '../model/MCouponType';
 import { UserData, UserHistoryData } from '../model/UserData';
 import HomeViewModel from '../viewmodel/HomeViewModel';
@@ -116,7 +117,9 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                 }}>
                     ยินดีต้อนรับในการล็อกอินของท่าน <a style={{
                         color: '#000000'
-                    }}>Darin</a>
+                    }}>{
+                            User.getUser()?.user?.name || '-'
+                        }</a>
                 </div>
 
                 <div style={{
@@ -124,7 +127,9 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     textAlign: 'center',
                     color: '#6C6C6C'
                 }}>
-                    20 - 31 ธันวาคม 2564
+                    {
+                        this.state.data?.getDuration()
+                    }
                 </div>
 
                 <div style={{
