@@ -368,7 +368,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
     spin() {
         console.log(this.spinRef.current?.clientWidth)
         return (
-            <div className="justify-content-center" onClick={() => {
+            <div className="justify-content-center" style={{ position: 'relative' }} onClick={() => {
 
                 let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) || -1
 
@@ -391,6 +391,19 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
 
                 }
             }}>
+                {
+                    (this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) || -1) != -1 ? <></> :
+                        <div className="justify-content-center" style={{
+                            position: 'absolute', zIndex: 11, width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
+                        }}>
+                            <div className='rounded-border' style={{
+                                backgroundColor: '#F4FFF4', color: '#00893F', fontSize: '30px', paddingLeft: '30px', paddingRight: '30px', textAlign: 'center'
+                            }}>
+                                ลุ้นสิทธิครบแล้ว
+                            </div>
+                        </div>
+                }
+
                 <WheelComponent
                     spinWidth={260}
                     mustStartSpinning={this.state.spin}
