@@ -6,13 +6,19 @@ export class UserData extends BaseModel {
     startDate?: number;
     endDate?: number;
     @Type(() => UserHistoryData)
-    history?: UserHistoryData[];
+    public history?: UserHistoryData[];
 }
 
 export class UserHistoryData extends BaseModel {
     code?: string;
     code64?: string;
-    couponTypeID?: string;
+    couponTypeID?: number;
     detail?: string;
     created?: number;
+
+    constructor(couponTypeID: number, detail: string){
+        super()
+        this.couponTypeID = couponTypeID
+        this.detail = detail
+    }
 }

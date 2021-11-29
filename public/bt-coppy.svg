@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="101" height="53" viewBox="0 0 101 53">
+  <defs>
+    <filter id="Rectangle_24" x="0" y="0" width="101" height="53" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_13" data-name="Group 13" transform="translate(12 7)">
+    <g transform="matrix(1, 0, 0, 1, -12, -7)" filter="url(#Rectangle_24)">
+      <rect id="Rectangle_24-2" data-name="Rectangle 24" width="77" height="29" rx="7" transform="translate(12 8)" fill="#fff"/>
+    </g>
+    <text id="คัดลอกโค้ด" transform="translate(39 21)" fill="#6c6c6c" font-size="25" font-family="DBHeavent-Cond, DB Heavent"><tspan x="-35.736" y="0">คัดลอกโค้ด</tspan></text>
+  </g>
+</svg>

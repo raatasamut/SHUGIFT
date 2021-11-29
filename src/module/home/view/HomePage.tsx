@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { Row, Image, Container } from 'react-bootstrap';
+import { Row, Image, Container, Button } from 'react-bootstrap';
 import { WheelData } from '../../../game/wheel/components/Wheel/types';
 import { WheelComponent } from '../../../game/wheel/components/Wheel/WheelComponent';
 import { MCouponType } from '../model/MCouponType';
-import { UserData } from '../model/UserData';
+import { UserData, UserHistoryData } from '../model/UserData';
 import HomeViewModel from '../viewmodel/HomeViewModel';
+import RoundComponent from './component/RoundComponent';
+import UseCodeComponent from './component/UseCodeComponent';
 
 export interface IHomePageProps {
     logoutCallback: () => void
@@ -15,22 +17,28 @@ export interface IHomePageState {
     data?: UserData,
     containerWidth: number,
     prizeNumber: number,
-    spin: boolean
+    spin: boolean,
+    used: number,
+    total: number
 }
 
 export default class HomePage extends React.Component<IHomePageProps, IHomePageState> {
 
     viewModel?: HomeViewModel
 
+    spinRef: React.RefObject<HTMLDivElement>;
+
     constructor(props: IHomePageProps) {
         super(props)
-
+        this.spinRef = React.createRef();
         this.state = {
             listMCouponType: [],
             data: undefined,
             containerWidth: window.innerWidth,
             prizeNumber: 0,
-            spin: false
+            spin: false,
+            used: 5000,
+            total: 10000
         }
 
         this.viewModel = new HomeViewModel()
@@ -40,9 +48,26 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
             })
             this.viewModel?.loadUserData((data?: UserData) => {
                 console.log('loadUserData')
-                this.setState({
-                    data: data
-                })
+                if (data) {
+                    if ((data.history?.length || 0) <= 0 || undefined) {
+                        data.history = new Array<UserHistoryData>()
+                    }
+
+                    let addCount = 3 - (data.history?.length || 3)
+
+                    for (let i = 0; i < addCount; i++) {
+                        data.history?.push(new UserHistoryData(-1, 'รอการสุ่ม'))
+                    }
+
+                    console.log('Validated coupon')
+                    console.log(data)
+
+                    this.setState({
+                        data: data
+                    })
+                } else {
+
+                }
             }, (msg) => {
 
             })
@@ -113,14 +138,75 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     }}>3</a> ครั้งเท่านั้น ต่อ 1 LINE ID
                 </div>
 
-                <Row className="justify-content-center">
-                    <Image style={{ width: '240px', marginBottom: '16px', marginTop: '16px' }} src={'ic-section.svg'} />
-                </Row>
+                <UseCodeComponent imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์' onclick={() => {
 
-                {
-                    this.state.listMCouponType.length > 0 ?
-                        this.spin() : <></>
-                }
+                }} />
+
+                <UseCodeComponent imageName='ic-use-code-admin' title='แจ้งโค้ดและสั่งซื้อกับแอดมิน' onclick={() => {
+
+                }} />
+
+                <div ref={this.spinRef} style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+                    {
+                        this.state.listMCouponType.length > 0 ?
+                            this.spin() : <></>
+                    }
+                </div>
+
+                <Container
+                    className='rounded-border'
+                    style={{
+                        padding: '10px'
+                    }}>
+
+                    <div className='justify-content-center' style={{ display: 'block', textAlign: 'center', marginRight: 'auto', marginLeft: 'auto' }}>
+                        <Image style={{ height: '28px', marginRight: '8px', verticalAlign: '0px', marginBottom: '-6px' }} src={'ic-gift.svg'} />
+
+                        <a style={{
+                            fontSize: '32px',
+                            color: '#6C6C6C'
+                        }}>
+                            ประวัติของรางวัล
+                        </a>
+                    </div>
+
+                    {
+                        this.state.data?.history?.map((item, i) =>
+                            <RoundComponent index={i + 1} data={item} />
+                        )
+                    }
+
+                    <div style={{
+                        fontSize: '24px',
+                        textAlign: 'center',
+                        color: '#6C6C6C'
+                    }}>
+                        มีคนจับคูปองแล้ว <a style={{
+                            color: '#000000'
+                        }}>{this.state.used}</a>/{this.state.total} คูปอง
+                    </div>
+
+                    <div style={{
+                        fontSize: '18px',
+                        textAlign: 'center',
+                        color: '#6C6C6C'
+                    }}>
+                        “ขอบคุณที่เข้าร่วมกิจกรรมของ SHU”
+                    </div>
+                </Container>
+
+                <div style={{
+                    fontSize: '26px',
+                    textAlign: 'center',
+                    color: '#000000',
+                    paddingTop: '10px'
+                }}>
+                    คูปองหมดอายุวันที่ 10 มกราคม 2565
+                </div>
+
+                <Row className="justify-content-center" style={{ paddingTop: '12px' }}>
+                    <Image style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
+                </Row>
             </>
         )
     }
@@ -138,12 +224,13 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
     getMList() {
         let mList: Array<WheelData> = []
         this.state.listMCouponType.map((item, index) => {
-            mList.push({ option: item.name || '-', style: { backgroundColor: index % 2 == 1 ? 'green' : 'white', textColor: 'black' } })
+            mList.push({ option: item.name || '-', style: { backgroundColor: item.bgColor } })
         })
         return mList
     }
 
     spin() {
+        console.log(this.spinRef.current?.clientWidth)
         return (
             <div className="justify-content-center" onClick={() => {
                 this.setState({
@@ -151,7 +238,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                 })
             }}>
                 <WheelComponent
-                    spinWidth={window.screen.width / 1.3}
+                    spinWidth={this.spinRef.current?.clientWidth || window.screen.width / 1.3}
                     mustStartSpinning={this.state.spin}
                     prizeNumber={this.state.prizeNumber}
                     data={this.getMList()}
@@ -159,6 +246,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                         this.setState({
                             spin: false
                         })
+                        console.log('STOP')
                     }}
                     backgroundColors={['#3e3e3e', '#df3428']}
                     textColors={['#ffffff']} />
