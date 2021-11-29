@@ -213,7 +213,9 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     color: '#000000',
                     paddingTop: '10px'
                 }}>
-                    คูปองหมดอายุวันที่ 10 มกราคม 2565
+                    {
+                        this.state.data?.getExpired()
+                    }
                 </div>
 
                 <Row className="justify-content-center" style={{ paddingTop: '12px' }}>

@@ -8,6 +8,19 @@ export class UserData extends BaseModel {
     @Type(() => UserHistoryData)
     public history?: UserHistoryData[];
 
+    public getExpired() {
+        try {
+            if(this.history){
+                return new Date((this.history[0].expired || 0) * 1000).toLocaleDateString('th-TH', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                })
+            }
+        } catch (e) {
+            return ''
+        }
+    }
 
     public getDuration() {
 
@@ -25,8 +38,8 @@ export class UserData extends BaseModel {
             day: 'numeric',
         })
 
-        if(start.getMonth() == end.getMonth()){
-            if(start.getDate() == end.getDate()){
+        if (start.getMonth() == end.getMonth()) {
+            if (start.getDate() == end.getDate()) {
                 return resultStart
             } else {
                 return start.getDate() + ' - ' + resultEnd
@@ -43,6 +56,7 @@ export class UserHistoryData extends BaseModel {
     couponTypeID?: number;
     detail?: string;
     created?: number;
+    expired?: number;
 
     constructor(couponTypeID: number, detail: string) {
         super()
