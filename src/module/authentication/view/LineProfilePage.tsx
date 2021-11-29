@@ -44,7 +44,7 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                     textAlign: 'center',
                     color: '#6C6C6C'
                 }}>
-                    อนุญาตให้ใช้ข้อมูลไลน์ ในการลงทะเบียน<br/>กรุณากดปุ่ม “ยืนยัน” เพื่อไปยังหน้า Lucky Draw
+                    อนุญาตให้ใช้ข้อมูลไลน์ ในการลงทะเบียน<br />กรุณากดปุ่ม “ยืนยัน” เพื่อไปยังหน้า Lucky Draw
                 </div>
 
                 <Row className="justify-content-center">
@@ -102,7 +102,7 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                 </Row>
 
                 <Row className="justify-content-center" style={{ paddingTop: '24px' }}>
-                    <Button variant="light" style={{ maxWidth: '110px', maxHeight: '28px', fontSize: '12px', color: '#6C6C6C' }} size="sm" onClick={this.props.logoutCallback}>LINE Logout</Button>
+                    <Image style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
                 </Row>
             </>
         )
@@ -119,7 +119,7 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                             </Row>
 
                             <Row className="justify-content-center" style={{ paddingTop: '16px' }}>
-                                <Button variant="light" style={{ maxWidth: '110px', maxHeight: '28px', fontSize: '12px', color: '#6C6C6C' }} size="sm" onClick={this.props.logoutCallback}>LINE Logout</Button>
+                                <Image style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
                             </Row>
                         </Col>
 

@@ -47,7 +47,7 @@ export default class LoginPage extends React.Component<ILoginPageProps, ILoginPa
         }}>
           มีคนจับคูปองแล้ว <a style={{
             color: '#000000'
-          }}>{this.state.used}</a>/{this.state.total} คูปอง
+          }}>{this.state.used.toLocaleString()}</a>/{this.state.total.toLocaleString()} คูปอง
         </div>
       </div>
     );
