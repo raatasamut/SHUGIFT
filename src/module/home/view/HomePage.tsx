@@ -226,7 +226,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                 </div>
 
                 <Row className="justify-content-center" style={{ paddingTop: '12px' }}>
-                    <Image style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
+                    <Image className='hover' style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
                 </Row>
             </>
         )
@@ -286,7 +286,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                         <UseCodeComponent isSmall={true} imageName='ic-use-code-admin' title='แจ้งโค้ดและสั่งซื้อกับแอดมิน' onclick={this.useCodeViaAdmin} />
 
                         <Row className="justify-content-center" style={{ paddingTop: '12px' }}>
-                            <Image style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
+                            <Image className='hover' style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
                         </Row>
                     </Col>
                     <Col>
@@ -368,7 +368,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
     spin() {
         console.log(this.spinRef.current?.clientWidth)
         return (
-            <div className="justify-content-center" style={{ position: 'relative' }} onClick={() => {
+            <div className="justify-content-center hover" style={{ position: 'relative' }} onClick={() => {
 
                 let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) || -1
 

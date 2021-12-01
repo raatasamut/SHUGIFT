@@ -2,18 +2,22 @@ import liff from '@line/liff';
 import { useEffect, useState } from 'react';
 import AppViewModel from '../viewmodel/AppViewModel';
 import User from '../../authentication/User';
-import { Container, Row, Image } from 'react-bootstrap';
+import { Container, Row, Image, Alert, Modal } from 'react-bootstrap';
 import LoginPage from '../../authentication/view/LoginPage';
 import LineProfilePage from '../../authentication/view/LineProfilePage';
 import RequestLogModel from '../model/LoginRequestModel'
 import './App.scss';
 import HomePage from '../../home/view/HomePage';
+import AlertComponent from '../../../component/AlertComponent';
 
 function App() {
 
   enum AppState {
     LOGIN = 'login', PROFILE = 'profile', HOME = 'home'
   }
+
+  const [alert, isShow] = useState(false)
+  const [alertMsg, setAlertMsg] = useState('')
 
   const [appState, setState] = useState(AppState.LOGIN)
   const [lineData, setData] = useState(new RequestLogModel())
@@ -32,6 +36,9 @@ function App() {
 
     // setState(AppState.PROFILE)
 
+    // document.addEventListener('contextmenu', (e) => {
+    //   e.preventDefault();
+    // });
   }, []);
 
   const logout = () => {
@@ -50,8 +57,13 @@ function App() {
     }
   }
 
+  const showAlert = (msg: string) => {
+    setAlertMsg(msg)
+    isShow(true)
+  }
+
   const initial = () => {
-    liff.init({ liffId: '1656661903-7gDz0NJL' }, () => {
+    liff.init({ liffId: '1656680913-v15bQrE1' }, () => {
       if (liff.isLoggedIn()) {
         getLineAccountData()
       } else {
@@ -84,6 +96,14 @@ function App() {
 
   return (
     <Container>
+
+      <Modal className="toast-modal" show={alert} onHide={() => isShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>คัดลอกโค้ดเรียบร้อยแล้ว</Modal.Title>
+        </Modal.Header>
+      </Modal>
+
+      {/* <button onClick={()=>{showAlert('sss')}}>DDD</button> */}
 
       <Row className="justify-content-center">
         <Image style={{ width: '90px' }} src={'logo.png'} />
@@ -119,6 +139,8 @@ function App() {
           {
             appState === AppState.LOGIN ? <LoginPage lineCallback={() => {
               liff.login()
+            }} alertCallback={(msg: string) => {
+              showAlert(msg)
             }} /> :
               appState === AppState.PROFILE ? <LineProfilePage data={lineData} loginCallback={() => {
                 requestLogin()

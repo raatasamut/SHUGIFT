@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Row, Image } from 'react-bootstrap';
 
 export interface ILoginPageProps {
-  lineCallback: () => void
+  lineCallback: () => void,
+  alertCallback: (msg: string) => void
 }
 
 export interface ILoginPageState {
@@ -28,12 +29,12 @@ export default class LoginPage extends React.Component<ILoginPageProps, ILoginPa
           fontSize: '24px',
           textAlign: 'center',
           color: '#6C6C6C'
-        }}>
+        }} onClick={()=>{this.props.alertCallback('ddddsss')}}>
           กรุณา Login ก่อนกด Lucky draw จำนวนสิทธิ์กดรับโค๊ด ท่านละ 3 ครั้ง
         </div>
 
         <Row className="justify-content-center">
-          <Image style={{ width: '240px', marginTop: '36px', marginBottom: '8px' }} src={'bt-line-login.svg'} onClick={this.props.lineCallback}/>
+          <Image className='hover' style={{ width: '240px', marginTop: '36px', marginBottom: '8px' }} src={'bt-line-login.svg'} onClick={this.props.lineCallback}/>
         </Row>
 
         <Row className="justify-content-center">

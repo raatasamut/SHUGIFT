@@ -102,7 +102,7 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                 </Row>
 
                 <Row className="justify-content-center" style={{ paddingTop: '24px' }}>
-                    <Image style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
+                    <Image className='hover' style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
                 </Row>
             </>
         )
@@ -119,7 +119,7 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                             </Row>
 
                             <Row className="justify-content-center" style={{ paddingTop: '16px' }}>
-                                <Image style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
+                                <Image className='hover' style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
                             </Row>
                         </Col>
 
