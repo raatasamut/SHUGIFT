@@ -5,7 +5,8 @@ import RequestLogModel from '../../main/model/LoginRequestModel'
 export interface ILineProfilePageProps {
     data: RequestLogModel,
     loginCallback: () => void,
-    logoutCallback: () => void
+    logoutCallback: () => void,
+    alertCallback: (status: number, msg: string) => void
 }
 
 

@@ -2,7 +2,7 @@ import liff from '@line/liff';
 import { useEffect, useState } from 'react';
 import AppViewModel from '../viewmodel/AppViewModel';
 import User from '../../authentication/User';
-import { Container, Row, Image, Alert, Modal } from 'react-bootstrap';
+import { Container, Row, Image, Alert, Modal, Button } from 'react-bootstrap';
 import LoginPage from '../../authentication/view/LoginPage';
 import LineProfilePage from '../../authentication/view/LineProfilePage';
 import RequestLogModel from '../model/LoginRequestModel'
@@ -18,6 +18,9 @@ function App() {
 
   const [alert, isShow] = useState(false)
   const [alertMsg, setAlertMsg] = useState('')
+
+  const [forceLogout, isShowForceLogout] = useState(false)
+  const [forceLogoutMsg, setForceLogoutMsg] = useState('')
 
   const [appState, setState] = useState(AppState.LOGIN)
   const [lineData, setData] = useState(new RequestLogModel())
@@ -57,9 +60,15 @@ function App() {
     }
   }
 
-  const showAlert = (msg: string) => {
-    setAlertMsg(msg)
-    isShow(true)
+  const showAlert = (status: number, msg: string) => {
+
+    if (status === 401) {
+      setForceLogoutMsg(msg)
+      isShowForceLogout(true)
+    } else {
+      setAlertMsg(msg)
+      isShow(true)
+    }
   }
 
   const initial = () => {
@@ -69,7 +78,7 @@ function App() {
       } else {
         checkUser();
       }
-    }, err => console.error(err));
+    }, err => showAlert(0, err.message));
   }
 
   const getLineAccountData = () => {
@@ -85,12 +94,16 @@ function App() {
       setState(AppState.PROFILE)
 
       liff.logout();
-    }).catch(err => console.error(err));
+    }).catch(err => {
+      showAlert(0, err)
+    });
   }
 
   const requestLogin = () => {
     viewModel.login((msg) => {
       initial();
+    }, (status, msg) => {
+      showAlert(status, msg)
     })
   }
 
@@ -99,11 +112,24 @@ function App() {
 
       <Modal className="toast-modal" show={alert} onHide={() => isShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>คัดลอกโค้ดเรียบร้อยแล้ว</Modal.Title>
+          <Modal.Title>{alertMsg}</Modal.Title>
         </Modal.Header>
       </Modal>
 
-      {/* <button onClick={()=>{showAlert('sss')}}>DDD</button> */}
+      <Modal
+        show={forceLogout}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header>
+          <Modal.Title>{forceLogoutMsg}</Modal.Title>
+        </Modal.Header>
+        <Modal.Footer>
+          <Button variant="outline-dark" onClick={() => {
+            logout()
+          }}>กลับไปที่หน้าเข้าสู้ระบบ</Button>
+        </Modal.Footer>
+      </Modal>
 
       <Row className="justify-content-center">
         <Image style={{ width: '90px' }} src={'logo.png'} />
@@ -139,16 +165,20 @@ function App() {
           {
             appState === AppState.LOGIN ? <LoginPage lineCallback={() => {
               liff.login()
-            }} alertCallback={(msg: string) => {
-              showAlert(msg)
+            }} alertCallback={(status: number, msg: string) => {
+              showAlert(status, msg)
             }} /> :
               appState === AppState.PROFILE ? <LineProfilePage data={lineData} loginCallback={() => {
                 requestLogin()
               }} logoutCallback={() => {
                 logout();
+              }} alertCallback={(status: number, msg: string) => {
+                showAlert(status, msg)
               }} /> :
                 appState === AppState.HOME ? <HomePage logoutCallback={() => {
                   logout();
+                }} alertCallback={(status: number, msg: string) => {
+                  showAlert(status, msg)
                 }} /> :
                   <>{appState}</>
           }

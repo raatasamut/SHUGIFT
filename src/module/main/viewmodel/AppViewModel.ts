@@ -8,7 +8,7 @@ export default class LoginViewModel{
     
     request = new RequestLogModel()
 
-    login(callback: (msg?: string) => void){
+    login(callback: (msg?: string) => void, errorCallback: (status: number, msg: string) => void){
         new WebAPI().request(User.authenticationAPI,
             'Authentication',
             'Login',
@@ -20,7 +20,7 @@ export default class LoginViewModel{
                 callback()
             },
             (errorStatus, errorMessage) => {
-                callback(errorMessage)
+                errorCallback(errorStatus, errorMessage)
             })
     }
     

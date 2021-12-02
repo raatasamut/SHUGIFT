@@ -11,7 +11,8 @@ import UseCodeComponent from './component/UseCodeComponent';
 import { GiftData } from '../model/GiftData';
 
 export interface IHomePageProps {
-    logoutCallback: () => void
+    logoutCallback: () => void,
+    alertCallback: (status: number, msg: string) => void
 }
 
 export interface IHomePageState {
@@ -51,8 +52,8 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                 listMCouponType: list || []
             })
             this.loadUserData()
-        }, (msg) => {
-
+        }, (status, msg) => {
+            this.props.alertCallback(status, msg)
         })
     }
 
@@ -79,8 +80,8 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
             } else {
 
             }
-        }, (msg) => {
-
+        }, (status, msg) => {
+            this.props.alertCallback(status, msg)
         })
     }
 
@@ -385,8 +386,8 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                                 })
                             }
                         }
-                    }, (msg) => {
-
+                    }, (status, msg) => {
+                        this.props.alertCallback(status, msg)
                     })
 
                 }

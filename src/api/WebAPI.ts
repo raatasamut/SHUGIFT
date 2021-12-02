@@ -2,10 +2,21 @@ import { RequestModel } from './models/RequestModel';
 import { BaseModel } from './../models/BaseModel';
 import { ResponseModel } from './models/ResponseModel';
 import { ClassConstructor, plainToClass } from 'class-transformer';
+import { isExpired, decodeToken } from "react-jwt";
+import User from '../module/authentication/User';
 
 export default class WebAPI {
 
     request<T>(url: string, module: string, target: string, data: BaseModel, cls: ClassConstructor<T>, successCallback: ((cls: T, clsArray: T[]) => void), errorCallback: ((status: number, message: string) => void)) {
+        
+        //Check JWT token
+        const token = User.getUser()?.token
+        if(token && isExpired(token)){
+            errorCallback(401, 'Token expired')
+            return
+        }
+        
+        // Fetch
         this.fetcher(url, module, target, data, (response) => {
 
             const tmp = response.getEntries(cls)

@@ -9,7 +9,7 @@ import { UserData, UserHistoryData } from "../model/UserData";
 
 export default class HomeViewModel {
 
-    loadMCouponType(callback: (list?: Array<MCouponType>) => void, errorCallback: (msg: string) => void) {
+    loadMCouponType(callback: (list?: Array<MCouponType>) => void, errorCallback: (status: number, msg: string) => void) {
         new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/xtd3nqx0bk2d9qr/data.json' : User.getUser()?.getService(APIKey.SELECT) || '',
             'Home',
             'CouponType',
@@ -19,11 +19,11 @@ export default class HomeViewModel {
                 callback(array)
             },
             (errorStatus, errorMessage) => {
-                errorCallback(errorMessage)
+                errorCallback(errorStatus, errorMessage)
             })
     }
 
-    loadUserData(callback: (data?: UserData) => void, errorCallback: (msg: string) => void) {
+    loadUserData(callback: (data?: UserData) => void, errorCallback: (status: number, msg: string) => void) {
         new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/ewajvtxporqf1rs/data.json' : User.getUser()?.getService(APIKey.SELECT) || '',
             'Home',
             'Data',
@@ -33,11 +33,11 @@ export default class HomeViewModel {
                 callback(obj)
             },
             (errorStatus, errorMessage) => {
-                errorCallback(errorMessage)
+                errorCallback(errorStatus, errorMessage)
             })
     }
 
-    loadGiftData(callback: (data?: UserHistoryData) => void, errorCallback: (msg: string) => void) {
+    loadGiftData(callback: (data?: UserHistoryData) => void, errorCallback: (status: number, msg: string) => void) {
         new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/1i7dg4z7ikma5iq/data.json' : User.getUser()?.getService(APIKey.SELECT) || '',
             'Home',
             'Gift',
@@ -47,7 +47,7 @@ export default class HomeViewModel {
                 callback(obj.coupon)
             },
             (errorStatus, errorMessage) => {
-                errorCallback(errorMessage)
+                errorCallback(errorStatus, errorMessage)
             })
     }
 }
