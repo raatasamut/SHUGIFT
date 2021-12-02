@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Row, Image, Container, Button, Col } from 'react-bootstrap';
+import { Row, Image, Container, Col } from 'react-bootstrap';
 import { WheelData } from '../../../game/wheel/components/Wheel/types';
 import { WheelComponent } from '../../../game/wheel/components/Wheel/WheelComponent';
 import User from '../../authentication/User';
@@ -7,8 +7,9 @@ import { MCouponType } from '../model/MCouponType';
 import { UserData, UserHistoryData } from '../model/UserData';
 import HomeViewModel from '../viewmodel/HomeViewModel';
 import RoundComponent from './component/RoundComponent';
+import SelectedComponent from './component/SelectedComponent';
+import SelectorComponent, { USEVIA } from './component/SelectorComponent';
 import UseCodeComponent from './component/UseCodeComponent';
-import { GiftData } from '../model/GiftData';
 
 export interface IHomePageProps {
     logoutCallback: () => void,
@@ -23,7 +24,11 @@ export interface IHomePageState {
     prizeNumber: number,
     spin: boolean,
     used: number,
-    total: number
+    total: number,
+    showSelector: boolean,
+    showSelected: boolean,
+    forType: USEVIA,
+    position: number
 }
 
 export default class HomePage extends React.Component<IHomePageProps, IHomePageState> {
@@ -37,6 +42,10 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
         this.spinRef = React.createRef();
         this.state = {
             listMCouponType: [],
+            showSelector: false,
+            showSelected: false,
+            forType: USEVIA.NONE,
+            position: -1,
             winData: new UserHistoryData(-1, ''),
             data: undefined,
             containerWidth: window.innerWidth,
@@ -63,6 +72,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
             if (data) {
                 if ((data.history?.length || 0) <= 0 || undefined) {
                     data.history = new Array<UserHistoryData>()
+                    // this.forType = USEVIA.NONE
                 }
 
                 let addCount = 3 - (data.history?.length || 3)
@@ -108,6 +118,29 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
     public render() {
         return (
             <div>
+                <SelectorComponent show={this.state.showSelector} onSelected={(forType: USEVIA) => {
+                    this.setState({
+                        forType: forType,
+                        showSelector: false,
+                        showSelected: true
+                    })
+                }} onCancel={() => {
+                    this.setState({
+                        showSelector: false
+                    })
+                }} />
+                <SelectedComponent show={this.state.showSelected}
+                    forType={this.state.forType}
+                    onStart={() => {
+                        this.setState({
+                            showSelected: false
+                        })
+                        this.startSpin()
+                    }} onCancel={() => {
+                        this.setState({
+                            showSelected: false
+                        })
+                    }} />
                 {
                     this.state.containerWidth < 990 ?
                         this.smallScreen() :
@@ -116,6 +149,32 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
 
             </div >
         );
+    }
+
+    startSpin() {
+        if (this.state.forType === USEVIA.NONE) {
+            this.setState({
+                showSelector: true
+            })
+        } else {
+            let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) || -1
+            if (position >= 0) {
+                this.viewModel?.loadGiftData((data) => {
+                    if (data) {
+                        if ((data.couponTypeID || -1) >= 0) {
+                            this.setState({
+                                winData: data,
+                            })
+                            this.setState({
+                                spin: true,
+                            })
+                        }
+                    }
+                }, (status, msg) => {
+                    this.props.alertCallback(status, msg)
+                })
+            }
+        }
     }
 
     smallScreen() {
@@ -370,30 +429,10 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
         console.log(this.spinRef.current?.clientWidth)
         return (
             <div className="justify-content-center hover" style={{ position: 'relative' }} onClick={() => {
-
-                let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) || -1
-
-                if (position >= 0) {
-
-                    this.viewModel?.loadGiftData((data) => {
-                        if (data) {
-                            if ((data.couponTypeID || -1) >= 0) {
-                                this.setState({
-                                    winData: data,
-                                })
-                                this.setState({
-                                    spin: true,
-                                })
-                            }
-                        }
-                    }, (status, msg) => {
-                        this.props.alertCallback(status, msg)
-                    })
-
-                }
+                this.startSpin()
             }}>
                 {
-                    (this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) || -1) != -1 ? <></> :
+                    (this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) || -1) !== -1 ? <></> :
                         <div className="justify-content-center" style={{
                             position: 'absolute', zIndex: 11, width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
                         }}>

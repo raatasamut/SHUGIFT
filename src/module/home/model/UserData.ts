@@ -38,8 +38,8 @@ export class UserData extends BaseModel {
             day: 'numeric',
         })
 
-        if (start.getMonth() == end.getMonth()) {
-            if (start.getDate() == end.getDate()) {
+        if (start.getMonth() === end.getMonth()) {
+            if (start.getDate() === end.getDate()) {
                 return resultStart
             } else {
                 return start.getDate() + ' - ' + resultEnd

@@ -2,13 +2,12 @@ import liff from '@line/liff';
 import { useEffect, useState } from 'react';
 import AppViewModel from '../viewmodel/AppViewModel';
 import User from '../../authentication/User';
-import { Container, Row, Image, Alert, Modal, Button } from 'react-bootstrap';
+import { Container, Row, Image, Modal, Button } from 'react-bootstrap';
 import LoginPage from '../../authentication/view/LoginPage';
 import LineProfilePage from '../../authentication/view/LineProfilePage';
 import RequestLogModel from '../model/LoginRequestModel'
 import './App.scss';
 import HomePage from '../../home/view/HomePage';
-import AlertComponent from '../../../component/AlertComponent';
 
 function App() {
 
@@ -36,7 +35,6 @@ function App() {
     // viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
 
     // setData(viewModel.request)
-
     // setState(AppState.PROFILE)
 
     // document.addEventListener('contextmenu', (e) => {
@@ -127,7 +125,7 @@ function App() {
         <Modal.Footer>
           <Button variant="outline-dark" onClick={() => {
             logout()
-          }}>กลับไปที่หน้าเข้าสู้ระบบ</Button>
+          }}>กลับไปที่หน้าเข้าสู่ระบบ</Button>
         </Modal.Footer>
       </Modal>
 

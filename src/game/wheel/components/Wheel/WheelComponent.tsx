@@ -70,6 +70,7 @@ export const WheelComponent = ({
   perpendicularText = false,
   textDistance = DEFAULT_TEXT_DISTANCE,
 }: Props) => {
+
   const [wheelData, setWheelData] = useState<WheelData[]>([...data]);
   const [startRotationDegrees, setStartRotationDegrees] = useState(0);
   const [finalRotationDegrees, setFinalRotationDegrees] = useState(0);
