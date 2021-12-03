@@ -65,7 +65,7 @@ export default class SelectorComponent extends React.Component<ISelectorComponen
                                 <Card.Body onClick={() => {
                                     this.setState({ forType: USEVIA.USER })
                                 }}>
-                                    <input type='radio' checked={this.state.forType === USEVIA.USER} />
+                                    <input type='radio' checked={this.state.forType === USEVIA.USER} onChange={()=>{}}/>
                                     <Image style={{ height: '18px', paddingLeft: '10px', paddingRight: '10px', marginTop: '-4px' }} src={'ic-use-code-web.svg'} />
                                     ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์
                                 </Card.Body>
@@ -74,7 +74,7 @@ export default class SelectorComponent extends React.Component<ISelectorComponen
                                 <Card.Body onClick={() => {
                                     this.setState({ forType: USEVIA.ADMIN })
                                 }}>
-                                    <input type='radio' checked={this.state.forType === USEVIA.ADMIN} />
+                                    <input type='radio' checked={this.state.forType === USEVIA.ADMIN} onChange={()=>{}}/>
                                     <Image style={{ height: '18px', paddingLeft: '10px', paddingRight: '10px', marginTop: '-4px' }} src={'ic-use-code-admin.svg'} />
                                     แจ้งโค้ดและสั่งซื้อกับแอดมิน
                                 </Card.Body>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1034.007" height="1082.022" viewBox="0 0 1034.007 1082.022">
+  <defs>
+    <filter id="Path_75" x="0" y="0" width="1034.007" height="1082.022" filterUnits="userSpaceOnUse">
+      <feOffset dx="10" dy="16" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Path_75-2" x="0" y="0" width="1034.007" height="1082.022" filterUnits="userSpaceOnUse">
+      <feOffset dx="10" dy="16" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur-2"/>
+      <feFlood flood-opacity="0.161" result="color"/>
+      <feComposite operator="out" in="SourceGraphic" in2="blur-2"/>
+      <feComposite operator="in" in="color"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <radialGradient id="radial-gradient" cx="0.526" cy="2.829" r="2.835" gradientTransform="translate(-0.006) scale(1.012 1)" gradientUnits="objectBoundingBox">
+      <stop offset="0.27" stop-color="#ee3425"/>
+      <stop offset="0.5" stop-color="#ea3125"/>
+      <stop offset="0.74" stop-color="#de2726"/>
+      <stop offset="0.86" stop-color="#d52027"/>
+      <stop offset="0.95" stop-color="#781214"/>
+      <stop offset="0.98" stop-color="#ee2f24"/>
+      <stop offset="1" stop-color="#ac1f23"/>
+    </radialGradient>
+  </defs>
+  <g id="arrow" transform="translate(1.97)">
+    <g data-type="innerShadowGroup">
+      <g transform="matrix(1, 0, 0, 1, -1.97, 0)" filter="url(#Path_75)">
+        <path id="Path_75-3" data-name="Path 75" d="M655.262,268.21A2785.169,2785.169,0,0,0,149.9,314.273L387.42,788.392l267.466,533.84,267.466-533.84,237.554-474.153A2783.909,2783.909,0,0,0,655.262,268.21Z" transform="translate(-147.9 -268.21)" fill="#ee3425"/>
+      </g>
+      <g transform="matrix(1, 0, 0, 1, -1.97, 0)" filter="url(#Path_75-2)">
+        <path id="Path_75-4" data-name="Path 75" d="M655.262,268.21A2785.169,2785.169,0,0,0,149.9,314.273L387.42,788.392l267.466,533.84,267.466-533.84,237.554-474.153A2783.909,2783.909,0,0,0,655.262,268.21Z" transform="translate(-147.9 -268.21)" fill="#fff"/>
+      </g>
+    </g>
+    <path id="Path_76" data-name="Path 76" d="M655.262,268.21A2873.48,2873.48,0,0,0,149.9,312.839L387.42,772.445l267.466,517.518L922.353,772.445l237.554-459.606A2869.216,2869.216,0,0,0,655.262,268.21Z" transform="translate(-149.87 -268.21)" fill="url(#radial-gradient)"/>
+  </g>
+</svg>

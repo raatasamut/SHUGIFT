@@ -44,9 +44,9 @@ const drawWheel = (
   } = drawWheelProps;
   /* eslint-enable prefer-const */
 
-  outerBorderWidth *= 1;
-  innerBorderWidth *= 1;
-  radiusLineWidth *= 1;
+  outerBorderWidth *= 0.5;
+  innerBorderWidth *= 0.5;
+  radiusLineWidth *= 0.5;
   fontSize *= 1;
 
   const canvas = canvasRef.current;
@@ -144,7 +144,8 @@ const drawWheel = (
         ? angle + arc / 2 + Math.PI / 2
         : angle + arc / 2;
       ctx.rotate(textRotationAngle);
-      ctx.fillText(text, -ctx.measureText(text).width / 2, fontSize / 2.7);
+      ctx.fillText(text, -20, 0);
+      // ctx.fillText(text, -ctx.measureText(text).width / 2, fontSize / 2.7);
       ctx.restore();
     }
   }

@@ -5,12 +5,14 @@ export class UserData extends BaseModel {
     name?: string;
     startDate?: number;
     endDate?: number;
+    couponPerUser?: number;
+    usingAdminChannel?: boolean;
     @Type(() => UserHistoryData)
     public history?: UserHistoryData[];
 
     public getExpired() {
         try {
-            if(this.history){
+            if (this.history) {
                 return new Date((this.history[0].expired || 0) * 1000).toLocaleDateString('th-TH', {
                     year: 'numeric',
                     month: 'long',
@@ -62,5 +64,17 @@ export class UserHistoryData extends BaseModel {
         super()
         this.couponTypeID = couponTypeID
         this.detail = detail
+    }
+
+    public getExpired() {
+        try {
+            return new Date((this.expired || 0) * 1000).toLocaleDateString('th-TH', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            })
+        } catch (e) {
+            return ''
+        }
     }
 }

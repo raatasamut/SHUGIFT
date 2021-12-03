@@ -1,6 +1,6 @@
 // IMAGES
 
-import Icon from '../../assets/marker.png';
+import Icon from '../../assets/marker.svg';
 
 const rouletteSelector = new Image();
 rouletteSelector.src = Icon;

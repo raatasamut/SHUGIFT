@@ -6,6 +6,7 @@ import User from '../../authentication/User';
 import { MCouponType } from '../model/MCouponType';
 import { UserData, UserHistoryData } from '../model/UserData';
 import HomeViewModel from '../viewmodel/HomeViewModel';
+import GettingCoupon from './component/GettingCoupon';
 import RoundComponent from './component/RoundComponent';
 import SelectedComponent from './component/SelectedComponent';
 import SelectorComponent, { USEVIA } from './component/SelectorComponent';
@@ -27,25 +28,32 @@ export interface IHomePageState {
     total: number,
     showSelector: boolean,
     showSelected: boolean,
+    showPrize: boolean,
     forType: USEVIA,
-    position: number
+    position: number,
+    maxPosition: number
 }
 
 export default class HomePage extends React.Component<IHomePageProps, IHomePageState> {
 
     viewModel?: HomeViewModel
+    spining: boolean = false
 
     spinRef: React.RefObject<HTMLDivElement>;
+    historyRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: IHomePageProps) {
         super(props)
         this.spinRef = React.createRef();
+        this.historyRef = React.createRef();
         this.state = {
             listMCouponType: [],
             showSelector: false,
             showSelected: false,
+            showPrize: false,
             forType: USEVIA.NONE,
             position: -1,
+            maxPosition: 0,
             winData: new UserHistoryData(-1, ''),
             data: undefined,
             containerWidth: window.innerWidth,
@@ -70,12 +78,14 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
         this.viewModel?.loadUserData((data?: UserData) => {
             console.log('loadUserData')
             if (data) {
+
+                let max = data.couponPerUser || 0
+
                 if ((data.history?.length || 0) <= 0 || undefined) {
                     data.history = new Array<UserHistoryData>()
-                    // this.forType = USEVIA.NONE
                 }
 
-                let addCount = 3 - (data.history?.length || 3)
+                let addCount = max - (data.history?.length || max)
 
                 for (let i = 0; i < addCount; i++) {
                     data.history?.push(new UserHistoryData(-1, 'รอการสุ่ม'))
@@ -84,9 +94,20 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                 console.log('Validated coupon')
                 console.log(data)
 
+                let useingVia = USEVIA.NONE
+                if (data.usingAdminChannel !== null) {
+                    useingVia = data.usingAdminChannel ? USEVIA.ADMIN : USEVIA.USER
+                }
+
                 this.setState({
+                    maxPosition: max,
                     data: data
                 })
+                // this.setState({
+                //     forType: useingVia,
+                //     maxPosition: max,
+                //     data: data
+                // })
             } else {
 
             }
@@ -141,6 +162,15 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                             showSelected: false
                         })
                     }} />
+                <GettingCoupon
+                    show={this.state.showPrize}
+                    position={this.state.position}
+                    winData={this.state.winData}
+                    onCancel={() => {
+                        this.setState({
+                            showPrize: false
+                        })
+                    }} />
                 {
                     this.state.containerWidth < 990 ?
                         this.smallScreen() :
@@ -157,22 +187,25 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                 showSelector: true
             })
         } else {
-            let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) || -1
-            if (position >= 0) {
-                this.viewModel?.loadGiftData((data) => {
-                    if (data) {
-                        if ((data.couponTypeID || -1) >= 0) {
-                            this.setState({
-                                winData: data,
-                            })
-                            this.setState({
-                                spin: true,
-                            })
+            if (!this.spining) {
+                this.spining = true
+                let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) || -1
+                if (position >= 0) {
+                    this.viewModel?.loadGiftData((data) => {
+                        if (data) {
+                            if ((data.couponTypeID || -1) >= 0) {
+                                this.setState({
+                                    winData: data,
+                                })
+                                this.setState({
+                                    spin: true,
+                                })
+                            }
                         }
-                    }
-                }, (status, msg) => {
-                    this.props.alertCallback(status, msg)
-                })
+                    }, (status, msg) => {
+                        this.props.alertCallback(status, msg)
+                    })
+                }
             }
         }
     }
@@ -233,6 +266,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                 </div>
 
                 <Container
+                    ref={this.historyRef}
                     className='rounded-border'
                     style={{
                         padding: '10px'
@@ -413,14 +447,13 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     </Col>
                 </Row>
             </Container>
-
         )
     }
 
     getMList() {
         let mList: Array<WheelData> = []
         this.state.listMCouponType.map((item, index) => {
-            mList.push({ option: item.name || '-', style: { backgroundColor: item.bgColor } })
+            mList.push({ option: item.name || '-', style: { backgroundColor: item.bgColor, textColor: item.fontColor } })
         })
         return mList
     }
@@ -428,9 +461,17 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
     spin() {
         console.log(this.spinRef.current?.clientWidth)
         return (
-            <div className="justify-content-center hover" style={{ position: 'relative' }} onClick={() => {
-                this.startSpin()
-            }}>
+            <div className="justify-content-center" style={{ position: 'relative' }}>
+                {
+                    this.state.spin ? <></> :
+                        <div className="justify-content-center" style={{
+                            position: 'absolute', zIndex: 11, width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
+                        }}>
+                            <Image className='hover' style={{ height: '68px', float: 'right' }} src={'ic-start.svg'} onClick={() => {
+                                this.startSpin()
+                            }} />
+                        </div>
+                }
                 {
                     (this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) || -1) !== -1 ? <></> :
                         <div className="justify-content-center" style={{
@@ -445,25 +486,28 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                 }
 
                 <WheelComponent
+                    radiusLineWidth={0}
                     spinWidth={260}
                     mustStartSpinning={this.state.spin}
                     prizeNumber={this.state.listMCouponType.findIndex(tmp => tmp.uniqueID == this.state.winData.couponTypeID)}
                     data={this.getMList()}
                     onStopSpinning={() => {
-                        this.setState({
-                            spin: false
-                        })
-
+                        this.spining = false
                         if (this.state.data?.history != null) {
                             let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1)
                             this.state.data.history[position] = this.state.winData
 
+                            if (position >= 2) {
+                                this.historyRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                            }
+
                             this.setState({
-                                data: this.state.data
+                                data: this.state.data,
+                                spin: false,
+                                showPrize: true,
+                                position: position
                             })
                         }
-
-                        // this.loadUserData()
                     }}
                     backgroundColors={['#3e3e3e', '#df3428']}
                     textColors={['#ffffff']} />
