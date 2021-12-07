@@ -2,7 +2,7 @@ import liff from '@line/liff';
 import { useEffect, useState } from 'react';
 import AppViewModel from '../viewmodel/AppViewModel';
 import User from '../../authentication/User';
-import { Container, Row, Image, Modal, Button } from 'react-bootstrap';
+import { Container, Row, Image, Modal, Button, Stack } from 'react-bootstrap';
 import LoginPage from '../../authentication/view/LoginPage';
 import LineProfilePage from '../../authentication/view/LineProfilePage';
 import RequestLogModel from '../model/LoginRequestModel'
@@ -17,6 +17,8 @@ function App() {
 
   const [alert, isShow] = useState(false)
   const [alertMsg, setAlertMsg] = useState('')
+
+  const [OAAlert, isOAShow] = useState(false)
 
   const [forceLogout, isShowForceLogout] = useState(false)
   const [forceLogoutMsg, setForceLogoutMsg] = useState('')
@@ -52,7 +54,12 @@ function App() {
   const checkUser = () => {
     let user = User.getUser()
     if (user) {
-      setState(AppState.HOME)
+      if (window.sessionStorage.getItem('loa') === 'y') {
+        window.sessionStorage.setItem('loa', 'y')
+        isOAShow(true)
+      } else {
+        setState(AppState.HOME)
+      }
     } else {
       setState(AppState.LOGIN)
     }
@@ -80,10 +87,12 @@ function App() {
   }
 
   const getLineAccountData = () => {
-    // const idToken = liff.getIDToken();
-    console.log('Line token')
-    console.log(liff.getIDToken())
+
     liff.getProfile().then(profile => {
+
+      viewModel.checkAddedOA(liff.getAccessToken(), (added: boolean) => {
+        window.sessionStorage.setItem('loa', added ? 'y' : 'n')
+      })
 
       viewModel.request.channel = 'LINE'
       viewModel.request.userID = profile.userId
@@ -128,6 +137,33 @@ function App() {
           <Button variant="outline-dark" onClick={() => {
             logout()
           }}>กลับไปที่หน้าเข้าสู่ระบบ</Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={OAAlert}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header>
+          <Modal.Title>คุณยังไม่ได้เป็นเพื่อนกับ SHU</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          SHU's Gift code ของคุณจะส่งไปยัง SHU's Official account
+
+        </Modal.Body>
+        <Modal.Footer>
+          <Stack gap={3}>
+            <Button variant="secondary" style={{ backgroundColor: '#535353' }} onClick={() => {
+              window.open('https://page.line.me/?liff.state=%3FaccountId%3Dshu.global', "_blank")
+              isOAShow(false)
+              setState(AppState.HOME)
+            }}>คลิ๊กเพื่อเป็นเพื่อนกับ SHU</Button>
+            <Button variant="outline-dark" onClick={() => {
+              isOAShow(false)
+              setState(AppState.HOME)
+            }}>ตกลงและไปยังหน้ากิจกรรม</Button>
+          </Stack>
         </Modal.Footer>
       </Modal>
 
