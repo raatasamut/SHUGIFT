@@ -33,7 +33,7 @@ export default class LoginPage extends React.Component<ILoginPageProps> {
           textAlign: 'center',
           color: '#6C6C6C'
         }}>
-          กรุณา Login ก่อนกด Lucky draw จำนวนสิทธิ์กดรับโค้ด ท่านละ 3 ครั้ง ต่อ 1 LINE ID
+          กรุณา Login<br/>ก่อนกด Lucky draw<br/>จำนวนสิทธิ์กดรับโค้ด ท่านละ 3 ครั้ง ต่อ 1 LINE ID
         </div>
 
         <Row className="justify-content-center">

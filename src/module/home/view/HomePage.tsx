@@ -630,7 +630,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                             <UseCodeComponent isSmall={false} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์' onclick={this.useCodeViaWeb} />
                         </>}
                 </> :
-                <>GONE</>
+                <></>
         )
     }
 }
