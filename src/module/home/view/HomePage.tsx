@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Row, Image, Container, Col } from 'react-bootstrap';
+import { Row, Image, Container, Col, Button } from 'react-bootstrap';
 import { WheelData } from '../../../game/wheel/components/Wheel/types';
 import { WheelComponent } from '../../../game/wheel/components/Wheel/WheelComponent';
 import User from '../../authentication/User';
@@ -7,6 +7,7 @@ import { MCouponType } from '../model/MCouponType';
 import { UserData, UserHistoryData } from '../model/UserData';
 import HomeViewModel from '../viewmodel/HomeViewModel';
 import GettingCoupon from './component/GettingCoupon';
+import HowToUseCode from './component/HowToUseCode';
 import RoundComponent from './component/RoundComponent';
 import SelectedComponent from './component/SelectedComponent';
 import SelectorComponent, { USEVIA } from './component/SelectorComponent';
@@ -24,14 +25,14 @@ export interface IHomePageState {
     containerWidth: number,
     prizeNumber: number,
     spin: boolean,
-    used: number,
-    total: number,
     showSelector: boolean,
     showSelected: boolean,
     showPrize: boolean,
+    showHowToUseCode: boolean,
     forType: USEVIA,
     position: number,
-    maxPosition: number
+    maxPosition: number,
+    endEvent: boolean
 }
 
 export default class HomePage extends React.Component<IHomePageProps, IHomePageState> {
@@ -51,6 +52,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
             showSelector: false,
             showSelected: false,
             showPrize: false,
+            showHowToUseCode: false,
             forType: USEVIA.NONE,
             position: -1,
             maxPosition: 0,
@@ -59,8 +61,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
             containerWidth: window.innerWidth,
             prizeNumber: 0,
             spin: false,
-            used: 5000,
-            total: 10000
+            endEvent: false
         }
 
         this.viewModel = new HomeViewModel()
@@ -79,35 +80,43 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
             console.log('loadUserData')
             if (data) {
 
-                let max = data.couponPerUser || 0
+                if (data.isEventEnd()) {
+                    this.setState({
+                        endEvent: true
+                    })
+                } else {
 
-                if ((data.history?.length || 0) <= 0 || undefined) {
-                    data.history = new Array<UserHistoryData>()
+                    let max = data.couponPerUser || 0
+
+                    if ((data.history?.length || 0) <= 0 || undefined) {
+                        data.history = new Array<UserHistoryData>()
+                    }
+
+                    let addCount = max - (data.history?.length || 0)
+
+                    for (let i = 0; i < addCount; i++) {
+                        data.history?.push(new UserHistoryData(-1, 'รอการสุ่ม'))
+                    }
+
+                    console.log('Validated coupon')
+                    console.log(data)
+
+                    let useingVia = USEVIA.NONE
+                    if (data.usingAdminChannel !== null) {
+                        useingVia = data.usingAdminChannel ? USEVIA.ADMIN : USEVIA.USER
+                    }
+
+                    this.setState({
+                        maxPosition: max,
+                        data: data
+                    })
+                    // this.setState({
+                    //     forType: useingVia,
+                    //     maxPosition: max,
+                    //     data: data
+                    // })
                 }
 
-                let addCount = max - (data.history?.length || max)
-
-                for (let i = 0; i < addCount; i++) {
-                    data.history?.push(new UserHistoryData(-1, 'รอการสุ่ม'))
-                }
-
-                console.log('Validated coupon')
-                console.log(data)
-
-                let useingVia = USEVIA.NONE
-                if (data.usingAdminChannel !== null) {
-                    useingVia = data.usingAdminChannel ? USEVIA.ADMIN : USEVIA.USER
-                }
-
-                this.setState({
-                    maxPosition: max,
-                    data: data
-                })
-                // this.setState({
-                //     forType: useingVia,
-                //     maxPosition: max,
-                //     data: data
-                // })
             } else {
 
             }
@@ -129,55 +138,95 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
     }
 
     useCodeViaWeb = () => {
-        window.open('https://www.shu.global', "_blank")
+        this.setState({
+            showHowToUseCode: true
+        })
     }
 
     useCodeViaAdmin = () => {
-        window.open('https://www.facebook.com/www.shu.global', "_blank")
+        this.setState({
+            showHowToUseCode: true
+        })
     }
 
     public render() {
         return (
             <div>
-                <SelectorComponent show={this.state.showSelector} onSelected={(forType: USEVIA) => {
-                    this.setState({
-                        forType: forType,
-                        showSelector: false,
-                        showSelected: true
-                    })
-                }} onCancel={() => {
-                    this.setState({
-                        showSelector: false
-                    })
-                }} />
-                <SelectedComponent show={this.state.showSelected}
-                    forType={this.state.forType}
-                    onStart={() => {
-                        this.setState({
-                            showSelected: false
-                        })
-                        this.startSpin()
-                    }} onCancel={() => {
-                        this.setState({
-                            showSelected: false
-                        })
-                    }} />
-                <GettingCoupon
-                    show={this.state.showPrize}
-                    position={this.state.position}
-                    winData={this.state.winData}
-                    onCancel={() => {
-                        this.setState({
-                            showPrize: false
-                        })
-                    }} />
                 {
-                    this.state.containerWidth < 990 ?
-                        this.smallScreen() :
-                        this.largeScreen()
-                }
+                    this.state.endEvent ?
+                        <div>
+                            <Row className="justify-content-center" style={{ fontSize: '34px', textAlign: 'center', color: '#6C6C6C' }}>
+                                กิจกรรมจบลงแล้ว
+                            </Row>
 
-            </div >
+                            <Row className="justify-content-center">
+                                <Image style={{ width: '240px', marginBottom: '16px', marginTop: '16px' }} src={'ic-section.svg'} />
+                            </Row>
+
+                            <Row className="justify-content-center" style={{ fontSize: '34px', textAlign: 'center', color: '#6C6C6C', lineHeight: '1', padding: '20px' }}>
+                                ทาง SHU ขอขอบคุณ ลูกค้าทุกท่าน ที่ให้ความสนใจ กิจกรรมของ SHU
+                            </Row>
+
+                            <Row className="justify-content-center" style={{ fontSize: '28px', textAlign: 'center', color: '#6C6C6C' }}>
+                                ขอบคุณค่ะ/ครับ
+                            </Row>
+                        </div>
+                        :
+                        <div>
+                            <SelectorComponent show={this.state.showSelector} onSelected={(forType: USEVIA) => {
+                                this.viewModel?.updateCouponChannel(forType === USEVIA.ADMIN, () => {
+                                    this.setState({
+                                        forType: forType,
+                                        showSelector: false,
+                                        showSelected: true
+                                    })
+                                }, () => {
+                                    this.setState({
+                                        showSelector: false,
+                                    })
+                                })
+                            }} onCancel={() => {
+                                this.setState({
+                                    showSelector: false
+                                })
+                            }} />
+                            <SelectedComponent show={this.state.showSelected}
+                                forType={this.state.forType}
+                                onStart={() => {
+                                    this.setState({
+                                        showSelected: false
+                                    })
+                                    this.startSpin()
+                                }} onCancel={() => {
+                                    this.setState({
+                                        showSelected: false
+                                    })
+                                }} />
+                            <GettingCoupon
+                                show={this.state.showPrize}
+                                position={this.state.position}
+                                winData={this.state.winData}
+                                onCancel={() => {
+                                    this.setState({
+                                        showPrize: false
+                                    })
+                                }} />
+                            <HowToUseCode show={this.state.showHowToUseCode}
+                                forType={this.state.forType}
+                                onCancel={() => {
+                                    this.setState({
+                                        showHowToUseCode: false
+                                    })
+                                }} />
+                            {
+                                this.state.containerWidth < 990 ?
+                                    this.smallScreen() :
+                                    this.largeScreen()
+                            }
+
+                        </div >
+                }
+            </div>
         );
     }
 
@@ -189,7 +238,10 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
         } else {
             if (!this.spining) {
                 this.spining = true
-                let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) || -1
+                let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1)
+                if (!position) {
+                    position = 1
+                }
                 if (position >= 0) {
                     this.viewModel?.loadGiftData((data) => {
                         if (data) {
@@ -289,14 +341,19 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                         )
                     }
 
+                    {
+                        this.useCodeAction()
+                    }
+
                     <div style={{
-                        fontSize: '24px',
+                        fontSize: '26px',
                         textAlign: 'center',
-                        color: '#6C6C6C'
+                        color: '#000000',
+                        marginTop: '16px'
                     }}>
-                        มีคนจับคูปองแล้ว <a style={{
-                            color: '#000000'
-                        }}>{this.state.used}</a>/{this.state.total} คูปอง
+                        {
+                            this.state.data?.getDayLeft()
+                        }
                     </div>
 
                     <div style={{
@@ -415,14 +472,19 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                                 )
                             }
 
+                            {
+                                this.useCodeAction()
+                            }
+
                             <div style={{
-                                fontSize: '16px',
+                                fontSize: '18px',
                                 textAlign: 'center',
-                                color: '#6C6C6C'
+                                color: '#000000',
+                                marginTop: '16px'
                             }}>
-                                มีคนจับคูปองแล้ว <a style={{
-                                    color: '#000000'
-                                }}>{this.state.used.toLocaleString()}</a>/{this.state.total.toLocaleString()} คูปอง
+                                {
+                                    this.state.data?.getDayLeft()
+                                }
                             </div>
 
                             <div style={{
@@ -461,57 +523,114 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
     spin() {
         console.log(this.spinRef.current?.clientWidth)
         return (
-            <div className="justify-content-center" style={{ position: 'relative' }}>
-                {
-                    this.state.spin ? <></> :
-                        <div className="justify-content-center" style={{
-                            position: 'absolute', zIndex: 11, width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
-                        }}>
-                            <Image className='hover' style={{ height: '68px', float: 'right' }} src={'ic-start.svg'} onClick={() => {
-                                this.startSpin()
-                            }} />
-                        </div>
-                }
-                {
-                    (this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) || -1) !== -1 ? <></> :
-                        <div className="justify-content-center" style={{
-                            position: 'absolute', zIndex: 11, width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
-                        }}>
-                            <div className='rounded-border' style={{
-                                backgroundColor: '#F4FFF4', color: '#00893F', fontSize: '30px', paddingLeft: '30px', paddingRight: '30px', textAlign: 'center'
+            <div>
+                <div className="justify-content-center" style={{ position: 'relative' }}>
+                    {
+                        this.state.spin ? <></> :
+                            <div className="justify-content-center" style={{
+                                position: 'absolute', zIndex: 11, width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
                             }}>
-                                ลุ้นสิทธิครบแล้ว
+                                <Image className='hover' style={{ height: '68px', float: 'right' }} src={'ic-start.svg'} onClick={() => {
+                                    this.startSpin()
+                                }} />
                             </div>
-                        </div>
-                }
+                    }
+                    {
+                        this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1) !== -1 ? <></> :
+                            <div className="justify-content-center" style={{
+                                position: 'absolute', zIndex: 11, width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
+                            }}>
+                                <div className='rounded-border' style={{
+                                    backgroundColor: '#F4FFF4', color: '#00893F', fontSize: '30px', paddingLeft: '30px', paddingRight: '30px', textAlign: 'center'
+                                }}>
+                                    ลุ้นสิทธิครบแล้ว
+                                </div>
+                            </div>
+                    }
 
-                <WheelComponent
-                    radiusLineWidth={0}
-                    spinWidth={260}
-                    mustStartSpinning={this.state.spin}
-                    prizeNumber={this.state.listMCouponType.findIndex(tmp => tmp.uniqueID == this.state.winData.couponTypeID)}
-                    data={this.getMList()}
-                    onStopSpinning={() => {
-                        this.spining = false
-                        if (this.state.data?.history != null) {
-                            let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1)
-                            this.state.data.history[position] = this.state.winData
+                    <WheelComponent
+                        radiusLineWidth={0}
+                        spinWidth={260}
+                        mustStartSpinning={this.state.spin}
+                        prizeNumber={this.state.listMCouponType.findIndex(tmp => tmp.uniqueID == this.state.winData.couponTypeID)}
+                        data={this.getMList()}
+                        onStopSpinning={() => {
+                            this.spining = false
+                            if (this.state.data?.history != null) {
+                                let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1)
+                                this.state.data.history[position] = this.state.winData
 
-                            if (position >= 2) {
-                                this.historyRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                                if (position >= 2) {
+                                    this.historyRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                                }
+
+                                this.setState({
+                                    data: this.state.data,
+                                    spin: false,
+                                    showPrize: true,
+                                    position: position
+                                })
                             }
+                        }}
+                        backgroundColors={['#3e3e3e', '#df3428']}
+                        textColors={['#ffffff']} />
+                </div>
 
-                            this.setState({
-                                data: this.state.data,
-                                spin: false,
-                                showPrize: true,
-                                position: position
-                            })
-                        }
-                    }}
-                    backgroundColors={['#3e3e3e', '#df3428']}
-                    textColors={['#ffffff']} />
+                <div style={{
+                    fontSize: '22px',
+                    textAlign: 'center',
+                    color: '#6C6C6C',
+                    paddingTop: '10px'
+                }}>กดปุ่ม START เพื่อเริ่มเล่น
+                </div>
             </div>
+        )
+    }
+
+    useCodeAction() {
+        return (
+            this.state.data?.history?.find(tmp => tmp.couponTypeID !== -1) ?
+                <>
+                    {this.state.forType === USEVIA.ADMIN ?
+                        <>
+                            <div style={{
+                                fontSize: '26px',
+                                textAlign: 'center',
+                                color: '#000000',
+                                paddingTop: '10px'
+                            }}>
+                                การใช้งาน : ทำการ “คัดลอกโค้ด” และกดที่ “แจ้งแอดมิน” เพื่อใช้คูปอง
+                            </div>
+                            <Row className="justify-content-center" style={{ paddingTop: '4px' }}>
+                                <Button variant="secondary" style={{ maxWidth: '130px', maxHeight: '44px', backgroundColor: '#535353' }} size="lg" onClick={() => {
+                                    window.open('https://www.facebook.com/www.shu.global', "_blank")
+                                }}>
+                                    แจ้งแอดมิน SHU
+                                </Button>
+                            </Row>
+                            <UseCodeComponent isSmall={false} imageName='ic-use-code-admin' title='แจ้งโค้ดและสั่งซื้อกับแอดมิน' onclick={this.useCodeViaAdmin} />
+                        </>
+                        :
+                        <>
+                            <div style={{
+                                fontSize: '26px',
+                                textAlign: 'center',
+                                color: '#000000',
+                                paddingTop: '10px'
+                            }}>
+                                การใช้งาน : ทำการ “คัดลอกโค้ด” และกดที่ “เปิดเว็บไซร์” เพื่อใช้คูปอง
+                            </div>
+                            <Row className="justify-content-center" style={{ paddingTop: '4px' }}>
+                                <Button variant="secondary" style={{ maxWidth: '130px', maxHeight: '44px', backgroundColor: '#535353' }} size="lg" onClick={() => {
+                                    window.open('https://www.shu.global', "_blank")
+                                }}>
+                                    เปิดเว็บไซร์ SHU
+                                </Button>
+                            </Row>
+                            <UseCodeComponent isSmall={false} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์' onclick={this.useCodeViaWeb} />
+                        </>}
+                </> :
+                <>GONE</>
         )
     }
 }

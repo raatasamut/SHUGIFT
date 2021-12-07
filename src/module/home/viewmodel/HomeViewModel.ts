@@ -5,6 +5,7 @@ import { APIKey } from "../../authentication/model/UserModel";
 import User from "../../authentication/User";
 import { GiftData } from "../model/GiftData";
 import { MCouponType } from "../model/MCouponType";
+import { UpdateCouponChannel } from "../model/UpdateCouponChannel";
 import { UserData, UserHistoryData } from "../model/UserData";
 
 export default class HomeViewModel {
@@ -45,6 +46,21 @@ export default class HomeViewModel {
             GiftData,
             (obj, array) => {
                 callback(obj.coupon)
+            },
+            (errorStatus, errorMessage) => {
+                errorCallback(errorStatus, errorMessage)
+            })
+    }
+
+
+    updateCouponChannel(usingAdminChannel: boolean,callback: () => void, errorCallback: (status: number, msg: string) => void) {
+        new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/w23g8ovx9amyxsu/data.json' : User.getUser()?.getService(APIKey.UPDATE) || '',
+            'Home',
+            'Data',
+            new UpdateCouponChannel(usingAdminChannel),
+            BaseModel,
+            (obj, array) => {
+                callback()
             },
             (errorStatus, errorMessage) => {
                 errorCallback(errorStatus, errorMessage)

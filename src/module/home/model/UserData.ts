@@ -24,6 +24,24 @@ export class UserData extends BaseModel {
         }
     }
 
+    public getDayLeft() {
+        try {
+            const now = new Date()
+            const end = new Date((this.endDate || 0) * 1000)
+
+            if (now.getDate() === end.getDate()) {
+                return 'วันสุดท้าย'
+            } else if (now.getDate() > end.getDate()) {
+                return 'สิ้นสุดระยะเวลากิจกรรม'
+            } else {
+                return (end.getDate() - now.getDate()) + ' วันสุดท้าย'
+            }
+
+        } catch (e) {
+            return ''
+        }
+    }
+
     public getDuration() {
 
         const start = new Date((this.startDate || 0) * 1000)
@@ -49,6 +67,13 @@ export class UserData extends BaseModel {
         } else {
             return resultStart + ' - ' + resultEnd
         }
+    }
+
+    public isEventEnd() {
+        const now = new Date()
+        const end = new Date((this.endDate || 0) * 1000)
+
+        return now.getDate() > end.getDate()
     }
 }
 

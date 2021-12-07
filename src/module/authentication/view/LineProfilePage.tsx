@@ -45,7 +45,7 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                     textAlign: 'center',
                     color: '#6C6C6C'
                 }}>
-                    อนุญาตให้ใช้ข้อมูลไลน์ ในการลงทะเบียน<br />กรุณากดปุ่ม “ยืนยัน” เพื่อไปยังหน้า Lucky Draw
+                    อนุญาตให้ใช้ข้อมูลไลน์ ในการลงทะเบียน กรุณากดปุ่ม “ยืนยัน” เพื่อไปยังหน้า Lucky Draw
                 </div>
 
                 <Row className="justify-content-center">
