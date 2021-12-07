@@ -80,7 +80,9 @@ function App() {
   }
 
   const getLineAccountData = () => {
-    const idToken = liff.getIDToken();
+    // const idToken = liff.getIDToken();
+    console.log('Line token')
+    console.log(liff.getIDToken())
     liff.getProfile().then(profile => {
 
       viewModel.request.channel = 'LINE'
