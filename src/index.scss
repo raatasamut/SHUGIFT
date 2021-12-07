@@ -4,15 +4,15 @@
 //   unicode-range: U+0020-007F;
 // }
 
-@font-face {
-  font-family: DBHeaventCond;
-  src: url('./font/dbheaventcond.ttf') format('truetype'), url('./font/dbheaventcond.woff') format('woff');
-}
+// @font-face {
+//   font-family: DBHeaventCond;
+//   src: url('./font/dbheaventcond.ttf') format('truetype'), url('./font/dbheaventcond.woff') format('woff');
+// }
 
 body {
   margin: 0;
   background-color: white;
-  font-family: DBHeaventCond;
+  // font-family: DBHeaventCond;
   // font-family: FranklinGothic, DBHeaventCond;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
