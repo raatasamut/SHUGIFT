@@ -54,7 +54,7 @@ function App() {
   const checkUser = () => {
     let user = User.getUser()
     if (user) {
-      if (window.sessionStorage.getItem('loa') === 'y') {
+      if (window.sessionStorage.getItem('loa') === 'n') {
         window.sessionStorage.setItem('loa', 'y')
         isOAShow(true)
       } else {
