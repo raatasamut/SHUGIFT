@@ -1,18 +1,19 @@
-@font-face {
-  font-family: FranklinGothic;
-  src: url(/font/FranklinGothic-Light.ttf);
-  unicode-range: U+0020-007F;
-}
+// @font-face {
+//   font-family: FranklinGothic;
+//   src: url('/font/franklin-gothic-regular.ttf') format('truetype'), url('/font/franklin-gothic-regular.woff') format('woff');
+//   unicode-range: U+0020-007F;
+// }
 
 @font-face {
   font-family: DBHeaventCond;
-  src: url(/font/DBHeaventCond.ttf);
+  src: url('/font/dbheaventcond.ttf') format('truetype'), url('/font/dbheaventcond.woff') format('woff');
 }
 
 body {
   margin: 0;
   background-color: white;
-  font-family: FranklinGothic, DBHeaventCond;
+  font-family: DBHeaventCond;
+  // font-family: FranklinGothic, DBHeaventCond;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

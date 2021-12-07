@@ -17,9 +17,10 @@ export default class LoginPage extends React.Component<ILoginPageProps> {
       <div>
 
         <div style={{
-          fontSize: '35px',
+          fontSize: '30px',
           textAlign: 'center',
-          color: '#6C6C6C'
+          color: '#6C6C6C',
+          fontWeight: 'bold'
         }}>
           ยินดีต้อนรับ<br/>เข้าสู่เทศกาลหมุนวงล้อ
         </div>
@@ -29,7 +30,7 @@ export default class LoginPage extends React.Component<ILoginPageProps> {
         </Row>
 
         <div style={{
-          fontSize: '30px',
+          fontSize: '26px',
           textAlign: 'center',
           color: '#6C6C6C'
         }}>

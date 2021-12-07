@@ -130,7 +130,7 @@ function App() {
       </Modal>
 
       <Row className="justify-content-center">
-        <Image style={{ width: '90px' }} src={'logo.png'} />
+        <Image style={{ width: '80px', padding: '16px' }} src={'logo-shu.svg'} />
       </Row>
 
       <Container
