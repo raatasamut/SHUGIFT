@@ -67,7 +67,7 @@ export default class SelectorComponent extends React.Component<ISelectorComponen
                                 }}>
                                     <input type='radio' checked={this.state.forType === USEVIA.USER} onChange={()=>{}}/>
                                     <Image style={{ height: '18px', paddingLeft: '10px', paddingRight: '10px', marginTop: '-4px' }} src={'ic-use-code-web.svg'} />
-                                    ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์
+                                    ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซต์
                                 </Card.Body>
                             </Card>
                             <Card>

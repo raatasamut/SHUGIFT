@@ -28,7 +28,7 @@ export default class HowToUseCode extends React.Component<IHowToUseCodeProps> {
             <Image style={{ height: '54px', marginBottom: '16px' }} src={this.props.forType === USEVIA.USER ? 'ic-use-code-web.svg' : 'ic-use-code-admin.svg'} />
 
             <Row className="justify-content-center" style={{ fontSize: '26px', textAlign: 'center' }}>
-              {this.props.forType === USEVIA.USER ? 'วิธีใช้โค้ดบนเว็บไซร์ SHU' : 'วิธีใช้โค้ดและสั่งซื้อกับแอดมิน'}
+              {this.props.forType === USEVIA.USER ? 'วิธีใช้โค้ดบนเว็บไซต์ SHU' : 'วิธีใช้โค้ดและสั่งซื้อกับแอดมิน'}
             </Row>
 
             {this.props.forType === USEVIA.USER ?
@@ -46,7 +46,7 @@ export default class HowToUseCode extends React.Component<IHowToUseCodeProps> {
                     window.open('https://www.shu.global/customer/account/login/', "_blank")
                     this.props.onCancel()
                   }}>
-                    เปิดเว็บไซร์ SHU
+                    เปิดเว็บไซต์ SHU
                   </Button>
                 </Row>
               </div> :
@@ -62,7 +62,7 @@ export default class HowToUseCode extends React.Component<IHowToUseCodeProps> {
                     window.open('https://page.line.me/?liff.state=%3FaccountId%3Dshu.global', "_blank")
                     this.props.onCancel()
                   }}>
-                    แจ้งแอดมิน SHU
+                    แจ้งแอดมิน
                   </Button>
                 </Row>
               </div>

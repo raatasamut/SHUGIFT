@@ -53,6 +53,12 @@ export default class LoginViewModel {
                             duration: nextDuration
                         }
                     })
+                } else if (obj.previousCampaign != null) {
+                    callback({
+                        logo: obj.previousCampaign.icon || '',
+                        backgroundColor: obj.previousCampaign.bgColor || '#FFFFFF',
+                        count: obj.previousCampaign.couponPerUser
+                    })
                 }
             },
             (errorStatus, errorMessage) => {

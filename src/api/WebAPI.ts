@@ -4,17 +4,20 @@ import { ResponseModel } from './models/ResponseModel';
 import { ClassConstructor, plainToClass } from 'class-transformer';
 import { isExpired } from "react-jwt";
 import User from '../module/authentication/User';
+import AppConfig from '../AppConfig';
 
 export default class WebAPI {
 
     request<T>(url: string, module: string, target: string, data: BaseModel, cls: ClassConstructor<T>, successCallback: ((cls: T, clsArray: T[]) => void), errorCallback: ((status: number, message: string) => void)) {
 
         //Check JWT token
-        // const token = User.getUser()?.token
-        // if (token && isExpired(token)) {
-        //     errorCallback(401, 'โทเค็นหทดอายุ')
-        //     return
-        // }
+        if (!AppConfig.useMockup) {
+            const token = User.getUser()?.token
+            if (token && isExpired(token)) {
+                errorCallback(401, 'โทเค็นหทดอายุ')
+                return
+            }
+        }
 
         // Fetch
         this.fetcher(url, module, target, data, (response) => {

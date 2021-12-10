@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Row, Image, Container, Col, Button } from 'react-bootstrap';
+import AppConfig from '../../../AppConfig';
 import { WheelData } from '../../../game/wheel/components/Wheel/types';
 import { WheelComponent } from '../../../game/wheel/components/Wheel/WheelComponent';
 import User from '../../authentication/User';
@@ -106,28 +107,31 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
         // })
     }
 
+    isShowLoading(show: boolean) {
+        this.props.alertCallback(show ? AppConfig.SHOW_LOADING : AppConfig.HIDE_LOADING, '')
+    }
+
     loadUserData() {
+        this.isShowLoading(true)
         this.viewModel?.loadUserData((data?: CampaignData) => {
+            this.isShowLoading(false)
             console.log('loadUserData')
             if (data) {
 
-                if(data.currentCampaign != null){
+                if (data.currentCampaign != null) {
 
                     let max = data.currentCampaign.couponPerUser || 0
 
                     if ((data.currentCampaign.history?.length || 0) <= 0 || undefined) {
                         data.currentCampaign.history = new Array<UserHistoryData>()
                     }
-    
+
                     let addCount = max - (data.currentCampaign.history?.length || 0)
-    
+
                     for (let i = 0; i < addCount; i++) {
                         data.currentCampaign.history?.push(new UserHistoryData(-1, 'รอการสุ่ม'))
                     }
-    
-                    console.log('Validated coupon')
-                    console.log(data)
-    
+
                     let useingVia = USEVIA.NONE
                     if (data.currentCampaign.usingAdminChannel !== null) {
                         useingVia = data.currentCampaign.usingAdminChannel ? USEVIA.ADMIN : USEVIA.USER
@@ -137,11 +141,11 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                         maxPosition: max,
                         data: data.currentCampaign
                     })
-                } else if(data.nextCampaign != null){
+                } else if (data.nextCampaign != null) {
                     this.props.showWaittingPage(data.nextCampaign)
-                } else if(data.previousCampaign != null){
-                    
-                    if(data.previousCampaign.getDayLeftMoreThan(5)){
+                } else if (data.previousCampaign != null) {
+
+                    if (data.previousCampaign.getDayLeftMoreThan(5)) {
                         this.props.showEndPage()
                     } else {
                         this.setState({
@@ -151,6 +155,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                 }
             }
         }, (status, msg) => {
+            this.isShowLoading(false)
             if (status === 404) {
                 this.setState({
                     endEvent: true
@@ -285,7 +290,9 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     position = 1
                 }
                 if (position >= 0) {
+                    this.isShowLoading(true)
                     this.viewModel?.loadGiftData((data) => {
+                        this.isShowLoading(false)
                         if (data) {
                             if ((data.couponTypeID || -1) >= 0) {
                                 this.setState({
@@ -297,6 +304,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                             }
                         }
                     }, (status, msg) => {
+                        this.isShowLoading(false)
                         this.props.alertCallback(status, msg)
                     })
                 }
@@ -349,7 +357,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     }}>{this.state.data?.couponPerUser}</a> ครั้งเท่านั้น ต่อ 1 LINE ID
                 </div>
 
-                <UseCodeComponent isSmall={false} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์' onclick={this.useCodeViaWeb} />
+                <UseCodeComponent isSmall={false} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซต์' onclick={this.useCodeViaWeb} />
 
                 <UseCodeComponent isSmall={false} imageName='ic-use-code-admin' title='แจ้งโค้ดและสั่งซื้อกับแอดมิน' onclick={this.useCodeViaAdmin} />
 
@@ -476,7 +484,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                             }}>{this.state.data?.couponPerUser}</a> ครั้งเท่านั้น ต่อ 1 LINE ID
                         </div>
 
-                        <UseCodeComponent isSmall={false} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์' onclick={this.useCodeViaWeb} />
+                        <UseCodeComponent isSmall={false} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซต์' onclick={this.useCodeViaWeb} />
 
                         <UseCodeComponent isSmall={false} imageName='ic-use-code-admin' title='แจ้งโค้ดและสั่งซื้อกับแอดมิน' onclick={this.useCodeViaAdmin} />
 
@@ -565,7 +573,6 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
     }
 
     spin() {
-        console.log(this.spinRef.current?.clientWidth)
         return (
             <div>
                 <div className="justify-content-center" style={{ position: 'relative' }}>
@@ -649,7 +656,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                                 <Button variant="secondary" style={{ maxWidth: '130px', maxHeight: '44px', backgroundColor: '#535353' }} size="lg" onClick={() => {
                                     window.open('https://page.line.me/?liff.state=%3FaccountId%3Dshu.global', "_blank")
                                 }}>
-                                    แจ้งแอดมิน SHU
+                                    แจ้งแอดมิน
                                 </Button>
                             </Row>
                             <UseCodeComponent isSmall={true} imageName='ic-use-code-admin' title='แจ้งโค้ดและสั่งซื้อกับแอดมิน' onclick={this.useCodeViaAdmin} />
@@ -662,16 +669,16 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                                 color: '#000000',
                                 paddingTop: '10px'
                             }}>
-                                การใช้งาน : ทำการ “คัดลอกโค้ด” และกดที่ “เปิดเว็บไซร์” เพื่อใช้คูปอง
+                                การใช้งาน : ทำการ “คัดลอกโค้ด” และกดที่ “เปิดเว็บไซต์” เพื่อใช้คูปอง
                             </div>
                             <Row className="justify-content-center" style={{ padding: '8px' }}>
                                 <Button variant="secondary" style={{ maxWidth: '130px', maxHeight: '44px', backgroundColor: '#535353' }} size="lg" onClick={() => {
                                     window.open('https://www.shu.global/customer/account/login/', "_blank")
                                 }}>
-                                    เปิดเว็บไซร์ SHU
+                                    เปิดเว็บไซต์ SHU
                                 </Button>
                             </Row>
-                            <UseCodeComponent isSmall={true} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์' onclick={this.useCodeViaWeb} />
+                            <UseCodeComponent isSmall={true} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซต์' onclick={this.useCodeViaWeb} />
                         </>}
                 </> :
                 <></>

@@ -44,7 +44,7 @@ export default class SelectedComponent extends React.Component<ISelectedComponen
                 fontSize: '28px',
                 color: '#6C6C6C'
               }}>
-                {this.props.forType === USEVIA.USER ? 'ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์' : 'แจ้งโค้ดและสั่งซื้อกับแอดมิน'}
+                {this.props.forType === USEVIA.USER ? 'ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซต์' : 'แจ้งโค้ดและสั่งซื้อกับแอดมิน'}
               </a>
             </div>
 
@@ -56,7 +56,7 @@ export default class SelectedComponent extends React.Component<ISelectedComponen
               เริ่มสุ่มคูปอง ครั้งที่ 1
             </Row>
 
-            <Image style={{ height: '96px', float: 'right' }} src={'bt-start.svg'} onClick={this.props.onStart} />
+            <Image style={{ height: '96px', float: 'right' }} src={'ic-start.svg'} onClick={this.props.onStart} />
 
             <Row className="justify-content-center" style={{ fontSize: '18px', textAlign: 'center', color: '#6C6C6C' }}>
             (กดปุ่ม START เพื่อเริ่มเล่น)

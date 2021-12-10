@@ -1,15 +1,12 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import ReactDOM from 'react-dom';
 import App from './module/main/view/App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss';
-
+  
 ReactDOM.render(
-  <div>
-    <App />
-    <footer style={{ fontSize: '12px', color: '#6C6C6C', textAlign: 'center', padding: '8px' }}>Copyright @ SHU Global 2020. All Right Reserved.</footer>
-  </div>,
+      <App />,
   document.getElementById('root')
 );
 
