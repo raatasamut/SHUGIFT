@@ -8,6 +8,11 @@ import LineProfilePage from '../../authentication/view/LineProfilePage';
 import RequestLogModel from '../model/LoginRequestModel'
 import './App.scss';
 import HomePage from '../../home/view/HomePage';
+import { UserData } from '../../home/model/UserData';
+import WaittingPage from './components/WaittingPage';
+import EndedPage from './components/EndedPage';
+
+const viewModel = new AppViewModel()
 
 function App() {
 
@@ -26,18 +31,55 @@ function App() {
   const [appState, setState] = useState(AppState.LOGIN)
   const [lineData, setData] = useState(new RequestLogModel())
 
-  const viewModel = new AppViewModel()
+
+  const [waittingPage, isShowWaittingPage] = useState(false)
+  const [waittingData, setWaittingPageData] = useState(new UserData())
+
+  const [endedPage, isShowEndedPage] = useState(false)
+
+  const [appTheme, setAppTheme] = useState({
+    logo: '',
+    backgroundColor: '#FFFFFF',
+    nextEvent: {
+      detail: '',
+      duration: ''
+    },
+    count: 3
+  })
 
   useEffect(() => {
-    initial()
 
-    // viewModel.request.channel = 'LINE'
-    // viewModel.request.userID = 'uwuduwuelr,flre,l;f,erlf,mllerw,dlewmkldmweklmdklewmeduuweqd'
-    // viewModel.request.name = 'fair'
-    // viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
+    viewModel.loadAppTheme((data?: {
+      logo: string,
+      backgroundColor: string,
+      nextEvent?: {
+        detail: string,
+        duration: string
+      },
+      count?: number
+    }) => {
+      setAppTheme({
+        logo: data?.logo || '',
+        backgroundColor: data?.backgroundColor || '',
+        nextEvent: data?.nextEvent || {
+          detail: '',
+          duration: ''
+        },
+        count: data?.count || 3
+      })
+    }, () => {
 
-    // setData(viewModel.request)
-    // setState(AppState.PROFILE)
+    })
+
+    // initial()
+
+    viewModel.request.channel = 'LINE'
+    viewModel.request.userID = 'uwuduwuelrdlewmkldmweklmdklewmeduuweqd'
+    viewModel.request.name = 'fair'
+    viewModel.request.picture = 'https://profile.line-scdn.net/0hsvPcIZdMLFltGgHUCotTDlFfIjQaNCoRFS42OkBKJmoQKjkOVn0xPUkYJT4XLj4JU382a00ccz1C'
+
+    setData(viewModel.request)
+    setState(AppState.PROFILE)
 
     // document.addEventListener('contextmenu', (e) => {
     //   e.preventDefault();
@@ -46,7 +88,7 @@ function App() {
 
   const logout = () => {
     setData(new RequestLogModel())
-    window.sessionStorage.removeItem('user')
+    window.localStorage.removeItem('user')
     setState(AppState.LOGIN)
     window.location.reload()
   }
@@ -54,8 +96,8 @@ function App() {
   const checkUser = () => {
     let user = User.getUser()
     if (user) {
-      if (window.sessionStorage.getItem('loa') === 'n') {
-        window.sessionStorage.setItem('loa', 'y')
+      if (window.localStorage.getItem('loa') === 'n') {
+        window.localStorage.setItem('loa', 'y')
         isOAShow(true)
       } else {
         setState(AppState.HOME)
@@ -77,7 +119,7 @@ function App() {
   }
 
   const initial = () => {
-    liff.init({ liffId: '1656680913-v15bQrE1' }, () => {
+    liff.init({ liffId: '1656702005-vBbBappn' }, () => {
       if (liff.isLoggedIn()) {
         getLineAccountData()
       } else {
@@ -91,7 +133,7 @@ function App() {
     liff.getProfile().then(profile => {
 
       viewModel.checkAddedOA(liff.getAccessToken(), (added: boolean) => {
-        window.sessionStorage.setItem('loa', added ? 'y' : 'n')
+        window.localStorage.setItem('loa', added ? 'y' : 'n')
       })
 
       viewModel.request.channel = 'LINE'
@@ -162,7 +204,7 @@ function App() {
             <Button variant="outline-dark" onClick={() => {
               isOAShow(false)
               setState(AppState.HOME)
-            }}>ตกลงและไปยังหน้ากิจกรรม</Button>
+            }}>ข้ามและไปยังหน้ากิจกรรม</Button>
           </Stack>
         </Modal.Footer>
       </Modal>
@@ -171,56 +213,127 @@ function App() {
         <Image style={{ width: '80px', padding: '16px' }} src={'logo-shu.svg'} />
       </Row>
 
-      <Container
-        className='rounded-border'
-        style={{
-          height: '100%',
-          maxWidth: '900px',
-          paddingBottom: '24px',
-          paddingLeft: '20px',
-          paddingRight: '20px',
-          backgroundColor: '#F2EFEA'
-        }}>
+      {
+        waittingPage ?
+          <>
+            <Container
+              className='rounded-border'
+              style={{
+                height: '100%',
+                maxWidth: '900px',
+                padding: '20px',
+                backgroundColor: '#F2F2F2'
+              }}>
 
-        <Row className="justify-content-center">
-          <Image style={{ width: '90%', maxWidth: '250px' }} src={'event-logo.svg'} />
-        </Row>
+              <Container
+                className='rounded-border'
+                style={{
+                  height: '100%',
+                  maxWidth: appState === AppState.HOME ? '900px' : '550px',
+                  paddingBottom: '24px',
+                  paddingLeft: '12px',
+                  paddingRight: '12px',
+                  backgroundColor: '#FFFFFF'
+                }}>
 
-        <Container
-          className='rounded-border'
-          style={{
-            height: '100%',
-            maxWidth: appState === AppState.HOME ? '900px' : '550px',
-            paddingTop: '24px',
-            paddingBottom: '24px',
-            paddingLeft: '12px',
-            paddingRight: '12px',
-            backgroundColor: '#FFFFFF'
-          }}>
+                <Row className="justify-content-center">
+                  <Image style={{ width: '100%', maxWidth: '300px' }} src='ic-shopping.svg' />
+                </Row>
 
-          {
-            appState === AppState.LOGIN ? <LoginPage lineCallback={() => {
-              liff.login()
-            }} alertCallback={(status: number, msg: string) => {
-              showAlert(status, msg)
-            }} /> :
-              appState === AppState.PROFILE ? <LineProfilePage data={lineData} loginCallback={() => {
-                requestLogin()
-              }} logoutCallback={() => {
-                logout();
-              }} alertCallback={(status: number, msg: string) => {
-                showAlert(status, msg)
-              }} /> :
-                appState === AppState.HOME ? <HomePage logoutCallback={() => {
-                  logout();
-                }} alertCallback={(status: number, msg: string) => {
-                  showAlert(status, msg)
-                }} /> :
-                  <>{appState}</>
-          }
+                <WaittingPage data={waittingData} />
 
-        </Container>
-      </Container>
+              </Container>
+            </Container>
+          </>
+          : endedPage ?
+            <>
+              <Container
+                className='rounded-border'
+                style={{
+                  height: '100%',
+                  maxWidth: '900px',
+                  padding: '20px',
+                  backgroundColor: '#F2F2F2'
+                }}>
+
+                <Container
+                  className='rounded-border'
+                  style={{
+                    height: '100%',
+                    maxWidth: appState === AppState.HOME ? '900px' : '550px',
+                    paddingBottom: '24px',
+                    paddingLeft: '12px',
+                    paddingRight: '12px',
+                    backgroundColor: '#FFFFFF'
+                  }}>
+
+                  <Row className="justify-content-center">
+                    <Image style={{ width: '100%', maxWidth: '300px' }} src='ic-shopping.svg' />
+                  </Row>
+
+                  <EndedPage />
+
+                </Container>
+              </Container>
+            </> :
+            <>
+              <Container
+                className='rounded-border'
+                style={{
+                  height: '100%',
+                  maxWidth: '900px',
+                  paddingBottom: '24px',
+                  paddingLeft: '20px',
+                  paddingRight: '20px',
+                  backgroundColor: appTheme.backgroundColor
+                }}>
+
+                <Row className="justify-content-center">
+                  <Image style={{ width: '90%', maxWidth: '250px' }} src={appTheme.logo} />
+                </Row>
+
+                <Container
+                  className='rounded-border'
+                  style={{
+                    height: '100%',
+                    maxWidth: appState === AppState.HOME ? '900px' : '550px',
+                    paddingTop: '24px',
+                    paddingBottom: '24px',
+                    paddingLeft: '12px',
+                    paddingRight: '12px',
+                    backgroundColor: '#FFFFFF'
+                  }}>
+
+                  {
+                    appState === AppState.LOGIN ? <LoginPage nextEvent={appTheme.nextEvent} count={appTheme.count} lineCallback={() => {
+                      liff.login()
+                    }} alertCallback={(status: number, msg: string) => {
+                      showAlert(status, msg)
+                    }} /> :
+                      appState === AppState.PROFILE ? <LineProfilePage data={lineData} loginCallback={() => {
+                        requestLogin()
+                      }} logoutCallback={() => {
+                        logout();
+                      }} alertCallback={(status: number, msg: string) => {
+                        showAlert(status, msg)
+                      }} /> :
+                        appState === AppState.HOME ? <HomePage logoutCallback={() => {
+                          logout();
+                        }} alertCallback={(status: number, msg: string) => {
+                          showAlert(status, msg)
+                        }} showWaittingPage={(data: UserData) => {
+                          setWaittingPageData(data)
+                          isShowWaittingPage(true)
+                        }} showEndPage={() => {
+                          isShowEndedPage(true)
+                        }} /> :
+                          <>{appState}</>
+                  }
+
+                </Container>
+              </Container>
+            </>
+      }
     </Container>
   );
 }

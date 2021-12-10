@@ -1,14 +1,13 @@
 import { plainToClass } from 'class-transformer';
 import AppConfig from '../../AppConfig';
+import RequestLogin from '../main/model/LoginRequestModel';
 import { UserModel } from './model/UserModel';
 
 export default class User{
 
-    static authenticationAPI = AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/wffnqh0wxm9zyxk/data.json' : ''
-
     static getUser() {
         try {
-            let tmp = window.sessionStorage.getItem('user')
+            let tmp = window.localStorage.getItem('user')
             if(tmp){
                 return plainToClass(UserModel, JSON.parse(tmp))
             } else {

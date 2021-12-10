@@ -6,14 +6,14 @@ import User from "../../authentication/User";
 import { GiftData } from "../model/GiftData";
 import { MCouponType } from "../model/MCouponType";
 import { UpdateCouponChannel } from "../model/UpdateCouponChannel";
-import { UserData, UserHistoryData } from "../model/UserData";
+import { CampaignData, UserData, UserHistoryData } from "../model/UserData";
 
 export default class HomeViewModel {
 
     loadMCouponType(callback: (list?: Array<MCouponType>) => void, errorCallback: (status: number, msg: string) => void) {
         new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/xtd3nqx0bk2d9qr/data.json' : User.getUser()?.getService(APIKey.SELECT) || '',
             'Home',
-            'CouponType',
+            'MCouponType',
             new BaseModel(),
             MCouponType,
             (obj, array) => {
@@ -24,12 +24,16 @@ export default class HomeViewModel {
             })
     }
 
-    loadUserData(callback: (data?: UserData) => void, errorCallback: (status: number, msg: string) => void) {
+    loadUserData(callback: (data?: CampaignData) => void, errorCallback: (status: number, msg: string) => void) {
+        //https://dl.dropboxusercontent.com/s/ewajvtxporqf1rs/data.json
+        //https://dl.dropboxusercontent.com/s/5uolwblzs87hp8s/dataFuture.json
+        //https://dl.dropboxusercontent.com/s/1mcrw9ulbvh8tis/dataPrevious.json
+
         new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/ewajvtxporqf1rs/data.json' : User.getUser()?.getService(APIKey.SELECT) || '',
             'Home',
             'Data',
             new BaseModel(),
-            UserData,
+            CampaignData,
             (obj, array) => {
                 callback(obj)
             },
@@ -56,7 +60,7 @@ export default class HomeViewModel {
     updateCouponChannel(usingAdminChannel: boolean,callback: () => void, errorCallback: (status: number, msg: string) => void) {
         new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/w23g8ovx9amyxsu/data.json' : User.getUser()?.getService(APIKey.UPDATE) || '',
             'Home',
-            'Data',
+            'UpdateCouponChannel',
             new UpdateCouponChannel(usingAdminChannel),
             BaseModel,
             (obj, array) => {

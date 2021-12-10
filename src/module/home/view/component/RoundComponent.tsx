@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Button, Image, Modal } from 'react-bootstrap';
 import { UserHistoryData } from '../../model/UserData';
+import { USEVIA } from './SelectorComponent';
 
 export interface IRoundComponentProps {
     isSmall: boolean,
+    forType: USEVIA,
     index: number,
     data: UserHistoryData
 }
@@ -34,23 +36,23 @@ export default class RoundComponent extends React.Component<IRoundComponentProps
                 </Modal>
 
                 <a style={{
-                    fontSize: this.props.isSmall ? '24px ': '26px',
+                    fontSize: this.props.isSmall ? '18px ' : '22px',
                     color: '#6C6C6C',
-                    paddingRight: this.props.isSmall ? '12px ': '16px'
+                    paddingRight: this.props.isSmall ? '12px ' : '16px'
                 }}>
                     ครั้งที่ {this.props.index}
                 </a>
 
                 <a style={{
-                    fontSize: this.props.isSmall ? '24px ': '26px',
+                    fontSize: this.props.isSmall ? '18px ' : '22px',
                     color: (this.props.data.couponTypeID || -1) >= 0 ? '#6C6C6C' : '#ACACAC'
                 }}>
                     {this.props.data.detail}
                 </a>
 
                 {
-                    (this.props.data.couponTypeID || -1) >= 0 ? <Button variant="light" className='rounded-sm-border' size='sm' style={{ height: this.props.isSmall ? '26px ': '30px', marginTop: this.props.isSmall ? '2px ': '4px', fontSize: this.props.isSmall ? '16px ': '18px', paddingTop: '0px', float: 'right' }} onClick={() => {
-                        let txt = this.props.data.code64 || ''
+                    (this.props.data.couponTypeID || -1) >= 0 ? <Button variant="light" className='rounded-sm-border' size='sm' style={{ height: this.props.isSmall ? '22px ' : '24px', marginTop: this.props.isSmall ? '1px ' : '2px', fontSize: this.props.isSmall ? '14px ' : '16px', paddingTop: '0px', float: 'right' }} onClick={() => {
+                        let txt = this.props.forType === USEVIA.USER ? (this.props.data.code || '') : (this.props.data.code64 || '')
                         const el = document.createElement("textarea");
                         el.value = txt;
                         el.setAttribute("readonly", "");

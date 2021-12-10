@@ -45,18 +45,18 @@ export default class GettingCoupon extends React.Component<IGettingCouponProps> 
                 <Row>
                   <div style={{ width: '25%' }} />
                   <div style={{ width: '75%' }}>
-                    <Row className="justify-content-center" style={{ fontSize: '34px', textAlign: 'center', color: '#DD9619', lineHeight: '1.2' }}>
+                    <Row className="justify-content-center" style={{ fontSize: '26px', textAlign: 'center', color: '#DD9619', lineHeight: '1.2', paddingTop: '8px' }}>
                       คูปองส่วนลด
                     </Row>
-                    <Row className="justify-content-center" style={{ fontSize: '60px', textAlign: 'center', color: '#6F2812', lineHeight: '1' }}>
+                    <Row className="justify-content-center" style={{ fontSize: '30px', textAlign: 'center', color: '#6F2812', lineHeight: '1.1', paddingTop: '12px' }}>
                       {this.props.winData.detail}
                     </Row>
-                    <Row className="justify-content-center" style={{ fontSize: '14px', textAlign: 'center', color: '#6F2812', lineHeight: '1' }}>
+                    <Row className="justify-content-center" style={{ fontSize: '14px', textAlign: 'center', color: '#6F2812', lineHeight: '1.1', paddingTop: '12px', marginBottom: '8px' }}>
                       {
                         'คูปองหมดอายุวันที่ ' + this.props.winData?.getExpired()
                       }
                     </Row>
-                    <Row className="justify-content-center" style={{ fontSize: '14px', textAlign: 'center', color: '#DD9619', lineHeight: '1' }}>
+                    <Row className="justify-content-center" style={{ fontSize: '14px', textAlign: 'center', color: '#DD9619', lineHeight: '1.1' }}>
                       ขอบคุณที่ร่วมลุ่นกิจกรรม
                     </Row>
                   </div>
@@ -75,7 +75,7 @@ export default class GettingCoupon extends React.Component<IGettingCouponProps> 
               }} onClick={this.props.onCancel}>ตกลง</Button>
             </div>
 
-            <Row className="justify-content-center" style={{ fontSize: '24px', textAlign: 'center' }}>
+            <Row className="justify-content-center" style={{ fontSize: '24px', textAlign: 'center', paddingTop: '12px' }}>
               คูปองหมดอายุวันที่ 10 มกราคม 2565
             </Row>
           </Stack>

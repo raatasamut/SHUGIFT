@@ -12,16 +12,16 @@ export default class UseCodeComponent extends React.Component<IUseCodeComponentP
   public render() {
     return (
       <div style={{ display: 'block', justifyContent: 'space-around' }}>
-        <Image style={{ width: this.props.isSmall ? '10px ': '14px', marginRight: this.props.isSmall ? '5px ': '8px', verticalAlign: '0px' }} src={this.props.imageName + '.svg'} />
+        <Image style={{ width: this.props.isSmall ? '10px ': '12px', marginRight: this.props.isSmall ? '3px ': '6px', verticalAlign: '0px' }} src={this.props.imageName + '.svg'} />
 
         <a style={{
-          fontSize: this.props.isSmall ? '18px ': '22px',
+          fontSize: this.props.isSmall ? '14px ': '18px',
           color: '#6C6C6C'
         }}>
           {this.props.title}
         </a>
 
-        <Button variant="light" className='rounded-sm-border' size='sm' style={{ height: this.props.isSmall ? '20px ': '22px', marginTop: this.props.isSmall ? '2px ': '4px', paddingLeft: '10px', paddingRight: '10px', paddingTop: '0px',float: 'right' }} onClick={this.props.onclick}>คลิกที่นี่</Button>
+        <Button variant="light" className='rounded-sm-border' size='sm' style={{ height: this.props.isSmall ? '14px ': '18px', marginTop: this.props.isSmall ? '2px ': '3px', paddingLeft: '5px', paddingRight: '8px', paddingTop: '0px',float: 'right', fontSize: this.props.isSmall ? '10px ': '12px' }} onClick={this.props.onclick}>คลิกที่นี่</Button>
 
       </div>
     );

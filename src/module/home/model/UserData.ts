@@ -1,6 +1,15 @@
 import { Type } from "class-transformer";
 import { BaseModel } from "../../../models/BaseModel";
 
+export class CampaignData extends BaseModel {
+    @Type(() => UserData)
+    previousCampaign?: UserData;
+    @Type(() => UserData)
+    currentCampaign?: UserData;
+    @Type(() => UserData)
+    nextCampaign?: UserData;
+}
+
 export class UserData extends BaseModel {
     name?: string;
     startDate?: number;
@@ -10,15 +19,18 @@ export class UserData extends BaseModel {
     @Type(() => UserHistoryData)
     public history?: UserHistoryData[];
 
+    icon?: string;
+    bgColor?: string;
+
     public getExpired() {
         try {
-            if (this.history) {
-                return new Date((this.history[0].expired || 0) * 1000).toLocaleDateString('th-TH', {
+            if (this.history != null && this.history[0].couponTypeID != -1) {
+                return 'คูปองหมดอายุวันที่ ' + new Date((this.history[0].expired || 0) * 1000).toLocaleDateString('th-TH', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
                 })
-            }
+            } else return ''
         } catch (e) {
             return ''
         }
@@ -39,6 +51,16 @@ export class UserData extends BaseModel {
 
         } catch (e) {
             return ''
+        }
+    }
+
+    public getDayLeftMoreThan(days: number) {
+        try {
+            const now = new Date().getTime()
+            const end = new Date((this.endDate || 0) * 1000).getTime() + (days * 24 * 60 * 60 * 1000)
+            return end < now
+        } catch (e) {
+            return false
         }
     }
 

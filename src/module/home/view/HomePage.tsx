@@ -4,7 +4,7 @@ import { WheelData } from '../../../game/wheel/components/Wheel/types';
 import { WheelComponent } from '../../../game/wheel/components/Wheel/WheelComponent';
 import User from '../../authentication/User';
 import { MCouponType } from '../model/MCouponType';
-import { UserData, UserHistoryData } from '../model/UserData';
+import { CampaignData, UserData, UserHistoryData } from '../model/UserData';
 import HomeViewModel from '../viewmodel/HomeViewModel';
 import GettingCoupon from './component/GettingCoupon';
 import HowToUseCode from './component/HowToUseCode';
@@ -15,10 +15,13 @@ import UseCodeComponent from './component/UseCodeComponent';
 
 export interface IHomePageProps {
     logoutCallback: () => void,
-    alertCallback: (status: number, msg: string) => void
+    alertCallback: (status: number, msg: string) => void,
+    showWaittingPage: (data: UserData) => void,
+    showEndPage: () => void
 }
 
 export interface IHomePageState {
+    campaignData: CampaignData,
     listMCouponType: Array<MCouponType>,
     winData: UserHistoryData,
     data?: UserData,
@@ -29,6 +32,7 @@ export interface IHomePageState {
     showSelected: boolean,
     showPrize: boolean,
     showHowToUseCode: boolean,
+    showHowToUseCodeAdmin: boolean,
     forType: USEVIA,
     position: number,
     maxPosition: number,
@@ -48,11 +52,13 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
         this.spinRef = React.createRef();
         this.historyRef = React.createRef();
         this.state = {
+            campaignData: new CampaignData(),
             listMCouponType: [],
             showSelector: false,
             showSelected: false,
             showPrize: false,
             showHowToUseCode: false,
+            showHowToUseCodeAdmin: false,
             forType: USEVIA.NONE,
             position: -1,
             maxPosition: 0,
@@ -71,57 +77,87 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
             })
             this.loadUserData()
         }, (status, msg) => {
-            this.props.alertCallback(status, msg)
+            if (status === 404) {
+                this.setState({
+                    endEvent: true
+                })
+            } else {
+                this.props.alertCallback(status, msg)
+            }
         })
+
+        // new WebAPI().getNTPTime()
+
+        // let timeSync = NtpTimeSync.getInstance({
+        //     servers: [
+        //         "1.th.pool.ntp.org",
+        //         "asia.pool.ntp.org",
+        //         "1.asia.pool.ntp.org",
+        //         "time.navy.mi.th",
+        //         "time2.navy.mi.th"
+        //     ],
+        //     sampleCount: 8,
+        //     replyTimeout: 3000
+        // });
+        // timeSync.getTime().then(result => {
+        //     console.log("current system time", new Date());
+        //     console.log("real time", result.now);
+        //     console.log("offset in milliseconds", result.offset);
+        // })
     }
 
     loadUserData() {
-        this.viewModel?.loadUserData((data?: UserData) => {
+        this.viewModel?.loadUserData((data?: CampaignData) => {
             console.log('loadUserData')
             if (data) {
 
-                if (data.isEventEnd()) {
-                    this.setState({
-                        endEvent: true
-                    })
-                } else {
+                if(data.currentCampaign != null){
 
-                    let max = data.couponPerUser || 0
+                    let max = data.currentCampaign.couponPerUser || 0
 
-                    if ((data.history?.length || 0) <= 0 || undefined) {
-                        data.history = new Array<UserHistoryData>()
+                    if ((data.currentCampaign.history?.length || 0) <= 0 || undefined) {
+                        data.currentCampaign.history = new Array<UserHistoryData>()
                     }
-
-                    let addCount = max - (data.history?.length || 0)
-
+    
+                    let addCount = max - (data.currentCampaign.history?.length || 0)
+    
                     for (let i = 0; i < addCount; i++) {
-                        data.history?.push(new UserHistoryData(-1, 'รอการสุ่ม'))
+                        data.currentCampaign.history?.push(new UserHistoryData(-1, 'รอการสุ่ม'))
                     }
-
+    
                     console.log('Validated coupon')
                     console.log(data)
-
+    
                     let useingVia = USEVIA.NONE
-                    if (data.usingAdminChannel !== null) {
-                        useingVia = data.usingAdminChannel ? USEVIA.ADMIN : USEVIA.USER
+                    if (data.currentCampaign.usingAdminChannel !== null) {
+                        useingVia = data.currentCampaign.usingAdminChannel ? USEVIA.ADMIN : USEVIA.USER
                     }
-
                     this.setState({
+                        forType: useingVia,
                         maxPosition: max,
-                        data: data
+                        data: data.currentCampaign
                     })
-                    // this.setState({
-                    //     forType: useingVia,
-                    //     maxPosition: max,
-                    //     data: data
-                    // })
+                } else if(data.nextCampaign != null){
+                    this.props.showWaittingPage(data.nextCampaign)
+                } else if(data.previousCampaign != null){
+                    
+                    if(data.previousCampaign.getDayLeftMoreThan(5)){
+                        this.props.showEndPage()
+                    } else {
+                        this.setState({
+                            endEvent: true
+                        })
+                    }
                 }
-
-            } else {
-
             }
         }, (status, msg) => {
-            this.props.alertCallback(status, msg)
+            if (status === 404) {
+                this.setState({
+                    endEvent: true
+                })
+            } else {
+                this.props.alertCallback(status, msg)
+            }
         })
     }
 
@@ -139,13 +175,19 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
 
     useCodeViaWeb = () => {
         this.setState({
-            showHowToUseCode: true
+            showHowToUseCodeAdmin: false
+        })
+        this.setState({
+            showHowToUseCode: true,
         })
     }
 
     useCodeViaAdmin = () => {
         this.setState({
-            showHowToUseCode: true
+            showHowToUseCodeAdmin: true
+        })
+        this.setState({
+            showHowToUseCode: true,
         })
     }
 
@@ -163,7 +205,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                                 <Image style={{ width: '240px', marginBottom: '16px', marginTop: '16px' }} src={'ic-section.svg'} />
                             </Row>
 
-                            <Row className="justify-content-center" style={{ fontSize: '34px', textAlign: 'center', color: '#6C6C6C', lineHeight: '1', padding: '20px' }}>
+                            <Row className="justify-content-center" style={{ fontSize: '34px', textAlign: 'center', color: '#6C6C6C', lineHeight: '1.4', padding: '20px' }}>
                                 ทาง SHU ขอขอบคุณ ลูกค้าทุกท่าน ที่ให้ความสนใจ กิจกรรมของ SHU
                             </Row>
 
@@ -212,7 +254,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                                     })
                                 }} />
                             <HowToUseCode show={this.state.showHowToUseCode}
-                                forType={this.state.forType}
+                                forType={this.state.showHowToUseCodeAdmin ? USEVIA.ADMIN : USEVIA.USER}
                                 onCancel={() => {
                                     this.setState({
                                         showHowToUseCode: false
@@ -299,11 +341,12 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     fontSize: '22px',
                     color: '#000000',
                     paddingTop: '12px',
-                    lineHeight: 1
+                    paddingBottom: '8px',
+                    lineHeight: 1.4
                 }}>
                     ท่านได้ร่วมลุ้นโค้ดแล้วจำนวน <a style={{
                         color: '#00A54C'
-                    }}>3</a> ครั้งเท่านั้น ต่อ 1 LINE ID
+                    }}>{this.state.data?.couponPerUser}</a> ครั้งเท่านั้น ต่อ 1 LINE ID
                 </div>
 
                 <UseCodeComponent isSmall={false} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์' onclick={this.useCodeViaWeb} />
@@ -337,7 +380,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
 
                     {
                         this.state.data?.history?.map((item, i) =>
-                            <RoundComponent isSmall={true} key={'his' + i} index={i + 1} data={item} />
+                            <RoundComponent isSmall={true} key={'his' + i} forType={this.state.forType} index={i + 1} data={item} />
                         )
                     }
 
@@ -372,7 +415,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     paddingTop: '10px'
                 }}>
                     {
-                        'คูปองหมดอายุวันที่ ' + this.state.data?.getExpired()
+                        this.state.data?.getExpired()
                     }
                 </div>
 
@@ -425,16 +468,17 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                             fontSize: '20px',
                             color: '#000000',
                             paddingTop: '12px',
-                            lineHeight: 1
+                            paddingBottom: '8px',
+                            lineHeight: 1.4
                         }}>
                             ท่านได้ร่วมลุ้นโค้ดแล้วจำนวน <a style={{
                                 color: '#00A54C'
-                            }}>3</a> ครั้งเท่านั้น ต่อ 1 LINE ID
+                            }}>{this.state.data?.couponPerUser}</a> ครั้งเท่านั้น ต่อ 1 LINE ID
                         </div>
 
-                        <UseCodeComponent isSmall={true} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์' onclick={this.useCodeViaWeb} />
+                        <UseCodeComponent isSmall={false} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์' onclick={this.useCodeViaWeb} />
 
-                        <UseCodeComponent isSmall={true} imageName='ic-use-code-admin' title='แจ้งโค้ดและสั่งซื้อกับแอดมิน' onclick={this.useCodeViaAdmin} />
+                        <UseCodeComponent isSmall={false} imageName='ic-use-code-admin' title='แจ้งโค้ดและสั่งซื้อกับแอดมิน' onclick={this.useCodeViaAdmin} />
 
                         <Row className="justify-content-center" style={{ paddingTop: '12px' }}>
                             <Image className='hover' style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
@@ -468,7 +512,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
 
                             {
                                 this.state.data?.history?.map((item, i) =>
-                                    <RoundComponent isSmall={true} key={'his' + i} index={i + 1} data={item} />
+                                    <RoundComponent isSmall={true} key={'his' + i} forType={this.state.forType} index={i + 1} data={item} />
                                 )
                             }
 
@@ -503,7 +547,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                             paddingTop: '10px'
                         }}>
                             {
-                                'คูปองหมดอายุวันที่ ' + this.state.data?.getExpired()
+                                this.state.data?.getExpired()
                             }
                         </div>
                     </Col>
@@ -541,7 +585,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                                 position: 'absolute', zIndex: 11, width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
                             }}>
                                 <div className='rounded-border' style={{
-                                    backgroundColor: '#F4FFF4', color: '#00893F', fontSize: '30px', paddingLeft: '30px', paddingRight: '30px', textAlign: 'center'
+                                    backgroundColor: '#F4FFF4', color: '#00893F', fontSize: '26px', paddingLeft: '30px', paddingRight: '30px', textAlign: 'center'
                                 }}>
                                     ลุ้นสิทธิครบแล้ว
                                 </div>
@@ -560,7 +604,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                                 let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1)
                                 this.state.data.history[position] = this.state.winData
 
-                                if (position >= 2) {
+                                if (position >= (this.state.data.couponPerUser || 0)) {
                                     this.historyRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
                                 }
 
@@ -594,40 +638,40 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     {this.state.forType === USEVIA.ADMIN ?
                         <>
                             <div style={{
-                                fontSize: '26px',
+                                fontSize: '16px',
                                 textAlign: 'center',
                                 color: '#000000',
                                 paddingTop: '10px'
                             }}>
                                 การใช้งาน : ทำการ “คัดลอกโค้ด” และกดที่ “แจ้งแอดมิน” เพื่อใช้คูปอง
                             </div>
-                            <Row className="justify-content-center" style={{ paddingTop: '4px' }}>
+                            <Row className="justify-content-center" style={{ padding: '8px' }}>
                                 <Button variant="secondary" style={{ maxWidth: '130px', maxHeight: '44px', backgroundColor: '#535353' }} size="lg" onClick={() => {
-                                    window.open('https://www.facebook.com/www.shu.global', "_blank")
+                                    window.open('https://page.line.me/?liff.state=%3FaccountId%3Dshu.global', "_blank")
                                 }}>
                                     แจ้งแอดมิน SHU
                                 </Button>
                             </Row>
-                            <UseCodeComponent isSmall={false} imageName='ic-use-code-admin' title='แจ้งโค้ดและสั่งซื้อกับแอดมิน' onclick={this.useCodeViaAdmin} />
+                            <UseCodeComponent isSmall={true} imageName='ic-use-code-admin' title='แจ้งโค้ดและสั่งซื้อกับแอดมิน' onclick={this.useCodeViaAdmin} />
                         </>
                         :
                         <>
                             <div style={{
-                                fontSize: '26px',
+                                fontSize: '16px',
                                 textAlign: 'center',
                                 color: '#000000',
                                 paddingTop: '10px'
                             }}>
                                 การใช้งาน : ทำการ “คัดลอกโค้ด” และกดที่ “เปิดเว็บไซร์” เพื่อใช้คูปอง
                             </div>
-                            <Row className="justify-content-center" style={{ paddingTop: '4px' }}>
+                            <Row className="justify-content-center" style={{ padding: '8px' }}>
                                 <Button variant="secondary" style={{ maxWidth: '130px', maxHeight: '44px', backgroundColor: '#535353' }} size="lg" onClick={() => {
-                                    window.open('https://www.shu.global', "_blank")
+                                    window.open('https://www.shu.global/customer/account/login/', "_blank")
                                 }}>
                                     เปิดเว็บไซร์ SHU
                                 </Button>
                             </Row>
-                            <UseCodeComponent isSmall={false} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์' onclick={this.useCodeViaWeb} />
+                            <UseCodeComponent isSmall={true} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซร์' onclick={this.useCodeViaWeb} />
                         </>}
                 </> :
                 <></>

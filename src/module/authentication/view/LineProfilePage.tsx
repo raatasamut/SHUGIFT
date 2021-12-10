@@ -9,7 +9,6 @@ export interface ILineProfilePageProps {
     alertCallback: (status: number, msg: string) => void
 }
 
-
 export interface ILineProfilePageState {
     containerWidth: number
 }
@@ -85,11 +84,11 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                     color: '#6C6C6C'
                 }} responsive>
                     <tbody>
-                        <tr style={{ lineHeight: '1px' }}>
+                        <tr style={{ lineHeight: '1.2px' }}>
                             <td className="noborder" style={{ textAlign: 'end' }}>UserID:</td>
                             <td className="noborder">{this.props.data.userID}</td>
                         </tr>
-                        <tr style={{ lineHeight: '1px' }}>
+                        <tr style={{ lineHeight: '1.2px' }}>
                             <td className="noborder" style={{ textAlign: 'end' }}>Username:</td>
                             <td className="noborder">{this.props.data.name}</td>
                         </tr>
@@ -140,11 +139,11 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                                 marginTop: '24px'
                             }} responsive>
                                 <tbody>
-                                    <tr style={{ lineHeight: '1px' }}>
+                                    <tr style={{ lineHeight: '1.2px' }}>
                                         <td className="noborder" style={{ textAlign: 'end' }}>UserID:</td>
                                         <td className="noborder">{this.props.data.userID}</td>
                                     </tr>
-                                    <tr style={{ lineHeight: '1px' }}>
+                                    <tr style={{ lineHeight: '1.2px' }}>
                                         <td className="noborder" style={{ textAlign: 'end' }}>Username:</td>
                                         <td className="noborder">{this.props.data.name}</td>
                                     </tr>

@@ -43,7 +43,7 @@ export default class HowToUseCode extends React.Component<IHowToUseCodeProps> {
                 ใช้งานคูปองที่ได้รับ<br />
                 <Row className="justify-content-center" style={{ paddingTop: '24px' }}>
                   <Button variant="secondary" style={{ maxWidth: '130px', maxHeight: '44px', backgroundColor: '#535353' }} size="lg" onClick={() => {
-                    window.open('https://www.shu.global', "_blank")
+                    window.open('https://www.shu.global/customer/account/login/', "_blank")
                     this.props.onCancel()
                   }}>
                     เปิดเว็บไซร์ SHU
@@ -59,7 +59,7 @@ export default class HowToUseCode extends React.Component<IHowToUseCodeProps> {
 
                 <Row className="justify-content-center" style={{ paddingTop: '24px' }}>
                   <Button variant="secondary" style={{ maxWidth: '130px', maxHeight: '44px', backgroundColor: '#535353' }} size="lg" onClick={() => {
-                    window.open('https://www.facebook.com/www.shu.global', "_blank")
+                    window.open('https://page.line.me/?liff.state=%3FaccountId%3Dshu.global', "_blank")
                     this.props.onCancel()
                   }}>
                     แจ้งแอดมิน SHU
