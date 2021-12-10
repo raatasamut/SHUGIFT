@@ -43,7 +43,11 @@ export default class HomeViewModel {
     }
 
     loadGiftData(callback: (data?: UserHistoryData) => void, errorCallback: (status: number, msg: string) => void) {
-        new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/1i7dg4z7ikma5iq/data.json' : User.getUser()?.getService(APIKey.SELECT) || '',
+
+        //https://dl.dropboxusercontent.com/s/1i7dg4z7ikma5iq/data.json
+        //https://dl.dropboxusercontent.com/s/bc2c2prposyst6l/data404.json
+
+        new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/bc2c2prposyst6l/data404.json' : User.getUser()?.getService(APIKey.SELECT) || '',
             'Home',
             'Gift',
             new BaseModel(),

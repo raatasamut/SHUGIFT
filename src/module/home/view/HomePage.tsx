@@ -37,7 +37,11 @@ export interface IHomePageState {
     forType: USEVIA,
     position: number,
     maxPosition: number,
-    endEvent: boolean
+    endEvent: boolean,
+    couponGone: {
+        isGone: boolean,
+        msg: string
+    }
 }
 
 export default class HomePage extends React.Component<IHomePageProps, IHomePageState> {
@@ -68,7 +72,11 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
             containerWidth: window.innerWidth,
             prizeNumber: 0,
             spin: false,
-            endEvent: false
+            endEvent: false,
+            couponGone: {
+                isGone: false,
+                msg: ''
+            }
         }
 
         this.viewModel = new HomeViewModel()
@@ -305,7 +313,16 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                         }
                     }, (status, msg) => {
                         this.isShowLoading(false)
-                        this.props.alertCallback(status, msg)
+                        if (status === 404) {
+                            this.setState({
+                                couponGone: {
+                                    isGone: true,
+                                    msg: msg
+                                }
+                            })
+                        } else {
+                            this.props.alertCallback(status, msg)
+                        }
                     })
                 }
             }
@@ -597,6 +614,20 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                                     ลุ้นสิทธิครบแล้ว
                                 </div>
                             </div>
+                    }
+                    {
+                        this.state.couponGone.isGone ?
+                        <div className="justify-content-center" style={{
+                            position: 'absolute', zIndex: 11, width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
+                        }}>
+                            <div className='rounded-border' style={{
+                                backgroundColor: '#F4FFF4', color: '#00893F', fontSize: '16px', padding: '24px', textAlign: 'center'
+                            }}>
+                                {this.state.couponGone.msg}
+                            </div>
+                        </div>
+                        :
+                        <></>
                     }
 
                     <WheelComponent
