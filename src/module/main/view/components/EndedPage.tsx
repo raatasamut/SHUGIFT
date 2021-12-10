@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Row, Image, Container, Col } from 'react-bootstrap';
-import { UserData } from '../../../home/model/UserData';
+import { Row, Image} from 'react-bootstrap';
 
 export interface IEndedPageProps {
 }

@@ -1,5 +1,5 @@
 import liff from '@line/liff';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import AppViewModel from '../viewmodel/AppViewModel';
 import User from '../../authentication/User';
 import { Container, Row, Image, Modal, Button, Stack } from 'react-bootstrap';
@@ -49,7 +49,7 @@ function App() {
     count: 3
   })
 
-  const [isShowLoading, setShowLoading] = useState(false)
+  const [isShowLoading, setShowLoading] = useState(true)
 
   useEffect(() => {
 
@@ -132,12 +132,16 @@ function App() {
 
   const initial = () => {
     liff.init({ liffId: '1656702005-vBbBappn' }, () => {
+      setShowLoading(false)
       if (liff.isLoggedIn()) {
         getLineAccountData()
       } else {
         checkUser();
       }
-    }, err => showAlert(0, err.message));
+    }, err => {
+      setShowLoading(false)
+      showAlert(0, err.message)
+    });
   }
 
   const getLineAccountData = () => {

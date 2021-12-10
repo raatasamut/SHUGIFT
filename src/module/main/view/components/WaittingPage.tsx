@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Row, Image } from 'react-bootstrap';
+import { Row, Image, Button } from 'react-bootstrap';
 import { UserData } from '../../../home/model/UserData';
 
 export interface IWaittingPageProps {
@@ -7,7 +7,8 @@ export interface IWaittingPageProps {
 }
 
 export interface IWaittingPageState {
-  detail?: string
+  detail?: string,
+  isShowJoinBtn: boolean
 }
 
 export default class WaittingPage extends React.Component<IWaittingPageProps, IWaittingPageState> {
@@ -15,15 +16,33 @@ export default class WaittingPage extends React.Component<IWaittingPageProps, IW
   constructor(props: IWaittingPageProps) {
     super(props)
 
-
     const now = new Date()
     const end = new Date((this.props.data.startDate || 0) * 1000)
 
-    let nextDuration = '(เหลืออีก ' + (end.getDate() - now.getDate()) + ' วัน)'
+    let dayLeft = (end.getDate() - now.getDate())
+    if (dayLeft <= 0) {
+      dayLeft = 1
+    }
+
+    let nextDuration = '(เหลืออีก ' + dayLeft + ' วัน)'
 
     this.state = {
-      detail: nextDuration
+      detail: nextDuration,
+      isShowJoinBtn: false
     }
+
+    let counter = (end.getTime() - now.getTime()) / 1000
+    let intervalId = setInterval(() => {
+      counter = counter - 1;
+      if (counter <= 0) {
+        this.setState({
+          detail: '(กิจกรรมเริ่มแล้ว)',
+          isShowJoinBtn: true
+        })
+        clearInterval(intervalId)
+      }
+    }, 1000)
+
   }
 
   public render() {
@@ -54,13 +73,22 @@ export default class WaittingPage extends React.Component<IWaittingPageProps, IW
           }
         </div>
 
-
-
+        {
+          this.state.isShowJoinBtn ?
+            <Row className="justify-content-center" style={{ paddingTop: '4px' }}>
+              <Button variant="secondary" style={{ maxWidth: '200px', maxHeight: '40px', backgroundColor: '#535353' }} onClick={() => {
+                window.location.reload();
+              }}>
+                เข้าร่วมกิจกรรม
+              </Button>
+            </Row>
+            : <></>
+        }
 
         <Row className="justify-content-center">
           <Image style={{ width: '240px', margin: '16px' }} src={'ic-section.svg'} />
         </Row>
-        
+
         <div style={{
           fontSize: '28px',
           textAlign: 'center',

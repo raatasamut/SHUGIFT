@@ -29,7 +29,7 @@ export default class HomeViewModel {
         //https://dl.dropboxusercontent.com/s/5uolwblzs87hp8s/dataFuture.json
         //https://dl.dropboxusercontent.com/s/1mcrw9ulbvh8tis/dataPrevious.json
 
-        new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/ewajvtxporqf1rs/data.json' : User.getUser()?.getService(APIKey.SELECT) || '',
+        new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/5uolwblzs87hp8s/dataFuture.json' : User.getUser()?.getService(APIKey.SELECT) || '',
             'Home',
             'Data',
             new BaseModel(),

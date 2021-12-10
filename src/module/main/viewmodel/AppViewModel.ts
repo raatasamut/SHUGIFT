@@ -2,8 +2,7 @@ import WebAPI from "../../../api/WebAPI";
 import AppConfig from "../../../AppConfig";
 import { BaseModel } from "../../../models/BaseModel";
 import { UserModel } from "../../authentication/model/UserModel";
-import User from "../../authentication/User";
-import { CampaignData, UserData } from "../../home/model/UserData";
+import { CampaignData } from "../../home/model/UserData";
 import RequestLogModel from '../model/LoginRequestModel'
 
 
