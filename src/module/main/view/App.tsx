@@ -86,6 +86,8 @@ function App() {
 
       setData(viewModel.request)
       setState(AppState.PROFILE)
+
+      setShowLoading(false)
     }
 
     // document.addEventListener('contextmenu', (e) => {
@@ -131,7 +133,7 @@ function App() {
   }
 
   const initial = () => {
-    liff.init({ liffId: '1656702005-vBbBappn' }, () => {
+    liff.init({ liffId: '1656710228-XJeQj4Lv' }, () => {
       setShowLoading(false)
       if (liff.isLoggedIn()) {
         getLineAccountData()

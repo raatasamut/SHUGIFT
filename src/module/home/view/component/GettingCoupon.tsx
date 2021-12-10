@@ -76,7 +76,9 @@ export default class GettingCoupon extends React.Component<IGettingCouponProps> 
             </div>
 
             <Row className="justify-content-center" style={{ fontSize: '24px', textAlign: 'center', paddingTop: '12px' }}>
-              คูปองหมดอายุวันที่ 10 มกราคม 2565
+              {
+                'คูปองหมดอายุวันที่ ' + this.props.winData?.getExpired()
+              }
             </Row>
           </Stack>
         </Modal.Body>

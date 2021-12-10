@@ -1,12 +1,18 @@
-import React, { useCallback, useState } from 'react';
 import ReactDOM from 'react-dom';
 import App from './module/main/view/App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import './index.scss';
-  
+import AdminPage from './admin/AdminPage';
+
 ReactDOM.render(
-      <App />,
+  <Router>
+    <Routes>
+      <Route path="/admin" element={<AdminPage />} />
+      <Route path="*" element={<App />} />
+    </Routes>
+  </Router>,
   document.getElementById('root')
 );
 

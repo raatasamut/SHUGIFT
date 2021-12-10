@@ -27,7 +27,7 @@ export default class LoginViewModel {
             (obj, array) => {
                 if (obj.currentCampaign != null) {
                     callback({
-                        logo: obj.currentCampaign.icon || '',
+                        logo: obj.currentCampaign.icon || 'logo.png',
                         backgroundColor: obj.currentCampaign.bgColor || '#FFFFFF',
                         count: obj.currentCampaign.couponPerUser
                     })

@@ -180,7 +180,6 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
     }
 
     handleResize = () => {
-        console.log('Screen ' + window.innerWidth)
         this.setState({
             containerWidth: window.innerWidth
         });
@@ -369,9 +368,9 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     paddingBottom: '8px',
                     lineHeight: 1.4
                 }}>
-                    ท่านได้ร่วมลุ้นโค้ดแล้วจำนวน <a style={{
+                    ท่านได้สิทธิร่วมลุ้นจำนวน <a style={{
                         color: '#00A54C'
-                    }}>{this.state.data?.couponPerUser}</a> ครั้งเท่านั้น ต่อ 1 LINE ID
+                    }}>{this.state.data?.couponPerUser}</a> ครั้งเท่านั้นต่อ 1 LINE ID
                 </div>
 
                 <UseCodeComponent isSmall={false} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซต์' onclick={this.useCodeViaWeb} />
@@ -496,9 +495,9 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                             paddingBottom: '8px',
                             lineHeight: 1.4
                         }}>
-                            ท่านได้ร่วมลุ้นโค้ดแล้วจำนวน <a style={{
+                            ท่านได้สิทธิร่วมลุ้นจำนวน <a style={{
                                 color: '#00A54C'
-                            }}>{this.state.data?.couponPerUser}</a> ครั้งเท่านั้น ต่อ 1 LINE ID
+                            }}>{this.state.data?.couponPerUser}</a> ครั้งเท่านั้นต่อ 1 LINE ID
                         </div>
 
                         <UseCodeComponent isSmall={false} imageName='ic-use-code-web' title='ใช้โค้ดสั่งซื้อสินค้าบนเว็บไซต์' onclick={this.useCodeViaWeb} />
@@ -617,17 +616,17 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     }
                     {
                         this.state.couponGone.isGone ?
-                        <div className="justify-content-center" style={{
-                            position: 'absolute', zIndex: 11, width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
-                        }}>
-                            <div className='rounded-border' style={{
-                                backgroundColor: '#F4FFF4', color: '#00893F', fontSize: '16px', padding: '24px', textAlign: 'center'
+                            <div className="justify-content-center" style={{
+                                position: 'absolute', zIndex: 11, width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
                             }}>
-                                {this.state.couponGone.msg}
+                                <div className='rounded-border' style={{
+                                    backgroundColor: '#F4FFF4', color: '#00893F', fontSize: '16px', padding: '24px', textAlign: 'center'
+                                }}>
+                                    {this.state.couponGone.msg}
+                                </div>
                             </div>
-                        </div>
-                        :
-                        <></>
+                            :
+                            <></>
                     }
 
                     <WheelComponent

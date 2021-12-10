@@ -22,6 +22,7 @@
     "react-dom": "^17.0.2",
     "react-jwt": "^1.1.4",
     "react-loading-overlay-ts": "^1.0.4",
+    "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
     "reflect-metadata": "^0.1.13",
     "styled-components": "^5.3.3",
@@ -53,6 +54,7 @@
     ]
   },
   "devDependencies": {
-    "@types/bootstrap": "^5.1.6"
+    "@types/bootstrap": "^5.1.6",
+    "@types/md5": "^2.3.1"
   }
 }

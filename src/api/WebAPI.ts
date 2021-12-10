@@ -71,11 +71,17 @@ export default class WebAPI {
                         }
                     }));
                 } else {
-                    res.text().then(txt => {
-                        console.log(`${res.status} : ${txt}`);
-                        errorCallback(res.status, txt);
-                    })
-
+                    try {
+                        res.json().then(r => {
+                            const response = plainToClass(ResponseModel, r);
+                            errorCallback(response.status, response.message || '');
+                        })
+                    } catch (e) {
+                        res.text().then(txt => {
+                            console.log(`${res.status} : ${txt}`);
+                            errorCallback(res.status, txt);
+                        })
+                    }
                 }
             }).catch((error: string) => {
                 console.log('Fetch error');

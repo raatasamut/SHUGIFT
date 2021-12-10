@@ -76,7 +76,7 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                 </Row>
 
                 <Row className="justify-content-center">
-                    <Image style={{ width: '110px', margin: '6px' }} src={this.props.data.picture} rounded />
+                    <Image style={{ width: '110px', height: '110px', margin: '6px', padding: '0px'  }} src={this.props.data.picture} rounded />
                 </Row>
 
                 <Table style={{
@@ -113,17 +113,13 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
             <>
                 <Container>
                     <Row>
-                        <Col style={{ width: '40%' }}>
+                        <Col style={{ width: '200px' }}>
                             <Row className="justify-content-center">
-                                <Image style={{ width: '110px', margin: '6px' }} src={this.props.data.picture} rounded />
-                            </Row>
-
-                            <Row className="justify-content-center" style={{ paddingTop: '16px' }}>
-                                <Image className='hover' style={{ height: '46px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
+                                <Image style={{ width: '110px', height: '110px', margin: '6px', padding: '0px' }} src={this.props.data.picture} rounded />
                             </Row>
                         </Col>
 
-                        <Col style={{ width: '60%' }}>
+                        <Col style={{ width: '350px' }}>
 
                             <Row className="justify-content-center" style={{
                                 fontSize: '16px',
@@ -149,8 +145,17 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
                                     </tr>
                                 </tbody>
                             </Table>
+                        </Col>
+                    </Row>
 
-                            <Row className="justify-content-center" style={{ paddingTop: '4px' }}>
+                    <Row>
+                        <Col style={{ width: '200px', padding: '0px' }}>
+                            <Row className="justify-content-center" style={{ width: '200px' }}>
+                                <Image className='hover' style={{ height: '40px', float: 'right' }} src={'bt-logout.svg'} onClick={this.props.logoutCallback} />
+                            </Row>
+                        </Col>
+                        <Col style={{ width: '350px', padding: '0px' }}>
+                            <Row className="justify-content-center" style={{ width: '350px' }}>
                                 <Button variant="secondary" style={{ maxWidth: '100px', maxHeight: '40px', backgroundColor: '#535353' }} size="sm" onClick={this.props.loginCallback}>
                                     ยืนยัน
                                 </Button>
