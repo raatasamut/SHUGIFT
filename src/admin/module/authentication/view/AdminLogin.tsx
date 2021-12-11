@@ -21,7 +21,7 @@ export default class AdminLogin extends React.Component<IAdminLoginProps> {
           Coupon Decoder
         </Row>
         <Row className="justify-content-center" style={{ fontSize: '22px' }}>
-          ยินดีต้อนรับเข้าสู่ระบบ
+          ถอดรหัสคูปอง
         </Row>
 
         <Row className="justify-content-center">
@@ -49,7 +49,7 @@ export default class AdminLogin extends React.Component<IAdminLoginProps> {
             </Form.Group>
 
             <Row className="justify-content-center">
-              <Button variant="primary" size="sm" style={{ maxWidth: '130px', marginTop: '16px', maxHeight: '40px', backgroundColor: '#535353' }} onClick={()=>{
+              <Button variant="primary" size="sm" style={{ maxWidth: '130px', marginTop: '16px', maxHeight: '40px', backgroundColor: '#535353' }} onClick={() => {
                 this.props.login(username, password)
               }}>
                 เข้าสู่ระบบ
