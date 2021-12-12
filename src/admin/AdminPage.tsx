@@ -2,8 +2,10 @@ import * as React from 'react';
 import AdminLogin from './module/authentication/view/AdminLogin';
 import AdminConvert from './module/convert/view/AdminConvert';
 import LoadingOverlay from 'react-loading-overlay-ts';
-import { Container, Row, Image, Button, Col } from 'react-bootstrap';
+import { Container, Row, Image, Button, Col, Modal } from 'react-bootstrap';
 import AdminViewModel from './AdminViewModel';
+import { plainToClass } from 'class-transformer';
+import { UserModel } from '../module/authentication/model/UserModel';
 
 export interface IAdminPageProps {
 }
@@ -12,6 +14,10 @@ export interface IAdminStateProps {
   authenticated: boolean,
   isShowLoading: boolean,
   user: string,
+  toast: {
+    isShow: Boolean,
+    msg: string
+  }
 }
 
 export default class AdminPage extends React.Component<IAdminPageProps, IAdminStateProps> {
@@ -21,13 +27,44 @@ export default class AdminPage extends React.Component<IAdminPageProps, IAdminSt
   constructor(props: IAdminPageProps) {
     super(props)
 
-    this.state = {
-      authenticated: false,
-      isShowLoading: false,
-      user: ''
+    this.viewModel = new AdminViewModel()
+
+    try {
+      let tmp = window.localStorage.getItem('admin')
+      if (tmp) {
+        let user = plainToClass(UserModel, JSON.parse(tmp))
+        this.state = {
+          authenticated: true,
+          isShowLoading: false,
+          user: user?.user?.name || '',
+          toast: {
+            isShow: false,
+            msg: ''
+          }
+        }
+      } else {
+        this.state = {
+          authenticated: false,
+          isShowLoading: false,
+          user: '',
+          toast: {
+            isShow: false,
+            msg: ''
+          }
+        }
+      }
+    } catch (e) {
+      this.state = {
+        authenticated: false,
+        isShowLoading: false,
+        user: '',
+        toast: {
+          isShow: false,
+          msg: ''
+        }
+      }
     }
 
-    this.viewModel = new AdminViewModel()
   }
 
   logout() {
@@ -51,6 +88,12 @@ export default class AdminPage extends React.Component<IAdminPageProps, IAdminSt
             height: '100vh',
             backgroundColor: '#393939'
           }}>
+
+          <Modal className="toast-modal" show={this.state.toast.isShow} onHide={() => this.setState({ toast: { isShow: false, msg: '' } })}>
+            <Modal.Header closeButton>
+              <Modal.Title>{this.state.toast.msg}</Modal.Title>
+            </Modal.Header>
+          </Modal>
 
           <Container
             style={{
@@ -93,7 +136,14 @@ export default class AdminPage extends React.Component<IAdminPageProps, IAdminSt
                 </Row>
 
                 {
-                  this.state.authenticated ? <AdminConvert /> : <AdminLogin login={(user: string, pass: string) => {
+                  this.state.authenticated ? <AdminConvert toast={(msg) => {
+                    this.setState({
+                      toast: {
+                        isShow: true,
+                        msg: msg
+                      }
+                    })
+                  }} /> : <AdminLogin login={(user: string, pass: string) => {
 
                     console.log(`User: ${user}, Pass: ${pass}`)
 
@@ -106,7 +156,12 @@ export default class AdminPage extends React.Component<IAdminPageProps, IAdminSt
                       })
                     }, (status, msg) => {
                       this.showLoading(false)
-
+                      this.setState({
+                        toast: {
+                          isShow: true,
+                          msg: msg
+                        }
+                      })
                     })
                   }} />
                 }

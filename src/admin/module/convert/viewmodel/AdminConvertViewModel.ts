@@ -8,7 +8,6 @@ export default class AdminConvertViewModel {
     }
 
     shouldPass(callback: ((pass: boolean, code: string) => void)) {
-
         try { //U0hVR0lGVDIwJQ== //=0hVR0lGVDIwJQ=U
 
             let chars = this.swapStr(this.inputCode, 0, this.inputCode.length - 1)
@@ -26,7 +25,6 @@ export default class AdminConvertViewModel {
         } catch (e) {
             callback(false, '')
         }
-
     }
 
     swapStr(str: string, first: number, last: number) {

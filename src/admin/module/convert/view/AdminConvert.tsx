@@ -3,6 +3,7 @@ import { Row, Image, Form, Container, FormControl, InputGroup, Button } from 're
 import AdminConvertViewModel from '../viewmodel/AdminConvertViewModel';
 
 export interface IAdminConvertProps {
+  toast: (msg: string) => void
 }
 
 export interface IAdminConvertState {
@@ -25,7 +26,7 @@ export default class AdminConvert extends React.Component<IAdminConvertProps, IA
     }
   }
 
-  coppyCode() {
+  coppyCode(show?: boolean) {
     let txt = this.state.decoded
     const el = document.createElement("textarea");
     el.value = txt;
@@ -37,6 +38,10 @@ export default class AdminConvert extends React.Component<IAdminConvertProps, IA
     el.setSelectionRange(0, 99999);
     document.execCommand("copy");
     document.body.removeChild(el);
+
+    if(show){
+      this.props.toast('คัดลอกโค้ดเรียบร้อยแล้ว')
+    }
   }
 
   public render() {
@@ -129,12 +134,13 @@ export default class AdminConvert extends React.Component<IAdminConvertProps, IA
                 placeholder="ถอดรหัสแล้ว"
                 style={{ textAlign: 'center', backgroundColor: this.state.decoded.length > 2 ? '#FFFFFF' : '#E8E8E8', color: this.state.decoded.length > 2 ? '#397DF3' : '#B4B4B4', fontSize: this.state.decoded.length > 2 ? '20px' : '16px' }}
                 value={this.state.decoded}
+                onChange={()=>{}}
               />
               {
                 this.state.decoded.length > 2 ?
                   <Button variant="outline-secondary" id="button-addon3" style={{ backgroundColor: '#397DF3', color: '#FFFFFF' }}
                     onClick={() => {
-                      this.coppyCode()
+                      this.coppyCode(true)
                     }}>
                     คัดลอก
                   </Button> : <></>

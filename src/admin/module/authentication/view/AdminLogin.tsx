@@ -1,15 +1,22 @@
 import * as React from 'react';
 import { Row, Image, Form, Button, Container } from 'react-bootstrap';
+import AdminLoginViewModel from '../viewmodel/AdminLoginViewModel';
 
 export interface IAdminLoginProps {
   login: (user: string, pass: string) => void
 }
 
 export default class AdminLogin extends React.Component<IAdminLoginProps> {
-  public render() {
 
-    let username: string = ''
-    let password: string = ''
+  viewModel?: AdminLoginViewModel
+
+  constructor(props: IAdminLoginProps){
+    super(props)
+
+    this.viewModel = new AdminLoginViewModel()
+  }
+
+  public render() {
 
     return (
       <div>
@@ -33,24 +40,24 @@ export default class AdminLogin extends React.Component<IAdminLoginProps> {
             <Form.Group className="mb-3">
               <Form.Label>Username</Form.Label>
               <Form.Control type="text" placeholder="ระบุ Username ของท่่าน" onChange={(event) => {
-                username = event.target.value || ''
+                this.viewModel?.setUsername(event.target.value || '')
               }} />
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>Password</Form.Label>
               <Form.Control type="password" placeholder="ระบุ Password ของท่่าน" onChange={(event) => {
-                password = event.target.value || ''
+                this.viewModel?.setPassword(event.target.value || '')
               }} onKeyPress={(target) => {
                 if (target.charCode == 13) {
-                  this.props.login(username, password)
+                  this.props.login(this.viewModel?.username || '', this.viewModel?.password || '')
                 }
               }} />
             </Form.Group>
 
             <Row className="justify-content-center">
               <Button variant="primary" size="sm" style={{ maxWidth: '130px', marginTop: '16px', maxHeight: '40px', backgroundColor: '#535353' }} onClick={() => {
-                this.props.login(username, password)
+                this.props.login(this.viewModel?.username || '', this.viewModel?.password || '')
               }}>
                 เข้าสู่ระบบ
               </Button>
