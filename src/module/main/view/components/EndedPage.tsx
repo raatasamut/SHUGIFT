@@ -17,7 +17,7 @@ export default class EndedPage extends React.Component<IEndedPageProps, IEndedPa
   shareButton(icon: string, title: string, link: string) {
     return (
       <Row className="justify-content-center">
-        <div className='rounded-border-button' style={{
+        <div className='rounded-border-button hover' style={{
           backgroundColor: '#F7F7F7',
           marginBottom: '8px',
           marginTop: '8px',

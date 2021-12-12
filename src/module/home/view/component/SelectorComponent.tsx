@@ -1,6 +1,5 @@
 import { Button, Modal, Image, Stack, Card } from 'react-bootstrap';
 import * as React from 'react';
-import '../style/SelectorStyle.scss'
 
 export interface ISelectorComponentProps {
     show: boolean,

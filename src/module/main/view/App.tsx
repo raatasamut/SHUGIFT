@@ -13,6 +13,7 @@ import WaittingPage from './components/WaittingPage';
 import EndedPage from './components/EndedPage';
 import AppConfig from '../../../AppConfig';
 import LoadingOverlay from 'react-loading-overlay-ts';
+import AgreementModal from './components/AgreementModal';
 
 const viewModel = new AppViewModel()
 
@@ -25,6 +26,7 @@ function App() {
   const [alert, isShow] = useState(false)
   const [alertMsg, setAlertMsg] = useState('')
 
+  const [agreementAlert, isAgreementShow] = useState(false)
   const [OAAlert, isOAShow] = useState(false)
 
   const [forceLogout, isShowForceLogout] = useState(false)
@@ -196,7 +198,7 @@ function App() {
     >
       <div
         style={{
-          height: appState === AppState.HOME ? '100%': '100vh'
+          height: appState === AppState.HOME ? '100%' : '100vh'
         }}>
         <Container>
           <Modal className="toast-modal" show={alert} onHide={() => isShow(false)}>
@@ -219,6 +221,15 @@ function App() {
               }}>กลับไปที่หน้าเข้าสู่ระบบ</Button>
             </Modal.Footer>
           </Modal>
+
+          <AgreementModal show={agreementAlert}
+            onSelected={() => {
+              isAgreementShow(false)
+              requestLogin()
+            }}
+            onCancel={() => {
+              isAgreementShow(false)
+            }} />
 
           <Modal
             show={OAAlert}
@@ -349,7 +360,7 @@ function App() {
                           showAlert(status, msg)
                         }} /> :
                           appState === AppState.PROFILE ? <LineProfilePage data={lineData} loginCallback={() => {
-                            requestLogin()
+                            isAgreementShow(true)
                           }} logoutCallback={() => {
                             logout();
                           }} alertCallback={(status: number, msg: string) => {
