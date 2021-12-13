@@ -181,6 +181,7 @@ function App() {
 
   const requestLogin = () => {
     setShowLoading(true)
+    window.localStorage.removeItem('loa')
     viewModel.login((msg) => {
       setShowLoading(false)
       initial();

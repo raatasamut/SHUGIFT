@@ -8,14 +8,16 @@ import AppConfig from '../AppConfig';
 
 export default class WebAPI {
 
-    request<T>(url: string, module: string, target: string, data: BaseModel, cls: ClassConstructor<T>, successCallback: ((cls: T, clsArray: T[]) => void), errorCallback: ((status: number, message: string) => void)) {
+    request<T>(url: string, module: string, target: string, data: BaseModel, cls: ClassConstructor<T>, successCallback: ((cls: T, clsArray: T[]) => void), errorCallback: ((status: number, message: string) => void), skipJWT?:boolean) {
 
         //Check JWT token
-        if (!AppConfig.useMockup) {
-            const token = User.getUser()?.token
-            if (token && isExpired(token)) {
-                errorCallback(401, 'โทเค็นหทดอายุ')
-                return
+        if(!skipJWT){
+            if (!AppConfig.useMockup) {
+                const token = User.getUser()?.token
+                if (token && isExpired(token)) {
+                    errorCallback(401, 'โทเค็นหทดอายุ')
+                    return
+                }
             }
         }
 

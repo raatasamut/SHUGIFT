@@ -68,7 +68,7 @@ export default class AdminConvert extends React.Component<IAdminConvertProps, IA
             <FormControl
               type="text"
               aria-describedby="basic-addon2"
-              placeholder="ระบุ Username ของท่่าน"
+              placeholder="วางรหัสที่ได้รับในช่องนี้"
               style={{ textAlign: 'center' }}
               onChange={(event) => {
                 this.viewModel?.setInputCode(event.target.value || '')

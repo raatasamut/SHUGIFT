@@ -8,7 +8,6 @@ export default class AdminViewModel {
 
     
     login(user: string, password: string, callback: (user?: UserModel) => void, errorCallback: (status: number, msg: string) => void) {
-        // admin1  SHU@2021
         new WebAPI().request(AppConfig.authenticationAPI,
             'Authentication',
             'AdminLogin',
@@ -21,7 +20,8 @@ export default class AdminViewModel {
             },
             (errorStatus, errorMessage) => {
                 errorCallback(errorStatus, errorMessage)
-            })
+            },
+            true)
     }
 
 }
