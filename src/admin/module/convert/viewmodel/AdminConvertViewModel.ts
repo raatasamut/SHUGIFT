@@ -1,3 +1,4 @@
+import { LogD } from "../../../../util/AppLog"
 
 export default class AdminConvertViewModel {
 
@@ -15,7 +16,7 @@ export default class AdminConvertViewModel {
             var base64 = require('base-64')
             var decodedData = base64.decode(chars)
 
-            console.log(decodedData)
+            LogD(decodedData)
 
             if (this.check(decodedData)) {
                 callback(true, decodedData)

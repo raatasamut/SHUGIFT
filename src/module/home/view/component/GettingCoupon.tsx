@@ -43,8 +43,8 @@ export default class GettingCoupon extends React.Component<IGettingCouponProps> 
               }} src="bg-prize.svg" alt="Card image" />
               <Card.ImgOverlay>
                 <Row>
-                  <div style={{ width: '25%' }} />
-                  <div style={{ width: '75%' }}>
+                  <div style={{ width: '22%' }} />
+                  <div style={{ width: '78%' }}>
                     <Row className="justify-content-center" style={{ fontSize: '26px', textAlign: 'center', color: '#DD9619', lineHeight: '1.2', paddingTop: '8px' }}>
                       คูปองส่วนลด
                     </Row>

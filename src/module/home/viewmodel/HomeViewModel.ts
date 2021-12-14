@@ -29,7 +29,7 @@ export default class HomeViewModel {
         //https://dl.dropboxusercontent.com/s/5uolwblzs87hp8s/dataFuture.json
         //https://dl.dropboxusercontent.com/s/1mcrw9ulbvh8tis/dataPrevious.json
 
-        new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/5uolwblzs87hp8s/dataFuture.json' : User.getUser()?.getService(APIKey.SELECT) || '',
+        new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/ewajvtxporqf1rs/data.json' : User.getUser()?.getService(APIKey.SELECT) || '',
             'Home',
             'Data',
             new BaseModel(),
@@ -47,7 +47,7 @@ export default class HomeViewModel {
         //https://dl.dropboxusercontent.com/s/1i7dg4z7ikma5iq/data.json
         //https://dl.dropboxusercontent.com/s/bc2c2prposyst6l/data404.json
 
-        new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/bc2c2prposyst6l/data404.json' : User.getUser()?.getService(APIKey.SELECT) || '',
+        new WebAPI().request(AppConfig.useMockup ? 'https://dl.dropboxusercontent.com/s/1i7dg4z7ikma5iq/data.json' : User.getUser()?.getService(APIKey.SELECT) || '',
             'Home',
             'Gift',
             new BaseModel(),

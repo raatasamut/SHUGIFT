@@ -5,13 +5,14 @@ import { ClassConstructor, plainToClass } from 'class-transformer';
 import { isExpired } from "react-jwt";
 import User from '../module/authentication/User';
 import AppConfig from '../AppConfig';
+import { LogD } from '../util/AppLog';
 
 export default class WebAPI {
 
-    request<T>(url: string, module: string, target: string, data: BaseModel, cls: ClassConstructor<T>, successCallback: ((cls: T, clsArray: T[]) => void), errorCallback: ((status: number, message: string) => void), skipJWT?:boolean) {
+    request<T>(url: string, module: string, target: string, data: BaseModel, cls: ClassConstructor<T>, successCallback: ((cls: T, clsArray: T[]) => void), errorCallback: ((status: number, message: string) => void), skipJWT?: boolean) {
 
         //Check JWT token
-        if(!skipJWT){
+        if (!skipJWT) {
             if (!AppConfig.useMockup) {
                 const token = User.getUser()?.token
                 if (token && isExpired(token)) {
@@ -38,8 +39,8 @@ export default class WebAPI {
 
         try {
 
-            console.log(`Request : ${url}`);
-            console.log(`Data : ${JSON.stringify(new RequestModel(module, target, data))}`);
+            LogD(`Request : ${url}`)
+            LogD(`Data : ${JSON.stringify(new RequestModel(module, target, data))}`)
 
             fetch(url, {
                 method: 'POST',
@@ -53,8 +54,8 @@ export default class WebAPI {
                     res.json().then((r => {
                         const response = plainToClass(ResponseModel, r);
 
-                        console.log('API res')
-                        console.log(response)
+                        LogD('API res')
+                        LogD(response)
 
                         switch (response.status) {
                             case 200: {
@@ -80,44 +81,36 @@ export default class WebAPI {
                         })
                     } catch (e) {
                         res.text().then(txt => {
-                            console.log(`${res.status} : ${txt}`);
+                            LogD(`${res.status} : ${txt}`);
                             errorCallback(res.status, txt);
                         })
                     }
                 }
             }).catch((error: string) => {
-                console.log('Fetch error');
+                LogD('Fetch error');
                 errorCallback(0, `${error}`);
             });
         } catch (e) {
-            console.log('exception error');
+            LogD('exception error');
             errorCallback(0, `${e}`);
         }
     }
 
-    async getNTPTime() {
-
-        // var dgram = require("dgram");
-
-        // var server = dgram.createSocket("udp4");
-
-        // let Sntp = require('sntp')
-
-        // var options = {
-        //     host: 'time.navy.mi.th',  // Defaults to pool.ntp.org
-        //     port: 123,                      // Defaults to 123 (NTP)
-        //     resolveReference: true,         // Default to false (not resolving)
-        //     timeout: 4000                   // Defaults to zero (no timeout)
-        // };
-
-        // try {
-        //     const time = await Sntp.time();
-        //     console.log('Local clock is off by: ' + time.t + ' milliseconds');
-        //     // process.exit(0);
-        // }
-        // catch (err) {
-        //     console.log('Failed: ' + err);
-        //     // process.exit(1);
-        // }
+    getWorldTime(cb: ((date: Date) => void)) {
+        fetch('http://worldtimeapi.org/api/timezone/Asia/Bangkok').then((res) => {
+            try {
+                if (res.status === 200) {
+                    res.json().then(r => {
+                        cb(new Date(r.unixtime * 1000))
+                    })
+                }
+            } catch (e) {
+                LogD('Fetch world time exception');
+                cb(new Date())
+            }
+        }).catch((error: string) => {
+            LogD('Fetch world time error');
+            cb(new Date())
+        })
     }
 }

@@ -1,5 +1,7 @@
 export default class AppConfig {
-    static useMockup: boolean = false
+    static useMockup: boolean = true
+
+    static showLog: boolean = true
 
     static SHOW_LOADING: number = 950
     static HIDE_LOADING: number = 951

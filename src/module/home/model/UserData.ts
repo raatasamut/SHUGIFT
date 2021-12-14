@@ -1,4 +1,5 @@
 import { Type } from "class-transformer";
+import WebAPI from "../../../api/WebAPI";
 import { BaseModel } from "../../../models/BaseModel";
 
 export class CampaignData extends BaseModel {
@@ -89,13 +90,6 @@ export class UserData extends BaseModel {
         } else {
             return resultStart + ' - ' + resultEnd
         }
-    }
-
-    public isEventEnd() {
-        const now = new Date()
-        const end = new Date((this.endDate || 0) * 1000)
-
-        return now.getDate() > end.getDate()
     }
 }
 

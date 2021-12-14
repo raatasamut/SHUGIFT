@@ -1,6 +1,7 @@
 import WebAPI from "../../../api/WebAPI";
 import AppConfig from "../../../AppConfig";
 import { BaseModel } from "../../../models/BaseModel";
+import { LogD } from "../../../util/AppLog";
 import { UserModel } from "../../authentication/model/UserModel";
 import { CampaignData } from "../../home/model/UserData";
 import RequestLogModel from '../model/LoginRequestModel'
@@ -25,40 +26,41 @@ export default class LoginViewModel {
             new BaseModel(),
             CampaignData,
             (obj, array) => {
-                if (obj.currentCampaign != null) {
-                    callback({
-                        logo: obj.currentCampaign.icon || 'logo.png',
-                        backgroundColor: obj.currentCampaign.bgColor || '#FFFFFF',
-                        count: obj.currentCampaign.couponPerUser
-                    })
-                } else if (obj.nextCampaign != null) {
-
-                    let nextDetail = 'กิจกรรมใหม่จะเริ่มในวันที่ ' + new Date((obj.nextCampaign.startDate || 0) * 1000).toLocaleDateString('th-TH', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                    })
-
-                    const now = new Date()
-                    const end = new Date((obj.nextCampaign.startDate || 0) * 1000)
-
-                    let nextDuration = '(เหลืออีก ' + (end.getDate() - now.getDate()) + ' วัน)'
-                    callback({
-                        logo: obj.nextCampaign.icon || '',
-                        backgroundColor: obj.nextCampaign.bgColor || '#FFFFFF',
-                        count: obj.nextCampaign.couponPerUser,
-                        nextEvent: {
-                            detail: nextDetail,
-                            duration: nextDuration
-                        }
-                    })
-                } else if (obj.previousCampaign != null) {
-                    callback({
-                        logo: obj.previousCampaign.icon || '',
-                        backgroundColor: obj.previousCampaign.bgColor || '#FFFFFF',
-                        count: obj.previousCampaign.couponPerUser
-                    })
-                }
+                new WebAPI().getWorldTime((now: Date)=>{
+                    if (obj.currentCampaign != null) {
+                        callback({
+                            logo: obj.currentCampaign.icon || 'logo.png',
+                            backgroundColor: obj.currentCampaign.bgColor || '#FFFFFF',
+                            count: obj.currentCampaign.couponPerUser
+                        })
+                    } else if (obj.nextCampaign != null) {
+    
+                        let nextDetail = 'กิจกรรมใหม่จะเริ่มในวันที่ ' + new Date((obj.nextCampaign.startDate || 0) * 1000).toLocaleDateString('th-TH', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                        })
+    
+                        const end = new Date((obj.nextCampaign.startDate || 0) * 1000)
+    
+                        let nextDuration = '(เหลืออีก ' + (end.getDate() - now.getDate()) + ' วัน)'
+                        callback({
+                            logo: obj.nextCampaign.icon || '',
+                            backgroundColor: obj.nextCampaign.bgColor || '#FFFFFF',
+                            count: obj.nextCampaign.couponPerUser,
+                            nextEvent: {
+                                detail: nextDetail,
+                                duration: nextDuration
+                            }
+                        })
+                    } else if (obj.previousCampaign != null) {
+                        callback({
+                            logo: obj.previousCampaign.icon || '',
+                            backgroundColor: obj.previousCampaign.bgColor || '#FFFFFF',
+                            count: obj.previousCampaign.couponPerUser
+                        })
+                    }
+                })
             },
             (errorStatus, errorMessage) => {
                 errorCallback(errorStatus, errorMessage)
@@ -72,7 +74,7 @@ export default class LoginViewModel {
             this.request,
             UserModel,
             (obj, array) => {
-                console.log(JSON.stringify(obj))
+                LogD(JSON.stringify(obj))
                 window.localStorage.setItem("user", JSON.stringify(obj));
                 callback()
             },
@@ -93,7 +95,12 @@ export default class LoginViewModel {
                 callback(r.friendFlag === true)
             }));
         }).catch((error: string) => {
-            console.log(error);
+            LogD(error);
         });
+    }
+
+    logout(){
+        window.localStorage.removeItem('user')
+        window.localStorage.removeItem('loa')
     }
 }

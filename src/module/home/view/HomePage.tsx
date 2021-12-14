@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { Row, Image, Container, Col, Button } from 'react-bootstrap';
+import WebAPI from '../../../api/WebAPI';
 import AppConfig from '../../../AppConfig';
 import { WheelData } from '../../../game/wheel/components/Wheel/types';
 import { WheelComponent } from '../../../game/wheel/components/Wheel/WheelComponent';
+import { LogD } from '../../../util/AppLog';
 import User from '../../authentication/User';
 import { MCouponType } from '../model/MCouponType';
 import { CampaignData, UserData, UserHistoryData } from '../model/UserData';
@@ -80,7 +82,11 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
         }
 
         this.viewModel = new HomeViewModel()
-        this.viewModel.loadMCouponType((list?: Array<MCouponType>) => {
+    }
+
+    componentDidMount() {
+
+        this.viewModel?.loadMCouponType((list?: Array<MCouponType>) => {
             this.setState({
                 listMCouponType: list || []
             })
@@ -95,24 +101,8 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
             }
         })
 
-        // new WebAPI().getNTPTime()
-
-        // let timeSync = NtpTimeSync.getInstance({
-        //     servers: [
-        //         "1.th.pool.ntp.org",
-        //         "asia.pool.ntp.org",
-        //         "1.asia.pool.ntp.org",
-        //         "time.navy.mi.th",
-        //         "time2.navy.mi.th"
-        //     ],
-        //     sampleCount: 8,
-        //     replyTimeout: 3000
-        // });
-        // timeSync.getTime().then(result => {
-        //     console.log("current system time", new Date());
-        //     console.log("real time", result.now);
-        //     console.log("offset in milliseconds", result.offset);
-        // })
+        this.handleResize();
+        window.addEventListener('resize', this.handleResize)
     }
 
     isShowLoading(show: boolean) {
@@ -123,7 +113,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
         this.isShowLoading(true)
         this.viewModel?.loadUserData((data?: CampaignData) => {
             this.isShowLoading(false)
-            console.log('loadUserData')
+            LogD('loadUserData')
             if (data) {
 
                 if (data.currentCampaign != null) {
@@ -172,11 +162,6 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                 this.props.alertCallback(status, msg)
             }
         })
-    }
-
-    componentDidMount() {
-        this.handleResize();
-        window.addEventListener('resize', this.handleResize)
     }
 
     handleResize = () => {
@@ -285,47 +270,62 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
     }
 
     startSpin() {
-        if (this.state.forType === USEVIA.NONE) {
-            this.setState({
-                showSelector: true
-            })
-        } else {
-            if (!this.spining) {
-                this.spining = true
-                let position = this.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1)
-                if (!position) {
-                    position = 1
-                }
-                if (position >= 0) {
-                    this.isShowLoading(true)
-                    this.viewModel?.loadGiftData((data) => {
-                        this.isShowLoading(false)
-                        if (data) {
-                            if ((data.couponTypeID || -1) >= 0) {
-                                this.setState({
-                                    winData: data,
-                                })
-                                this.setState({
-                                    spin: true,
-                                })
-                            }
+
+        let self = this
+        new WebAPI().getWorldTime((date: Date) => {
+            let systemTime = new Date()
+
+            LogD(`World time is: ${date}, System time is ${systemTime}}`)
+
+            let fiveMin = 5 * 50 * 1000
+
+            if (!(date.getTime() > (systemTime.getTime() - fiveMin) && date.getTime() < (systemTime.getTime() + fiveMin))) {
+                LogD('TIME CHANGE WARNING !! !! !!')
+                self.props.alertCallback(401, 'เวลาบนอุปกรณ์ของท่าน ห่างจากเวลาบนเครือข่ายมากเกินไป')
+            } else {
+                if (self.state.forType === USEVIA.NONE) {
+                    self.setState({
+                        showSelector: true
+                    })
+                } else {
+                    if (!self.spining) {
+                        self.spining = true
+                        let position = self.state.data?.history?.findIndex(tmp => tmp.couponTypeID === -1)
+                        if (!position) {
+                            position = 1
                         }
-                    }, (status, msg) => {
-                        this.isShowLoading(false)
-                        if (status === 404) {
-                            this.setState({
-                                couponGone: {
-                                    isGone: true,
-                                    msg: msg
+                        if (position >= 0) {
+                            self.isShowLoading(true)
+                            self.viewModel?.loadGiftData((data) => {
+                                self.isShowLoading(false)
+                                if (data) {
+                                    if ((data.couponTypeID || -1) >= 0) {
+                                        self.setState({
+                                            winData: data,
+                                        })
+                                        self.setState({
+                                            spin: true,
+                                        })
+                                    }
+                                }
+                            }, (status, msg) => {
+                                self.isShowLoading(false)
+                                if (status === 404) {
+                                    self.setState({
+                                        couponGone: {
+                                            isGone: true,
+                                            msg: msg
+                                        }
+                                    })
+                                } else {
+                                    self.props.alertCallback(status, msg)
                                 }
                             })
-                        } else {
-                            this.props.alertCallback(status, msg)
                         }
-                    })
+                    }
                 }
             }
-        }
+        })
     }
 
     smallScreen() {

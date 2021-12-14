@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Row, Image, Button } from 'react-bootstrap';
+import WebAPI from '../../../../api/WebAPI';
 import { UserData } from '../../../home/model/UserData';
 
 export interface IWaittingPageProps {
@@ -13,36 +14,52 @@ export interface IWaittingPageState {
 
 export default class WaittingPage extends React.Component<IWaittingPageProps, IWaittingPageState> {
 
+  intervalId?: NodeJS.Timeout
+
   constructor(props: IWaittingPageProps) {
     super(props)
-
-    const now = new Date()
-    const end = new Date((this.props.data.startDate || 0) * 1000)
-
-    let dayLeft = (end.getDate() - now.getDate())
-    if (dayLeft <= 0) {
-      dayLeft = 1
-    }
-
-    let nextDuration = '(เหลืออีก ' + dayLeft + ' วัน)'
-
     this.state = {
-      detail: nextDuration,
+      detail: '(เหลืออีก ... วัน)',
       isShowJoinBtn: false
     }
+  }
 
-    let counter = (end.getTime() - now.getTime()) / 1000
-    let intervalId = setInterval(() => {
-      counter = counter - 1;
-      if (counter <= 0) {
-        this.setState({
-          detail: '(กิจกรรมเริ่มแล้ว)',
-          isShowJoinBtn: true
-        })
-        clearInterval(intervalId)
+  componentDidMount() {
+    new WebAPI().getWorldTime((now: Date) => {
+      const end = new Date((this.props.data.startDate || 0) * 1000)
+
+      let dayLeft = (end.getDate() - now.getDate())
+      if (dayLeft <= 0) {
+        dayLeft = 1
       }
-    }, 1000)
 
+      let nextDuration = '(เหลืออีก ' + dayLeft + ' วัน)'
+
+      this.state = {
+        detail: nextDuration,
+        isShowJoinBtn: false
+      }
+
+      let counter = (end.getTime() - now.getTime()) / 1000
+      this.intervalId = setInterval(() => {
+        counter = counter - 1;
+        if (counter <= 0) {
+          this.setState({
+            detail: '(กิจกรรมเริ่มแล้ว)',
+            isShowJoinBtn: true
+          })
+          if (this.intervalId) {
+            clearInterval(this.intervalId)
+          }
+        }
+      }, 1000)
+    })
+  }
+
+  componentWillUnmount() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 
   public render() {

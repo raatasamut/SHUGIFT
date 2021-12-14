@@ -6,6 +6,7 @@ import { Container, Row, Image, Button, Col, Modal } from 'react-bootstrap';
 import AdminViewModel from './AdminViewModel';
 import { plainToClass } from 'class-transformer';
 import { UserModel } from '../module/authentication/model/UserModel';
+import { LogD } from '../util/AppLog';
 
 export interface IAdminPageProps {
 }
@@ -145,7 +146,7 @@ export default class AdminPage extends React.Component<IAdminPageProps, IAdminSt
                     })
                   }} /> : <AdminLogin login={(user: string, pass: string) => {
 
-                    console.log(`User: ${user}, Pass: ${pass}`)
+                    LogD(`User: ${user}, Pass: ${pass}`)
 
                     this.showLoading(true)
                     this.viewModel?.login(user, pass, (user) => {

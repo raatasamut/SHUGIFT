@@ -5,12 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import './index.scss';
 import AdminPage from './admin/AdminPage';
+import MainPage from './module/main/view/MainPage';
 
 ReactDOM.render(
   <Router>
     <Routes>
       <Route path="/admin" element={<AdminPage />} />
-      <Route path="*" element={<App />} />
+      <Route path="*" element={<MainPage />} />
     </Routes>
   </Router>,
   document.getElementById('root')

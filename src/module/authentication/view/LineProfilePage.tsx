@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Row, Image, Button, Col, Container, Table } from 'react-bootstrap';
+import { LogD } from '../../../util/AppLog';
 import RequestLogModel from '../../main/model/LoginRequestModel'
 
 export interface ILineProfilePageProps {
@@ -34,8 +35,8 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
 
     public render() {
 
-        console.log('LineProfilePage')
-        console.log(this.props.data)
+        LogD('LineProfilePage')
+        LogD(this.props.data)
 
         return (
             <div>

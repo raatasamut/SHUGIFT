@@ -3,6 +3,7 @@ import AppConfig from "../AppConfig";
 import { UserModel } from "../module/authentication/model/UserModel";
 import MD5 from 'md5'
 import AdminRequestLogin from "./module/authentication/model/AdminRequestLogin";
+import { LogD } from "../util/AppLog";
 
 export default class AdminViewModel {
 
@@ -14,7 +15,7 @@ export default class AdminViewModel {
             new AdminRequestLogin(user, MD5(password)),
             UserModel,
             (obj, array) => {
-                console.log(JSON.stringify(obj))
+                LogD(JSON.stringify(obj))
                 window.localStorage.setItem("admin", JSON.stringify(obj));
                 callback(obj)
             },
