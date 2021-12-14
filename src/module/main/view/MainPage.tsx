@@ -120,7 +120,9 @@ export default class MainPage extends React.Component<IMainPageProps, IMainPageS
                 }
             })
         }, () => {
-
+            this.setState({
+                isShowEndedPage: true
+            })
         })
 
         if (!AppConfig.useMockup) {

@@ -274,9 +274,6 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
         let self = this
         new WebAPI().getWorldTime((date: Date) => {
             let systemTime = new Date()
-
-            LogD(`World time is: ${date}, System time is ${systemTime}}`)
-
             let fiveMin = 5 * 50 * 1000
 
             if (!(date.getTime() > (systemTime.getTime() - fiveMin) && date.getTime() < (systemTime.getTime() + fiveMin))) {
@@ -467,7 +464,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     fontSize: '28px',
                     textAlign: 'center',
                     color: '#6C6C6C',
-                    marginTop: '-12px'
+                    marginTop: '-6px'
                 }}>
                     ยินดีต้อนรับในการล็อกอินของท่าน <a style={{
                         color: '#000000'
@@ -480,7 +477,7 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     fontSize: '30px',
                     textAlign: 'center',
                     color: '#6C6C6C',
-                    marginTop: '-12px'
+                    marginTop: '-6px'
                 }}>
                     {
                         this.state.data?.getDuration()

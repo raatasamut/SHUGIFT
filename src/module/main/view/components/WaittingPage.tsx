@@ -35,10 +35,10 @@ export default class WaittingPage extends React.Component<IWaittingPageProps, IW
 
       let nextDuration = '(เหลืออีก ' + dayLeft + ' วัน)'
 
-      this.state = {
+      this.setState({
         detail: nextDuration,
         isShowJoinBtn: false
-      }
+      })
 
       let counter = (end.getTime() - now.getTime()) / 1000
       this.intervalId = setInterval(() => {

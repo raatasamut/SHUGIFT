@@ -59,6 +59,8 @@ export default class LoginViewModel {
                             backgroundColor: obj.previousCampaign.bgColor || '#FFFFFF',
                             count: obj.previousCampaign.couponPerUser
                         })
+                    } else {
+                        errorCallback(404, 'Not found')
                     }
                 })
             },

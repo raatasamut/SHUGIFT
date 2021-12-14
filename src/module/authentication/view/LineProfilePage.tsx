@@ -29,6 +29,10 @@ export default class LineProfilePage extends React.Component<ILineProfilePagePro
         window.addEventListener('resize', this.handleResize)
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize)
+    }
+
     handleResize = () => this.setState({
         containerWidth: window.innerWidth
     });

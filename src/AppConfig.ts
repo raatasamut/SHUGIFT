@@ -1,5 +1,5 @@
 export default class AppConfig {
-    static useMockup: boolean = true
+    static useMockup: boolean = false
 
     static showLog: boolean = true
 

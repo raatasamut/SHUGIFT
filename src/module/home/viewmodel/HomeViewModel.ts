@@ -6,7 +6,7 @@ import User from "../../authentication/User";
 import { GiftData } from "../model/GiftData";
 import { MCouponType } from "../model/MCouponType";
 import { UpdateCouponChannel } from "../model/UpdateCouponChannel";
-import { CampaignData, UserData, UserHistoryData } from "../model/UserData";
+import { CampaignData, UserHistoryData } from "../model/UserData";
 
 export default class HomeViewModel {
 

@@ -9,11 +9,6 @@ export interface IEndedPageState {
 
 export default class EndedPage extends React.Component<IEndedPageProps, IEndedPageState> {
 
-  constructor(props: IEndedPageProps) {
-    super(props)
-
-  }
-
   shareButton(icon: string, title: string, link: string) {
     return (
       <Row className="justify-content-center">
