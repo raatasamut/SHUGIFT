@@ -6,11 +6,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import './index.scss';
 import AdminPage from './admin/AdminPage';
 import MainPage from './module/main/view/MainPage';
+import TermPage from './components/TermPage';
 
 ReactDOM.render(
   <Router>
     <Routes>
       <Route path="/admin" element={<AdminPage />} />
+      <Route path="/term" element={<TermPage />} />
       <Route path="*" element={<MainPage />} />
     </Routes>
   </Router>,

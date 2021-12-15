@@ -28,6 +28,7 @@ export default class LoginViewModel {
             (obj, array) => {
                 new WebAPI().getWorldTime((now: Date)=>{
                     if (obj.currentCampaign != null) {
+                        localStorage.setItem('term', obj.currentCampaign.detail || '')
                         callback({
                             logo: obj.currentCampaign.icon || 'logo.png',
                             backgroundColor: obj.currentCampaign.bgColor || '#FFFFFF',
@@ -43,7 +44,14 @@ export default class LoginViewModel {
     
                         const end = new Date((obj.nextCampaign.startDate || 0) * 1000)
     
-                        let nextDuration = '(เหลืออีก ' + (end.getDate() - now.getDate()) + ' วัน)'
+                        let left = (end.getDate() - now.getDate())
+                        if(left <= 0){
+                            left = 1
+                        }
+
+                        let nextDuration = '(เหลืออีก ' + left + ' วัน)'
+
+                        localStorage.setItem('term', obj.nextCampaign.detail || '')
                         callback({
                             logo: obj.nextCampaign.icon || '',
                             backgroundColor: obj.nextCampaign.bgColor || '#FFFFFF',
@@ -54,6 +62,8 @@ export default class LoginViewModel {
                             }
                         })
                     } else if (obj.previousCampaign != null) {
+
+                        localStorage.setItem('term', obj.previousCampaign.detail || '')
                         callback({
                             logo: obj.previousCampaign.icon || '',
                             backgroundColor: obj.previousCampaign.bgColor || '#FFFFFF',
@@ -66,7 +76,7 @@ export default class LoginViewModel {
             },
             (errorStatus, errorMessage) => {
                 errorCallback(errorStatus, errorMessage)
-            })
+            }, true)
     }
 
     login(callback: (msg?: string) => void, errorCallback: (status: number, msg: string) => void) {

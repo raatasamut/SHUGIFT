@@ -61,7 +61,7 @@ export default class AgreementModal extends React.Component<IAgreementModalProps
                                         <Col><div>
                                             ยอมรับ ข้าพเจ้าได้อ่านและยอมรับ<br />
                                             <a className='hover' style={{ color: 'blue', textDecoration: 'underline' }} onClick={() => {
-
+                                                window.open('/term', "_blank")
                                             }}>เงื่อนไขการร่วมกิจกรรมและของรางวัล</a>
                                         </div></Col>
                                     </Row>

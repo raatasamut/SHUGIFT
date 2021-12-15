@@ -121,8 +121,18 @@ export default class WaittingPage extends React.Component<IWaittingPageProps, IW
           paddingTop: '20px',
           paddingBottom: '50px'
         }}>
-          ขอบคุณค่ะ/ครับ
+          ขอบคุณค่ะ
         </div>
+
+        <Row className="justify-content-center">
+          <a className='hover' style={{
+            color: 'blue', textDecoration: 'underline', textAlign: 'center',
+            paddingTop: '20px',
+            paddingBottom: '16px'
+          }} onClick={() => {
+            window.open('/term', "_blank")
+          }}>เงื่อนไขการร่วมกิจกรรมและของรางวัล</a>
+        </Row>
       </div>
     );
   }

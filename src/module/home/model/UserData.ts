@@ -19,6 +19,7 @@ export class UserData extends BaseModel {
     usingAdminChannel?: boolean;
     @Type(() => UserHistoryData)
     public history?: UserHistoryData[];
+    detail?: string;
 
     icon?: string;
     bgColor?: string;

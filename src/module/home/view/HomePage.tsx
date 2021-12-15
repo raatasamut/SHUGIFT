@@ -92,13 +92,15 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
             })
             this.loadUserData()
         }, (status, msg) => {
-            if (status === 404) {
-                this.setState({
-                    endEvent: true
-                })
-            } else {
-                this.props.alertCallback(status, msg)
-            }
+
+            this.loadUserData()
+            // if (status === 404) {
+            //     this.setState({
+            //         endEvent: true
+            //     })
+            // } else {
+            //     this.props.alertCallback(status, msg)
+            // }
         })
 
         this.handleResize();
@@ -139,10 +141,13 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                         maxPosition: max,
                         data: data.currentCampaign
                     })
+
+                    localStorage.setItem('term', data.currentCampaign.detail || '')
                 } else if (data.nextCampaign != null) {
                     this.props.showWaittingPage(data.nextCampaign)
                 } else if (data.previousCampaign != null) {
 
+                    localStorage.setItem('term', data.previousCampaign.detail || '')
                     if (data.previousCampaign.getDayLeftMoreThan(5)) {
                         this.props.showEndPage()
                     } else {
@@ -207,7 +212,17 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                             </Row>
 
                             <Row className="justify-content-center" style={{ fontSize: '28px', textAlign: 'center', color: '#6C6C6C' }}>
-                                ขอบคุณค่ะ/ครับ
+                                ขอบคุณค่ะ
+                            </Row>
+
+                            <Row className="justify-content-center">
+                                <a className='hover' style={{
+                                    color: 'blue', textDecoration: 'underline', textAlign: 'center',
+                                    paddingTop: '20px',
+                                    paddingBottom: '16px'
+                                }} onClick={() => {
+                                    window.open('/term', "_blank")
+                                }}>เงื่อนไขการร่วมกิจกรรมและของรางวัล</a>
                             </Row>
                         </div>
                         :
@@ -661,6 +676,12 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                     paddingTop: '10px'
                 }}>กดปุ่ม START เพื่อเริ่มเล่น
                 </div>
+
+                <Row className="justify-content-center">
+                    <a className='hover' style={{ color: 'blue', textDecoration: 'underline', textAlign: 'center' }} onClick={() => {
+                        window.open('/term', "_blank")
+                    }}>เงื่อนไขการร่วมกิจกรรมและของรางวัล</a>
+                </Row>
             </div>
         )
     }

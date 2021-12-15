@@ -92,9 +92,9 @@ function App() {
       setShowLoading(false)
     }
 
-    // document.addEventListener('contextmenu', (e) => {
-    //   e.preventDefault();
-    // });
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+    });
   }, []);
 
   const logout = () => {
@@ -223,14 +223,14 @@ function App() {
             </Modal.Footer>
           </Modal>
 
-          <AgreementModal show={agreementAlert}
+          {/* <AgreementModal show={agreementAlert}
             onSelected={() => {
               isAgreementShow(false)
               requestLogin()
             }}
             onCancel={() => {
               isAgreementShow(false)
-            }} />
+            }} /> */}
 
           <Modal
             show={OAAlert}

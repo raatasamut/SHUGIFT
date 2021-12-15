@@ -33,7 +33,9 @@ export interface IMainPageState {
         isShow: boolean,
         msg: string
     },
-    agreementAlert: boolean,
+    agreementAlert: {
+        isShow: boolean
+    },
     isOAShow: boolean,
     isShowWaittingPage: {
         isShow: boolean,
@@ -76,7 +78,9 @@ export default class MainPage extends React.Component<IMainPageProps, IMainPageS
                 isShow: false,
                 msg: ''
             },
-            agreementAlert: false,
+            agreementAlert: {
+                isShow: false
+            },
             isOAShow: false,
             isShowWaittingPage: {
                 isShow: false,
@@ -254,12 +258,13 @@ export default class MainPage extends React.Component<IMainPageProps, IMainPageS
                 isShowLoading: false
             })
         } else if (status === 401) {
-            this.setState({
-                isShowForceLogout: {
-                    isShow: true,
-                    msg: msg
-                }
-            })
+            this.logout()
+            // this.setState({
+            //     isShowForceLogout: {
+            //         isShow: true,
+            //         msg: msg
+            //     }
+            // })
         } else {
             this.setState({
                 alert: {
@@ -307,16 +312,20 @@ export default class MainPage extends React.Component<IMainPageProps, IMainPageS
                             </Modal.Footer>
                         </Modal>
 
-                        <AgreementModal show={this.state.agreementAlert}
+                        <AgreementModal show={this.state.agreementAlert.isShow}
                             onSelected={() => {
                                 this.setState({
-                                    agreementAlert: false
+                                    agreementAlert: {
+                                        isShow: false
+                                    }
                                 })
                                 this.requestLogin()
                             }}
                             onCancel={() => {
                                 this.setState({
-                                    agreementAlert: false
+                                    agreementAlert: {
+                                        isShow: false
+                                    }
                                 })
                             }} />
 
@@ -427,11 +436,13 @@ export default class MainPage extends React.Component<IMainPageProps, IMainPageS
                                                 paddingBottom: '24px',
                                                 paddingLeft: '20px',
                                                 paddingRight: '20px',
-                                                backgroundColor: this.state.appTheme.backgroundColor
+                                                backgroundColor: this.state.appTheme.backgroundColor,
+                                                backgroundImage: window.innerWidth >= 900 ? `url(bg-desktop.svg)` : `url(bg-mobile.svg)`,
+                                                backgroundSize: 'cover'
                                             }}>
 
                                             <Row className="justify-content-center">
-                                                <Image style={{ width: '90%', maxWidth: '250px' }} src={this.state.appTheme.logo} />
+                                                <Image style={{ width: '90%', maxWidth: '300px' }} src={this.state.appTheme.logo} />
                                             </Row>
 
                                             <Container
@@ -454,7 +465,9 @@ export default class MainPage extends React.Component<IMainPageProps, IMainPageS
                                                     }} /> :
                                                         this.state.appState === AppState.PROFILE ? <LineProfilePage data={this.state.userRequestLoginData} loginCallback={() => {
                                                             this.setState({
-                                                                agreementAlert: true
+                                                                agreementAlert: {
+                                                                    isShow: true
+                                                                }
                                                             })
                                                         }} logoutCallback={() => {
                                                             this.logout();

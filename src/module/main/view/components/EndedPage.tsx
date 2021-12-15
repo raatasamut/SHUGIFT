@@ -94,7 +94,7 @@ export default class EndedPage extends React.Component<IEndedPageProps, IEndedPa
           paddingTop: '20px',
           paddingBottom: '50px'
         }}>
-          ขอบคุณค่ะ/ครับ
+          ขอบคุณค่ะ
         </div>
       </div>
     );

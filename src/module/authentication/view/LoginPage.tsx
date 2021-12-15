@@ -28,7 +28,7 @@ export default class LoginPage extends React.Component<ILoginPageProps> {
           fontWeight: 'bold',
           paddingBottom: '16px'
         }}>
-          ยินดีต้อนรับ<br />เข้าสู่เทศกาลหมุนวงล้อ
+          ลุ้นรับจับรางวัลกับ Box of Happiness
         </div>
 
         {
@@ -69,7 +69,12 @@ export default class LoginPage extends React.Component<ILoginPageProps> {
           <Image className='hover' style={{ width: '240px', marginTop: '36px', marginBottom: '8px' }} src={'bt-line-login.svg'} onClick={this.props.lineCallback} />
         </Row>
 
-      </div>
+        <Row className="justify-content-center">
+          <a className='hover' style={{ color: 'blue', textDecoration: 'underline', textAlign: 'center' }} onClick={() => {
+            window.open('/term', "_blank")
+          }}>เงื่อนไขการร่วมกิจกรรมและของรางวัล</a>
+        </Row>
+      </div >
     );
   }
 }
